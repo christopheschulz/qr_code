@@ -84,27 +84,32 @@ def len_arguments_is_valid(arguments,len_arguments):
 
 
 def arguments_has_error():
-    print(""" -g to generate a QR code \n -r to read a QR code
-""")
+    print(" Use -g to generate a QR code, followed by the text to be encoded."
+    "\n Use -r, followed by the QR code image filename, to extract and decode its contents.")
 
 
 def qr_code():
     arguments = get_arguments()
-    len_arguments = 1
+    len_arguments = 2
     if not len_arguments_is_valid(arguments,len_arguments):
         arguments_has_error()
         return
-    if arguments[0] == "-g":
+    qr_handler = arguments[0]
+    qr_entry = arguments[1]
+
+    if qr_handler == "-g":
         ## to do
         # pour l'instant j'envoie le lien en manuel, à gérer avec ligne de commande
-        qr_text = "https://docs.python.org/3/library/pathlib.html#module-pathlib"
+        qr_text = qr_entry
         generate_qr_code(qr_text,qr_version,QR_ERROR_CORRECT_L,qr_box_size,qr_border)
-    elif arguments[0] == "-r":
+    
+    elif qr_handler == "-r":
     ## to do
     # pour l'instant j'envoie le fichier en manuel, à gérer avec ligne de commande
-        file_name = "QR002.png"
+        file_name = qr_entry
         file_path = load_file(file_name)
         if not file_path:
+            print("file not exist")
             return
         read_qr_code(file_path)
     else :
