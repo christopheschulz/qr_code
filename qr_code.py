@@ -41,16 +41,14 @@ def generate_qr_code(qr_text,
 
 def read_qr_code(file):
     # read the QRCODE image
-    ## to do
-    # load file à défibir
-    # file = load_file() 
     img = cv2.imread(file)
     # initialize the cv2 QRCode detector
     detector = cv2.QRCodeDetector()
     # detect and decode
+    # retourne un tuple. Le texte est dans la première variable de ce tuple
     data = detector.detectAndDecode(img) 
     text_qr_code = data[0]
-    print(text_qr_code)   
+    return text_qr_code
 
 
 def save_file():
@@ -98,20 +96,16 @@ def qr_code():
     qr_entry = arguments[1]
 
     if qr_handler == "-g":
-        ## to do
-        # pour l'instant j'envoie le lien en manuel, à gérer avec ligne de commande
         qr_text = qr_entry
         generate_qr_code(qr_text,qr_version,QR_ERROR_CORRECT_L,qr_box_size,qr_border)
     
     elif qr_handler == "-r":
-    ## to do
-    # pour l'instant j'envoie le fichier en manuel, à gérer avec ligne de commande
         file_name = qr_entry
         file_path = load_file(file_name)
         if not file_path:
             print("file not exist")
             return
-        read_qr_code(file_path)
+        print(read_qr_code(file_path))
     else :
          arguments_has_error()
 
