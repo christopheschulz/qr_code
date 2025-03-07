@@ -1,25 +1,35 @@
 import sys
 from pathlib import Path
 
+# gestion génération QR code
 import qrcode
 import qrcode.constants
+#gestion lecture QR code
 import cv2
 
-# constante
-QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
-QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
-QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
-QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+def qr_code_generation_parameters():
+    # version
 
-# variable à gérer avant la génération
-qr_version = None # maximum 40
-qr_box_size = 10
-qr_border = 4 # minimum 4
+    # constante d'erreur de génération voir fichier help for QR code dans help
+    QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
+    QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
+    QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
+    QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+
+    # box size
+    # The box_size parameter controls how many 
+    # pixels each “box” of the QR code is.
+
+
+    # border
+    # The border parameter controls how many 
+    # boxes thick the border should be 
+    # (the default is 4, which is the minimum according to the specs).
 
 
 def generate_qr_code(qr_text,
                      qr_version=None,
-                     qr_error_correction=QR_ERROR_CORRECT_M,
+                     qr_error_correction=qrcode.constants.ERROR_CORRECT_M,
                      qr_box_size=10,
                      qr_border=4):
     
@@ -33,8 +43,7 @@ def generate_qr_code(qr_text,
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
-    ## to do
-    # attention là il faut une gestion de fichier
+   
     file = save_file()
     img.save(file)
 
