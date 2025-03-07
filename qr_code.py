@@ -7,8 +7,11 @@ import qrcode.constants
 #gestion lecture QR code
 import cv2
 
-def qr_code_generation_parameters():
+def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
+    if 1 <= qr_version <= 40:
+        qr_version = qr_version
+
     # The version parameter is an integer from 1 to 40 
     # that controls the size of the QR Code 
     # (the smallest, version 1, is a 21x21 matrix). 
@@ -30,7 +33,7 @@ def qr_code_generation_parameters():
     # The border parameter controls how many 
     # boxes thick the border should be 
     # (the default is 4, which is the minimum according to the specs).
-
+    return qr_version,qr_error_correct,qr_box_size,qr_border
 
 def generate_qr_code(qr_text,
                      qr_version=None,
@@ -98,7 +101,7 @@ def arguments_has_error():
     "\n Use -r, followed by the QR code image filename, to extract and decode its contents.")
 
 
-def qr_code():
+def main():
     arguments = get_arguments()
     len_arguments = 2
     if not len_arguments_is_valid(arguments,len_arguments):
@@ -123,4 +126,5 @@ def qr_code():
          arguments_has_error()
 
 
-qr_code()
+if __name__ == "__main__":
+    main()
