@@ -9,6 +9,11 @@ import cv2
 
 def qr_code_generation_parameters():
     # version
+    # The version parameter is an integer from 1 to 40 
+    # that controls the size of the QR Code 
+    # (the smallest, version 1, is a 21x21 matrix). 
+    # Set to None and use the fit parameter when making 
+    # the code to determine this automatically.
 
     # constante d'erreur de génération voir fichier help for QR code dans help
     QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
