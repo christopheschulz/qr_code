@@ -15,10 +15,11 @@ QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
 qr_version = None # maximum 40
 qr_box_size = 10
 qr_border = 4 # minimum 4
-qr_img_number = 0
 
 
-def generate_qr_code(qr_version=1,
+
+def generate_qr_code(qr_text,
+                     qr_version=1,
                      qr_error_correction=QR_ERROR_CORRECT_M,
                      qr_box_size=10,
                      qr_border=4):
@@ -29,21 +30,21 @@ def generate_qr_code(qr_version=1,
         box_size=qr_box_size,
         border=qr_border,
     )
-    qr.add_data('Some data') # entre parenthèses c'est le texte à transformer
+    qr.add_data(qr_text) # entre parenthèses c'est le texte à transformer
     qr.make(fit=True)
 
     img = qr.make_image(fill_color="black", back_color="white")
     ## to do
     # attention là il faut une gestion de fichier
-    file = file_name_path()
+    file = save_file()
     img.save(file)
 
 
 def read_qr_code():
     # read the QRCODE image
     ## to do
-    # attention là il faut une gestion de fichier
-    file = save_file()
+    # load file à défibir
+    file = load_file() 
     img = cv2.imread(file)
     # initialize the cv2 QRCode detector
     detector = cv2.QRCodeDetector()
@@ -56,13 +57,18 @@ def read_qr_code():
 def save_file():
     p = Path.cwd()
     qr_folder = p / "QR"
+    file_path = ""
+    qr_img_number = 0
     
     while Path(file_path).exists():
-        file_name = f"QR{str(qr_img_number).zfill(3)}.png"
-        file_path = qr_folder / file_name
         qr_img_number += 1
+        file_path = qr_folder / f"QR{str(qr_img_number).zfill(3)}.png"
        
     return file_path
+
+
+def load_file():
+    pass
 
 
 def get_arguments():
@@ -70,8 +76,8 @@ def get_arguments():
 
 
 def qr_code():
-    
-    generate_qr_code(qr_version,QR_ERROR_CORRECT_L,qr_box_size,qr_border)
+    qr_text = "https://docs.python.org/3/library/pathlib.html#module-pathlib"
+    generate_qr_code(qr_text,qr_version,QR_ERROR_CORRECT_L,qr_box_size,qr_border)
     # read_qr_code()
 
 
