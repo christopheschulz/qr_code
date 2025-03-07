@@ -32,7 +32,6 @@ def generate_qr_code(qr_text,
                      qr_error_correction=qrcode.constants.ERROR_CORRECT_M,
                      qr_box_size=10,
                      qr_border=4):
-    
     qr = qrcode.QRCode(
         version=qr_version,
         error_correction=qr_error_correction,
@@ -67,9 +66,8 @@ def save_file():
     qr_img_number = 0
     
     while Path(file_path).exists():
-        qr_img_number += 1
         file_path = qr_folder / f"QR{str(qr_img_number).zfill(3)}.png"
-       
+        qr_img_number += 1
     return file_path
 
 
