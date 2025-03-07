@@ -9,8 +9,6 @@ import cv2
 
 def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
-    if 1 <= qr_version <= 40:
-        qr_version = qr_version
 
     # The version parameter is an integer from 1 to 40 
     # that controls the size of the QR Code 
