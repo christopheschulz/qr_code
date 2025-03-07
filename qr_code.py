@@ -18,7 +18,7 @@ qr_border = 4 # minimum 4
 
 
 def generate_qr_code(qr_text,
-                     qr_version=1,
+                     qr_version=None,
                      qr_error_correction=QR_ERROR_CORRECT_M,
                      qr_box_size=10,
                      qr_border=4):
@@ -97,7 +97,8 @@ def qr_code():
 
     if qr_handler == "-g":
         qr_text = qr_entry
-        generate_qr_code(qr_text,qr_version,QR_ERROR_CORRECT_L,qr_box_size,qr_border)
+        ## pour l'instant je ne gère pas les paramètres de la classe qrcode
+        generate_qr_code(qr_text)
     
     elif qr_handler == "-r":
         file_name = qr_entry
