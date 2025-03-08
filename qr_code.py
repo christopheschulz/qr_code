@@ -7,6 +7,8 @@ import qrcode.constants
 #gestion lecture QR code
 import cv2
 
+DIR_QR_IMG = 'qr_img'
+
 def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
 
@@ -67,23 +69,33 @@ def read_qr_code(file):
 
 def save_file():
     p = Path.cwd()
-    qr_folder = p / "QR"
+    qr_img_folder = p / DIR_QR_IMG
     file_path = ""
     qr_img_number = 0
     
     while Path(file_path).exists():
-        file_path = qr_folder / f"QR{str(qr_img_number).zfill(3)}.png"
+        file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
         qr_img_number += 1
     return file_path
 
 
-def load_file(file):
+def get_file_path(file):
     p = Path.cwd()
-    qr_folder = p / "QR"
-    file_path = qr_folder / file
+    qr_img_folder = p / DIR_QR_IMG
+    file_path = qr_img_folder / file
     if Path(file_path).exists():
         return file_path
    
+
+def load_qr_config():
+    pass
+
+
+def save_qr_config(qr_version,qr_error_correct,qr_box_size,qr_border):
+    p = Path.cwd()
+    qr_config_folder = p / "config"
+    file_path = qr_config_folder / file
+
 
 def get_arguments():
     arguments = sys.argv[1:]
@@ -94,7 +106,7 @@ def len_arguments_is_valid(arguments,len_arguments):
     return len(arguments) == len_arguments
 
 
-def arguments_has_error():
+def display_help_arguments():
     print(" Use -g to generate a QR code, followed by the text to be encoded."
     "\n Use -r, followed by the QR code image filename, to extract and decode its contents.")
 
@@ -103,7 +115,7 @@ def main():
     arguments = get_arguments()
     len_arguments = 2
     if not len_arguments_is_valid(arguments,len_arguments):
-        arguments_has_error()
+        display_help_arguments()
         return
     qr_handler = arguments[0]
     qr_entry = arguments[1]
@@ -112,16 +124,15 @@ def main():
         qr_text = qr_entry
         ## pour l'instant je ne gère pas les paramètres de la classe qrcode
         generate_qr_code(qr_text)
-    
     elif qr_handler == "-r":
         file_name = qr_entry
-        file_path = load_file(file_name)
+        file_path = get_file_path(file_name)
         if not file_path:
             print("file not exist")
             return
         print(read_qr_code(file_path))
     else :
-         arguments_has_error()
+         display_help_arguments()
 
 
 if __name__ == "__main__":
