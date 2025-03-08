@@ -145,6 +145,9 @@ def main():
             print("file not exist")
             return
         print(read_qr_code(file_path))
+    elif qr_handler == "-conf":
+        print("gestion config à faire")
+
     else :
          display_help_arguments()
 
