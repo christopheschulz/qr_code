@@ -1,4 +1,5 @@
 import sys
+import json
 from pathlib import Path
 
 # gestion génération QR code
@@ -7,7 +8,8 @@ import qrcode.constants
 #gestion lecture QR code
 import cv2
 
-DIR_QR_IMG = 'qr_img'
+DIR_QR_IMG = "qr_img"
+DIR_QR_CONFIG = "config"
 
 def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
@@ -91,10 +93,22 @@ def load_qr_config():
     pass
 
 
-def save_qr_config(qr_version,qr_error_correct,qr_box_size,qr_border):
+def save_qr_config(qr_version,qr_error_correction,qr_box_size,qr_border):
+    ## to do
+    # je pense qu'ici il serait bon de checker si les 
+    # valeurs sont correctes avant sauvegarde
+    qr_config_dict = {}
     p = Path.cwd()
-    qr_config_folder = p / "config"
+    qr_config_folder = p / DIR_QR_CONFIG
+    file = "qr_code.config"
     file_path = qr_config_folder / file
+    qr_config_dict["version"] = qr_version
+    qr_config_dict["error_correction"] = qr_error_correction
+    qr_config_dict["box_size"] = qr_box_size
+    qr_config_dict["border"] = qr_border
+
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
 
 
 def get_arguments():
@@ -136,4 +150,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+     # main()
+
+    save_qr_config(qr_version=None,
+                     qr_error_correction=qrcode.constants.ERROR_CORRECT_M,
+                     qr_box_size=10,
+                     qr_border=4)
