@@ -10,8 +10,15 @@ import cv2
 
 DIR_QR_IMG = "qr_img"
 DIR_QR_CONFIG = "config"
+QR_CONFIG_FILE = "qr_code.config"
 
-def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
+QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
+print(qrcode.constants.ERROR_CORRECT_L)
+QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
+QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
+QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+
+def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
 
     # The version parameter is an integer from 1 to 40 
@@ -21,10 +28,7 @@ def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_bor
     # the code to determine this automatically.
 
     # constante d'erreur de génération voir fichier help for QR code dans help
-    QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
-    QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
-    QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
-    QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+    
 
     # box size
     # The box_size parameter controls how many 
@@ -37,9 +41,28 @@ def qr_code_generation_parameters(qr_version,qr_error_correct,qr_box_size,qr_bor
     # (the default is 4, which is the minimum according to the specs).
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
+
+def manage_config():
+    print("Veuillez entrer le valeurs des config suivantes demandée.")
+    qr_version = int(input("Entrez la version du qrd code (1 - 40) :"))
+    qr_error_correct = input("Entrer le facteur d'erreur (L/M/Q/H) :")
+    if qr_error_correct.upper() == "L":
+        qr_error_correct = QR_ERROR_CORRECT_L
+    elif qr_error_correct.upper() == "M":
+         qr_error_correct = QR_ERROR_CORRECT_M
+    elif qr_error_correct.upper() == "Q":
+         qr_error_correct = QR_ERROR_CORRECT_Q
+    elif qr_error_correct.upper() == "H":
+         qr_error_correct = QR_ERROR_CORRECT_H
+    qr_box_size = int(input("Entrez la grandeur du QR Code :"))
+    qr_border = int(input("Entrez la largeur du bord :"))
+
+    return qr_version,qr_error_correct,qr_box_size,qr_border
+
+
 def generate_qr_code(qr_text,
                      qr_version=None,
-                     qr_error_correction=qrcode.constants.ERROR_CORRECT_M,
+                     qr_error_correction=1,
                      qr_box_size=10,
                      qr_border=4):
     qr = qrcode.QRCode(
@@ -53,7 +76,7 @@ def generate_qr_code(qr_text,
 
     img = qr.make_image(fill_color="black", back_color="white")
    
-    file = save_file()
+    file = save_qr_code_img()
     img.save(file)
 
 
@@ -69,7 +92,7 @@ def read_qr_code(file):
     return text_qr_code
 
 
-def save_file():
+def save_qr_code_img():
     p = Path.cwd()
     qr_img_folder = p / DIR_QR_IMG
     file_path = ""
@@ -81,27 +104,35 @@ def save_file():
     return file_path
 
 
-def get_file_path(file):
+def get_file_path(file,dir):
     p = Path.cwd()
-    qr_img_folder = p / DIR_QR_IMG
-    file_path = qr_img_folder / file
+    folder = p / dir
+    file_path = folder / file
     if Path(file_path).exists():
         return file_path
    
 
 def load_qr_config():
-    pass
+    p = Path.cwd()
+    folder = p / DIR_QR_CONFIG
+    file_path = folder / QR_CONFIG_FILE
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    qr_version = data["version"]
+    qr_error_correction = data["error_correction"]
+    qr_box_size = data["box_size"]
+    qr_border= data["border"]
+    return qr_version,qr_error_correction,qr_box_size,qr_border
 
 
-def save_qr_config(qr_version,qr_error_correction,qr_box_size,qr_border):
+def save_qr_config(file_path,qr_version,qr_error_correction,qr_box_size,qr_border):
     ## to do
     # je pense qu'ici il serait bon de checker si les 
     # valeurs sont correctes avant sauvegarde
     qr_config_dict = {}
-    p = Path.cwd()
-    qr_config_folder = p / DIR_QR_CONFIG
-    file = "qr_code.config"
-    file_path = qr_config_folder / file
+    update_config_version = 1
+   
+    qr_config_dict["update"] = update_config_version
     qr_config_dict["version"] = qr_version
     qr_config_dict["error_correction"] = qr_error_correction
     qr_config_dict["box_size"] = qr_box_size
@@ -122,7 +153,8 @@ def len_arguments_is_valid(arguments,len_arguments):
 
 def display_help_arguments():
     print(" Use -g to generate a QR code, followed by the text to be encoded."
-    "\n Use -r, followed by the QR code image filename, to extract and decode its contents.")
+    "\n Use -r, followed by the QR code image filename, to extract and decode its contents."
+    "\n Use -c to manage config, followed by name of config Enter in a selected config mode")
 
 
 def main():
@@ -134,28 +166,36 @@ def main():
     qr_handler = arguments[0]
     qr_entry = arguments[1]
 
-    if qr_handler == "-g":
+    if qr_handler == "-g": # générer un qr_code
+        config_args = load_qr_config()
+       
         qr_text = qr_entry
         ## pour l'instant je ne gère pas les paramètres de la classe qrcode
-        generate_qr_code(qr_text)
-    elif qr_handler == "-r":
+        generate_qr_code(qr_text,*config_args)
+
+    elif qr_handler == "-r": # lire un qr_code à partir d'une image
         file_name = qr_entry
-        file_path = get_file_path(file_name)
+        file_path = get_file_path(file_name, DIR_QR_IMG)
         if not file_path:
             print("file not exist")
             return
         print(read_qr_code(file_path))
-    elif qr_handler == "-conf":
-        print("gestion config à faire")
-
+        
+    elif qr_handler == "-c":
+        config_args = manage_config()
+        file_name = qr_entry
+        file_path = get_file_path(file_name, DIR_QR_CONFIG)
+        save_qr_config(file_path,
+                       qr_version=config_args[0],
+                       qr_error_correction=config_args[1],
+                       qr_box_size=config_args[2],
+                       qr_border=config_args[3])
+        
     else :
          display_help_arguments()
 
 
 if __name__ == "__main__":
-     # main()
+    main()
 
-    save_qr_config(qr_version=None,
-                     qr_error_correction=qrcode.constants.ERROR_CORRECT_M,
-                     qr_box_size=10,
-                     qr_border=4)
+    
