@@ -1,4 +1,5 @@
 import sys
+import datetime
 import json
 from pathlib import Path
 
@@ -13,11 +14,10 @@ DIR_QR_CONFIG = "config"
 QR_CONFIG_FILE = "qr_code.config"
 
 QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
-print(qrcode.constants.ERROR_CORRECT_L)
 QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
 QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
 QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
-
+#### Not Used
 def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
 
@@ -40,24 +40,7 @@ def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_siz
     # boxes thick the border should be 
     # (the default is 4, which is the minimum according to the specs).
     return qr_version,qr_error_correct,qr_box_size,qr_border
-
-
-def manage_config():
-    print("Veuillez entrer le valeurs des config suivantes demandée.")
-    qr_version = int(input("Entrez la version du qrd code (1 - 40) :"))
-    qr_error_correct = input("Entrer le facteur d'erreur (L/M/Q/H) :")
-    if qr_error_correct.upper() == "L":
-        qr_error_correct = QR_ERROR_CORRECT_L
-    elif qr_error_correct.upper() == "M":
-         qr_error_correct = QR_ERROR_CORRECT_M
-    elif qr_error_correct.upper() == "Q":
-         qr_error_correct = QR_ERROR_CORRECT_Q
-    elif qr_error_correct.upper() == "H":
-         qr_error_correct = QR_ERROR_CORRECT_H
-    qr_box_size = int(input("Entrez la grandeur du QR Code :"))
-    qr_border = int(input("Entrez la largeur du bord :"))
-
-    return qr_version,qr_error_correct,qr_box_size,qr_border
+####
 
 
 def generate_qr_code(qr_text,
@@ -80,18 +63,6 @@ def generate_qr_code(qr_text,
     img.save(file)
 
 
-def read_qr_code(file):
-    # read the QRCODE image
-    img = cv2.imread(file)
-    # initialize the cv2 QRCode detector
-    detector = cv2.QRCodeDetector()
-    # detect and decode
-    # retourne un tuple. Le texte est dans la première variable de ce tuple
-    data = detector.detectAndDecode(img) 
-    text_qr_code = data[0]
-    return text_qr_code
-
-
 def save_qr_code_img():
     p = Path.cwd()
     qr_img_folder = p / DIR_QR_IMG
@@ -104,13 +75,46 @@ def save_qr_code_img():
     return file_path
 
 
+def read_qr_code(file):
+    # read the QRCODE image
+    img = cv2.imread(file)
+    # initialize the cv2 QRCode detector
+    detector = cv2.QRCodeDetector()
+    # detect and decode
+    # retourne un tuple. Le texte est dans la première variable de ce tuple
+    data = detector.detectAndDecode(img) 
+    text_qr_code = data[0]
+    return text_qr_code
+
+
 def get_file_path(file,dir):
     p = Path.cwd()
     folder = p / dir
     file_path = folder / file
     if Path(file_path).exists():
         return file_path
-   
+
+
+# Config 
+def manage_config():
+    ## todo
+    # reste à gérer les errrus de
+    print("Veuillez entrer les valeurs des configurations suivantes demandée.")
+    qr_version = int(input("Entrez la version du QR code (1 - 40) :"))
+    qr_error_correct = input("Entrer le facteur d'erreur du QR Code (L/M/Q/H) :")
+    if qr_error_correct.upper() == "L":
+        qr_error_correct = QR_ERROR_CORRECT_L
+    elif qr_error_correct.upper() == "M":
+         qr_error_correct = QR_ERROR_CORRECT_M
+    elif qr_error_correct.upper() == "Q":
+         qr_error_correct = QR_ERROR_CORRECT_Q
+    elif qr_error_correct.upper() == "H":
+         qr_error_correct = QR_ERROR_CORRECT_H
+    qr_box_size = int(input("Entrez la grandeur du QR Code :"))
+    qr_border = int(input("Entrez la largeur du bord (minimum 4):"))
+
+    return qr_version,qr_error_correct,qr_box_size,qr_border
+
 
 def load_qr_config():
     p = Path.cwd()
@@ -130,7 +134,8 @@ def save_qr_config(file_path,qr_version,qr_error_correction,qr_box_size,qr_borde
     # je pense qu'ici il serait bon de checker si les 
     # valeurs sont correctes avant sauvegarde
     qr_config_dict = {}
-    update_config_version = 1
+
+    update_config_version = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
    
     qr_config_dict["update"] = update_config_version
     qr_config_dict["version"] = qr_version
@@ -142,6 +147,7 @@ def save_qr_config(file_path,qr_version,qr_error_correction,qr_box_size,qr_borde
         json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
 
 
+#arguments
 def get_arguments():
     arguments = sys.argv[1:]
     return arguments
@@ -157,6 +163,7 @@ def display_help_arguments():
     "\n Use -c to manage config, followed by name of config Enter in a selected config mode")
 
 
+# main
 def main():
     arguments = get_arguments()
     len_arguments = 2
@@ -177,19 +184,19 @@ def main():
         file_name = qr_entry
         file_path = get_file_path(file_name, DIR_QR_IMG)
         if not file_path:
-            print("file not exist")
+            print(f"le fichier {file_name} n'existe pas !")
             return
         print(read_qr_code(file_path))
         
     elif qr_handler == "-c":
-        config_args = manage_config()
         file_name = qr_entry
         file_path = get_file_path(file_name, DIR_QR_CONFIG)
+        if not file_path:
+            print(f"le fichier de config {file_name} n'existe pas !")
+            return
+        config_args = manage_config()
         save_qr_config(file_path,
-                       qr_version=config_args[0],
-                       qr_error_correction=config_args[1],
-                       qr_box_size=config_args[2],
-                       qr_border=config_args[3])
+                       *config_args)
         
     else :
          display_help_arguments()
