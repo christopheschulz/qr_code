@@ -73,7 +73,7 @@ def save_qr_code_img():
 
 
 # Config 
-def manage_config():
+def config_user_input():
     
     print("Veuillez entrer les valeurs des configurations suivantes demandée.")
     qr_version = input("Entrez la version du QR code (1 - 40) :")
@@ -93,7 +93,7 @@ def manage_config():
     qr_border = input("Entrez la largeur du bord (minimum 4):")
 
     # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
-    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
 
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
@@ -115,7 +115,7 @@ def load_qr_config():
     qr_border = str(data["border"])
 
     # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
-    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
     
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
@@ -138,7 +138,7 @@ def save_qr_config(file_path,qr_version,qr_error_correct,qr_box_size,qr_border):
         json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
 
 
-def qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
+def qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
     parameter_changed = False # pour la recherche de modif
     # version
     if not qr_version == None:
@@ -177,12 +177,12 @@ def qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border
     if qr_box_size.isdigit():
         qr_box_size = int(qr_box_size)
     else:
-        print("Le paramètre 'box size'  doit être un int. Nouvelle valeur initialisée à 1 ")
-        qr_box_size = 1
+        print("Le paramètre 'box size'  doit être un int. Nouvelle valeur initialisée à 10 ")
+        qr_box_size = 10
         parameter_changed = True
     if qr_box_size < 1:
-        print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
-        qr_box_size = 1
+        print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 10 ")
+        qr_box_size = 10
         parameter_changed = True
 
     # border
@@ -214,50 +214,47 @@ def get_arguments():
     return arguments
    
 
-def len_arguments_is_valid(arguments,len_arguments):
-    return len(arguments) == len_arguments
-
-
 def display_help_arguments():
     print(" Use -g to generate a QR code, followed by the text to be encoded."
     "\n Use -r, followed by the QR code image filename, to extract and decode its contents."
-    "\n Use -c to manage config, followed by name of config Enter in a selected config mode")
+    "\n Use -c to manage config")
 
 
 # main
 def main():
     arguments = get_arguments()
-    len_arguments = 2
-    if not len_arguments_is_valid(arguments,len_arguments):
-        display_help_arguments()
-        return
-    qr_handler = arguments[0]
-    qr_entry = arguments[1]
+    length_arguments = len(arguments)
+    
+    if length_arguments == 2:
+        qr_handler = arguments[0]
+        qr_entry = arguments[1]
+        if qr_handler == "-g": # générer un qr_code
+            config_args = load_qr_config()
+            if config_args:
+                qr_text = qr_entry
+                generate_qr_code(qr_text,*config_args)
 
-    if qr_handler == "-g": # générer un qr_code
-        config_args = load_qr_config()
-        if config_args:
-            qr_text = qr_entry
-            generate_qr_code(qr_text,*config_args)
+        elif qr_handler == "-r": # lire un qr_code à partir d'une image
+            file_name = qr_entry
+            file_path = get_file_path(file_name, DIR_QR_IMG)
+            if not file_path:
+                print(f"le fichier {file_name} n'existe pas !")
+                return
+            print(read_qr_code(file_path))
+   
+    elif length_arguments == 1: 
+        qr_handler = arguments[0]
 
-    elif qr_handler == "-r": # lire un qr_code à partir d'une image
-        file_name = qr_entry
-        file_path = get_file_path(file_name, DIR_QR_IMG)
-        if not file_path:
-            print(f"le fichier {file_name} n'existe pas !")
-            return
-        print(read_qr_code(file_path))
-        
-    elif qr_handler == "-c": # changer config QR code
-        file_name = qr_entry
-        file_path = get_file_path(file_name, DIR_QR_CONFIG)
-        if not file_path:
-            print(f"le fichier de config {file_name} n'existe pas !")
-            return
-        config_args = manage_config()
-        save_qr_config(file_path,
-                       *config_args)
-        
+        if qr_handler == "-c": # changer config QR code
+            file_name = QR_CONFIG_FILE
+            file_path = get_file_path(file_name, DIR_QR_CONFIG)
+            if not file_path:
+                print(f"le fichier de config {file_name} n'existe pas !")
+                return
+            config_args = config_user_input()
+            save_qr_config(file_path,
+                        *config_args)
+            
     else :
          display_help_arguments()
 
