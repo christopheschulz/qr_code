@@ -11,7 +11,7 @@ import cv2
 
 DIR_QR_IMG = "qr_img"
 DIR_QR_CONFIG = "config"
-QR_CONFIG_FILE = "qr_code.config"
+QR_CONFIG_FILE = "config.json"
 
 QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
 QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
@@ -35,7 +35,7 @@ def generate_qr_code(qr_text,
 
     img = qr.make_image(fill_color="black", back_color="white")
    
-    file = save_qr_code_img()
+    file = get_qr_code_img_file_path()
     img.save(file)
 
 
@@ -60,7 +60,7 @@ def get_file_path(file,dir):
         return file_path
 
 
-def save_qr_code_img():
+def get_qr_code_img_file_path():
     p = Path.cwd()
     qr_img_folder = p / DIR_QR_IMG
     file_path = ""
@@ -108,6 +108,9 @@ def load_qr_config():
     except json.JSONDecodeError:
         print("Problème avec la lecture du json")
         return
+    except FileNotFoundError:
+        print(f"Il semblerai que le fichier {file_path} soit introuvable")
+        return
     
     qr_version = str(data["version"])
     qr_error_correct = str(data["error_correction"])
@@ -134,8 +137,15 @@ def save_qr_config(file_path,qr_version,qr_error_correct,qr_box_size,qr_border):
     qr_config_dict["box_size"] = qr_box_size
     qr_config_dict["border"] = qr_border
 
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
+    try :
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
+    except json.JSONDecodeError:
+        print("Problème avec la lecture du json")
+        return
+    except FileNotFoundError:
+        print(f"Il semblerai que le fichier {file_path} soit introuvable")
+        return
 
 
 def qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
@@ -228,6 +238,7 @@ def main():
     if length_arguments == 2:
         qr_handler = arguments[0]
         qr_entry = arguments[1]
+        
         if qr_handler == "-g": # générer un qr_code
             config_args = load_qr_config()
             if config_args:
