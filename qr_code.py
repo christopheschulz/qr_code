@@ -17,11 +17,10 @@ QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
 QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
 QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
 QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
-print(QR_ERROR_CORRECT_L,QR_ERROR_CORRECT_M,QR_ERROR_CORRECT_Q,QR_ERROR_CORRECT_H)
 
 
-def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
-   
+def qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
+    # version
     if qr_version.isdigit():
         qr_version = int(qr_version)
     else:
@@ -34,6 +33,7 @@ def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_siz
         print("Le paramètre 'version' ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
         qr_version = 1
     
+    # error_correction
     if qr_error_correct.isdigit():
         qr_error_correct = int(qr_error_correct)
     else:
@@ -46,6 +46,7 @@ def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_siz
         print("Le paramètre 'error correction'  ne peut pas être infèrieur à 0. Nouvelle valeur initialisée à 0 ")
         qr_error_correct = 0
 
+    # box size
     if qr_box_size.isdigit():
         qr_box_size = int(qr_box_size)
     else:
@@ -55,6 +56,7 @@ def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_siz
         print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
         qr_box_size = 1
 
+    # border
     if qr_border.isdigit():
         qr_border = int(qr_border)
     else:
@@ -121,8 +123,7 @@ def get_file_path(file,dir):
 
 # Config 
 def manage_config():
-    ## todo
-    # reste à gérer les errrus de
+    
     print("Veuillez entrer les valeurs des configurations suivantes demandée.")
     qr_version = input("Entrez la version du QR code (1 - 40) :")
     qr_error_correct = input("Entrer le facteur d'erreur du QR Code (L/M/Q/H) :")
@@ -140,7 +141,8 @@ def manage_config():
     qr_box_size = input("Entrez la grandeur du QR Code :")
     qr_border = input("Entrez la largeur du bord (minimum 4):")
 
-    qr_version,qr_error_correct,qr_box_size,qr_border = generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
+    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
 
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
