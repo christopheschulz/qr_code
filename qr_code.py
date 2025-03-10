@@ -17,11 +17,23 @@ QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
 QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
 QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
 QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+print(QR_ERROR_CORRECT_L,QR_ERROR_CORRECT_M,QR_ERROR_CORRECT_Q,QR_ERROR_CORRECT_H)
+
 
   
 #### Not Used
 def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
+    if qr_version.isalpha():
+        print("Le paramètre 'version'  ne peut pas être un caractère. Nouvelle valeur initialisée à 1 ")
+        qr_version = 1
+    elif qr_version > 40:
+        print("Le paramètre 'version' ne peut pas être supérieur à 40. Nouvelle valeur initialisée à 40 ")
+        qr_version = 40
+    elif qr_version < 1:
+        print("Le paramètre 'version' ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
+        qr_version = 1
+    
 
     # The version parameter is an integer from 1 to 40 
     # that controls the size of the QR Code 
@@ -31,13 +43,34 @@ def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_siz
 
     # constante d'erreur de génération voir fichier help for QR code dans help
     
+    if qr_error_correct.isalpha():
+        print("Le paramètre 'error correction'  ne peut pas être un caractère. Nouvelle valeur initialisée à 1 ")
+        qr_error_correct = 0
+    elif qr_error_correct > 3:
+        print("Le paramètre 'error correction'  ne peut pas être supérieur à 3. Nouvelle valeur initialisée à 3 ")
+        qr_error_correct = 3
+    elif qr_error_correct < 0:
+        print("Le paramètre 'error correction'  ne peut pas être infèrieur à 0. Nouvelle valeur initialisée à 0 ")
+        qr_error_correct = 0
 
     # box size
     # The box_size parameter controls how many 
     # pixels each “box” of the QR code is.
-
+    
+    if qr_box_size.isalpha():
+        print("Le paramètre 'box size'  ne peut pas être un caractère. Nouvelle valeur initialisée à 1 ")
+        qr_box_size = 1
+    elif qr_box_size < 1:
+        print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
+        qr_box_size = 1
 
     # border
+    if qr_border.isalpha():
+        print("Le paramètre 'border'  ne peut pas être un caractère. Nouvelle valeur initialisée à 4 ")
+        qr_border = 4
+    elif qr_border < 4:
+        print("Le paramètre 'border'  ne peut pas être infèrieur à 4. Nouvelle valeur initialisée à 4 ")
+        qr_box_size = 4
     # The border parameter controls how many 
     # boxes thick the border should be 
     # (the default is 4, which is the minimum according to the specs).
