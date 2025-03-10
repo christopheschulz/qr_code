@@ -19,56 +19,6 @@ QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
 QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
 
 
-def qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
-    # version
-    if qr_version.isdigit():
-        qr_version = int(qr_version)
-    else:
-        print("Le paramètre 'version' doit être un int . Nouvelle valeur initialisée à 1 ")
-        qr_version = 1
-    if qr_version > 40:
-        print("Le paramètre 'version' ne peut pas être supérieur à 40. Nouvelle valeur initialisée à 40 ")
-        qr_version = 40
-    elif qr_version < 1:
-        print("Le paramètre 'version' ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
-        qr_version = 1
-    
-    # error_correction
-    if qr_error_correct.isdigit():
-        qr_error_correct = int(qr_error_correct)
-    else:
-        print("Le paramètre 'error correction'  doit être un int. Nouvelle valeur initialisée à 0 ")
-        qr_error_correct = 0
-    if qr_error_correct > 3:
-        print("Le paramètre 'error correction'  ne peut pas être supérieur à 3. Nouvelle valeur initialisée à 3 ")
-        qr_error_correct = 3
-    elif qr_error_correct < 0:
-        print("Le paramètre 'error correction'  ne peut pas être infèrieur à 0. Nouvelle valeur initialisée à 0 ")
-        qr_error_correct = 0
-
-    # box size
-    if qr_box_size.isdigit():
-        qr_box_size = int(qr_box_size)
-    else:
-        print("Le paramètre 'box size'  doit être un int. Nouvelle valeur initialisée à 1 ")
-        qr_box_size = 1
-    if qr_box_size < 1:
-        print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
-        qr_box_size = 1
-
-    # border
-    if qr_border.isdigit():
-        qr_border = int(qr_border)
-    else:
-        print("Le paramètre 'border'  doit être un int. Nouvelle valeur initialisée à 4 ")
-        qr_border = 4
-    if qr_border < 4:
-        print("Le paramètre 'border'  ne peut pas être infèrieur à 4. Nouvelle valeur initialisée à 4 ")
-        qr_box_size = 4
-   
-    return qr_version,qr_error_correct,qr_box_size,qr_border
-
-
 def generate_qr_code(qr_text,
                      qr_version=None,
                      qr_error_correction=1,
@@ -89,18 +39,6 @@ def generate_qr_code(qr_text,
     img.save(file)
 
 
-def save_qr_code_img():
-    p = Path.cwd()
-    qr_img_folder = p / DIR_QR_IMG
-    file_path = ""
-    qr_img_number = 0
-    
-    while Path(file_path).exists():
-        file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
-        qr_img_number += 1
-    return file_path
-
-
 def read_qr_code(file):
     # read the QRCODE image
     img = cv2.imread(file)
@@ -113,12 +51,25 @@ def read_qr_code(file):
     return text_qr_code
 
 
+#file
 def get_file_path(file,dir):
     p = Path.cwd()
     folder = p / dir
     file_path = folder / file
     if Path(file_path).exists():
         return file_path
+
+
+def save_qr_code_img():
+    p = Path.cwd()
+    qr_img_folder = p / DIR_QR_IMG
+    file_path = ""
+    qr_img_number = 0
+    
+    while Path(file_path).exists():
+        file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
+        qr_img_number += 1
+    return file_path
 
 
 # Config 
@@ -151,31 +102,110 @@ def load_qr_config():
     p = Path.cwd()
     folder = p / DIR_QR_CONFIG
     file_path = folder / QR_CONFIG_FILE
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    qr_version = data["version"]
-    qr_error_correction = data["error_correction"]
-    qr_box_size = data["box_size"]
-    qr_border= data["border"]
-    return qr_version,qr_error_correction,qr_box_size,qr_border
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except json.JSONDecodeError:
+        print("Problème avec la lecture du json")
+        return
+    
+    qr_version = str(data["version"])
+    qr_error_correct = str(data["error_correction"])
+    qr_box_size = str(data["box_size"])
+    qr_border = str(data["border"])
+
+    # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
+    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    
+    return qr_version,qr_error_correct,qr_box_size,qr_border
 
 
-def save_qr_config(file_path,qr_version,qr_error_correction,qr_box_size,qr_border):
-    ## to do
-    # je pense qu'ici il serait bon de checker si les 
-    # valeurs sont correctes avant sauvegarde
+def save_qr_config(file_path,qr_version,qr_error_correct,qr_box_size,qr_border):
+    # # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
+    # qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    
     qr_config_dict = {}
 
     update_config_version = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
    
     qr_config_dict["update"] = update_config_version
     qr_config_dict["version"] = qr_version
-    qr_config_dict["error_correction"] = qr_error_correction
+    qr_config_dict["error_correction"] = qr_error_correct
     qr_config_dict["box_size"] = qr_box_size
     qr_config_dict["border"] = qr_border
 
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(qr_config_dict, f, indent=4, ensure_ascii=False)
+
+
+def qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
+    parameter_changed = False # pour la recherche de modif
+    # version
+    if not qr_version == None:
+        if qr_version.isdigit():
+            qr_version = int(qr_version)
+        else:
+            print("Le paramètre 'version' doit être un int . Nouvelle valeur initialisée à 1 ")
+            qr_version = 1
+            parameter_changed = True
+        if qr_version > 40:
+            print("Le paramètre 'version' ne peut pas être supérieur à 40. Nouvelle valeur initialisée à 40 ")
+            qr_version = 40
+            parameter_changed = True
+        elif qr_version < 1:
+            print("Le paramètre 'version' ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
+            qr_version = 1
+            parameter_changed = True
+    
+    # error_correction
+    if qr_error_correct.isdigit():
+        qr_error_correct = int(qr_error_correct)
+    else:
+        print("Le paramètre 'error correction'  doit être un int. Nouvelle valeur initialisée à 0 ")
+        qr_error_correct = 0
+        parameter_changed = True
+    if qr_error_correct > 3:
+        print("Le paramètre 'error correction'  ne peut pas être supérieur à 3. Nouvelle valeur initialisée à 3 ")
+        qr_error_correct = 3
+        parameter_changed = True
+    elif qr_error_correct < 0:
+        print("Le paramètre 'error correction'  ne peut pas être infèrieur à 0. Nouvelle valeur initialisée à 0 ")
+        qr_error_correct = 0
+        parameter_changed = True
+
+    # box size
+    if qr_box_size.isdigit():
+        qr_box_size = int(qr_box_size)
+    else:
+        print("Le paramètre 'box size'  doit être un int. Nouvelle valeur initialisée à 1 ")
+        qr_box_size = 1
+        parameter_changed = True
+    if qr_box_size < 1:
+        print("Le paramètre 'box size'  ne peut pas être infèrieur à 1. Nouvelle valeur initialisée à 1 ")
+        qr_box_size = 1
+        parameter_changed = True
+
+    # border
+    if qr_border.isdigit():
+        qr_border = int(qr_border)
+    else:
+        print("Le paramètre 'border'  doit être un int. Nouvelle valeur initialisée à 4 ")
+        qr_border = 4
+        parameter_changed = True
+    if qr_border < 4:
+        print("Le paramètre 'border'  ne peut pas être infèrieur à 4. Nouvelle valeur initialisée à 4 ")
+        qr_border = 4
+        parameter_changed = True
+    
+    if parameter_changed:
+        file_path = get_file_path(QR_CONFIG_FILE, DIR_QR_CONFIG)
+        save_qr_config(file_path,
+                       qr_version,
+                       qr_error_correct,
+                       qr_box_size,
+                       qr_border)
+        
+    return qr_version,qr_error_correct,qr_box_size,qr_border
 
 
 #arguments
@@ -206,10 +236,9 @@ def main():
 
     if qr_handler == "-g": # générer un qr_code
         config_args = load_qr_config()
-       
-        qr_text = qr_entry
-        ## pour l'instant je ne gère pas les paramètres de la classe qrcode
-        generate_qr_code(qr_text,*config_args)
+        if config_args:
+            qr_text = qr_entry
+            generate_qr_code(qr_text,*config_args)
 
     elif qr_handler == "-r": # lire un qr_code à partir d'une image
         file_name = qr_entry
@@ -219,7 +248,7 @@ def main():
             return
         print(read_qr_code(file_path))
         
-    elif qr_handler == "-c":
+    elif qr_handler == "-c": # changer config QR code
         file_name = qr_entry
         file_path = get_file_path(file_name, DIR_QR_CONFIG)
         if not file_path:
