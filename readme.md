@@ -1,6 +1,13 @@
 # qr_code
 
 python version 3.13
+```
+# import for generate qr_code
+import qrcode
+import qrcode.constants
+# import for read qr_code
+import cv2
+```
 
 # parameters:
 
