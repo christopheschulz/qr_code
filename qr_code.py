@@ -17,6 +17,8 @@ QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
 QR_ERROR_CORRECT_M = qrcode.constants.ERROR_CORRECT_M # 15%
 QR_ERROR_CORRECT_Q = qrcode.constants.ERROR_CORRECT_Q # 25%
 QR_ERROR_CORRECT_H = qrcode.constants.ERROR_CORRECT_H # 30%
+
+  
 #### Not Used
 def generation_qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
     # version
