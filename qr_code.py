@@ -96,7 +96,7 @@ def config_user_input():
     qr_border = input("Entrez la largeur du bord (minimum 4):")
 
     # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
-    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    qr_version,qr_error_correct,qr_box_size,qr_border = check_qr_code_config_parameters(qr_version,qr_error_correct,qr_box_size,qr_border)
 
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
@@ -121,7 +121,7 @@ def load_qr_config():
     qr_border = data["border"]
 
     # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
-    qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+    qr_version,qr_error_correct,qr_box_size,qr_border = check_qr_code_config_parameters(qr_version,qr_error_correct,qr_box_size,qr_border)
     
     return qr_version,qr_error_correct,qr_box_size,qr_border
 
@@ -151,7 +151,7 @@ def save_qr_config(file_path,qr_version,qr_error_correct,qr_box_size,qr_border):
         return
 
 
-def qr_code_config_checker(qr_version,qr_error_correct,qr_box_size,qr_border):
+def check_qr_code_config_parameters(qr_version,qr_error_correct,qr_box_size,qr_border):
     parameter_changed = False # pour la recherche de modif
     # version
     if not qr_version == None:
