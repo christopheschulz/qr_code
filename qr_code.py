@@ -233,6 +233,10 @@ def display_help_arguments():
     "\n Use -c to manage config")
 
 
+def is_length_arguments_ok(arguments,lenght):
+    return len(arguments) == lenght
+
+
 # handle
 def handle_generate_qr(qr_entry):
     config_args = load_qr_config()
@@ -262,27 +266,20 @@ def handle_change_config_qr():
 # main
 def main():
     arguments = get_arguments()
-    length_arguments = len(arguments)
-
-    if length_arguments not in {1, 2}:
-        display_help_arguments()
-        return
+    qr_handler = arguments[0] 
     
-    qr_handler = arguments[0]
-
-    if length_arguments == 2:
+    if qr_handler == "-g" and is_length_arguments_ok(arguments,2): # générer un qr_code
         qr_entry = arguments[1]
-        if qr_handler == "-g": # générer un qr_code
-            handle_generate_qr(qr_entry)
-        elif qr_handler == "-r": # lire un qr_code à partir d'une image
-            handle_decode_qr(qr_entry)
-    elif length_arguments == 1: 
-        if qr_handler == "-c": # changer config QR code
-            handle_change_config_qr()  
-    else :
-         display_help_arguments()
+        handle_generate_qr(qr_entry)
+    elif qr_handler == "-r" and is_length_arguments_ok(arguments,2): # lire un qr_code à partir d'une image
+        qr_entry = arguments[1]
+        handle_decode_qr(qr_entry)
+    elif qr_handler == "-c" and is_length_arguments_ok(arguments,1): # changer config QR code
+        handle_change_config_qr() 
+    else:
+        display_help_arguments()
 
-
+ 
 if __name__ == "__main__":
     main()
  
