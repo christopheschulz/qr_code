@@ -233,47 +233,56 @@ def display_help_arguments():
     "\n Use -c to manage config")
 
 
+# handle
+def handle_generate_qr(qr_entry):
+    config_args = load_qr_config()
+    if config_args:
+        qr_text = qr_entry
+        generate_qr_code(qr_text,*config_args)
+
+
+def handle_decode_qr(qr_entry):
+    file_path = get_file_path(qr_entry, DIR_QR_IMG)
+    if not file_path:
+        print(f"le fichier {qr_entry} n'existe pas !")
+        return
+    print(read_qr_code(file_path))
+
+
+def handle_change_config_qr():
+    file_path = get_file_path(QR_CONFIG_FILE, DIR_QR_CONFIG)
+    if not file_path:
+        print(f"le fichier de config {QR_CONFIG_FILE} n'existe pas !")
+        return
+    config_args = config_user_input()
+    save_qr_config(file_path,
+                        *config_args)
+
+
 # main
 def main():
     arguments = get_arguments()
     length_arguments = len(arguments)
+
+    if length_arguments not in {1, 2}:
+        display_help_arguments()
+        return
     
+    qr_handler = arguments[0]
+
     if length_arguments == 2:
-        qr_handler = arguments[0]
         qr_entry = arguments[1]
-        
         if qr_handler == "-g": # générer un qr_code
-            config_args = load_qr_config()
-            if config_args:
-                qr_text = qr_entry
-                generate_qr_code(qr_text,*config_args)
-
+            handle_generate_qr(qr_entry)
         elif qr_handler == "-r": # lire un qr_code à partir d'une image
-            file_name = qr_entry
-            file_path = get_file_path(file_name, DIR_QR_IMG)
-            if not file_path:
-                print(f"le fichier {file_name} n'existe pas !")
-                return
-            print(read_qr_code(file_path))
-   
+            handle_decode_qr(qr_entry)
     elif length_arguments == 1: 
-        qr_handler = arguments[0]
-
         if qr_handler == "-c": # changer config QR code
-            file_name = QR_CONFIG_FILE
-            file_path = get_file_path(file_name, DIR_QR_CONFIG)
-            if not file_path:
-                print(f"le fichier de config {file_name} n'existe pas !")
-                return
-            config_args = config_user_input()
-            save_qr_config(file_path,
-                        *config_args)
-            
+            handle_change_config_qr()  
     else :
          display_help_arguments()
 
 
 if __name__ == "__main__":
     main()
-
-    
+ 
