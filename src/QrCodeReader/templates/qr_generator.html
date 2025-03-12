@@ -1,75 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Générateur de QR Code</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 15px;
-            border-bottom: 2px solid #ddd;
-        }
-        nav a {
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
-        }
-        h1 {
-            margin: 20px 0;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-        }
-        .box {
-            border: 2px solid #ddd;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-        }
-        .qr-options {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .qr-options button {
-            padding: 8px;
-            border: 1px solid #ccc;
-            background: white;
-            cursor: pointer;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-        .footer {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f5f5f5;
-            border-top: 2px solid #ddd;
-        }
-        .qr-preview {
-            border: 2px solid #ddd;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 150px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style_qr_generator.css' %}">
 </head>
 <body>
     <nav>
