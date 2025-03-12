@@ -11,3 +11,6 @@ def qr_generator(request):
 
 def qr_history(request):
     return render(request,"qr_history.html")
+
+def about(request):
+    return render(request,"about.html")

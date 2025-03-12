@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from .views import qr_reader,qr_generator,qr_history
+from .views import qr_reader,qr_generator,qr_history,about
 
 urlpatterns = [
-    path('qrreader', qr_reader),
-    path('qrgenerator', qr_generator),
-    path('qrhistory', qr_history),
+    path('qrreader', qr_reader, name='qrreader'),
+    path('qrgenerator', qr_generator, name='qrgenerator'),
+    path('qrhistory', qr_history, name='qrhistory'),
+    path('about', about, name='about'),
     path('admin/', admin.site.urls),
 ]

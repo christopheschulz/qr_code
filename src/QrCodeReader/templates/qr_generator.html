@@ -9,11 +9,10 @@
 </head>
 <body>
     <nav>
-        <a href="#">Scanner QR Code</a>
-        <a href="#">Lecteur QR code</a>
-        <a href="#">Générateur QR Code</a>
-        <a href="#">Historique</a>
-        <a href="#">À propos</a>
+        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
+        <a href="{% url 'qrgenerator' %}">Générateur QR Code</a>
+        <a href="{% url 'qrhistory' %}">Historique</a>
+        <a href="{% url 'about' %}">À propos</a>
     </nav>
     <h1>Générateur de QR Code</h1>
     <div class="container">
@@ -40,7 +39,7 @@
         </div>
     </div>
     <div class="footer">
-        <p>&copy; QRScanner.net - Tous droits réservés.</p>
+        <p>&copy; QRcodereader.net - Tous droits réservés.</p>
     </div>
 </body>
 </html>
