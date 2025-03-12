@@ -1,5 +1,13 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
-def index(request):
-    return HttpResponse("<h1>Bonjour, bienvenue sur mon site </h1>")
+def qr_reader(request):
+    return render(request,"qr_reader.html")
+
+
+def qr_generator(request):
+    return render(request,"qr_generator.html")
+
+
+def qr_history(request):
+    return render(request,"qr_history.html")
