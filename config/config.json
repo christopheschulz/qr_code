@@ -1,7 +1,7 @@
 {
-    "update": "11/03/2025, 20:12:28",
-    "version": null,
-    "error_correction": 0,
-    "box_size": 10,
+    "update": "12/03/2025, 08:45:27",
+    "version": 1,
+    "error_correction": 1,
+    "box_size": 50,
     "border": 4
 }
