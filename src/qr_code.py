@@ -9,8 +9,8 @@ import qrcode.constants
 #gestion lecture QR code
 import cv2
 
-DIR_QR_IMG = "qr_img"
-DIR_QR_CONFIG = "config"
+DIR_QR_IMG = "QrCodeReader/static/qr_img"
+DIR_QR_CONFIG = "QrCodeReader/config"
 QR_CONFIG_FILE = "config.json"
 
 QR_ERROR_CORRECT_L = qrcode.constants.ERROR_CORRECT_L # 7%
