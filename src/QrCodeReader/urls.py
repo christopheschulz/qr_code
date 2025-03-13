@@ -20,6 +20,7 @@ from django.urls import path
 from .views import qr_reader,qr_generator,qr_history,about
 
 urlpatterns = [
+    path('', qr_generator, name='qrgenerator'),
     path('qrreader', qr_reader, name='qrreader'),
     path('qrgenerator', qr_generator, name='qrgenerator'),
     path('qrhistory', qr_history, name='qrhistory'),

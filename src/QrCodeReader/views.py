@@ -1,12 +1,15 @@
 from django.shortcuts import render
-
+from QrCodeReader.forms import QrReaderForm
 
 def qr_reader(request):
     return render(request,"qr_reader.html")
 
 
 def qr_generator(request):
-    return render(request,"qr_generator.html")
+    qr_text_form = QrReaderForm()
+
+
+    return render(request,"qr_generator.html",{"form" : qr_text_form})
 
 
 def qr_history(request):

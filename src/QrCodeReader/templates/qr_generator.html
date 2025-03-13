@@ -9,37 +9,25 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
         <a href="{% url 'qrgenerator' %}">Générateur QR Code</a>
+        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
         <a href="{% url 'qrhistory' %}">Historique</a>
         <a href="{% url 'about' %}">À propos</a>
     </nav>
     <h1>Générateur de QR Code</h1>
     <div class="container">
         <div class="box">
-            <!-- <div class="qr-options">
-                <button>URL</button>
-                <button>VCard</button>
-                <button>Téléphone</button>
-                <button>Texte</button>
-                <button>Email</button>
-                <button>SMS</button>
-                <button>WIFI</button>
-                <button>Emplacement</button>
-                <button>Événement</button>
-            </div> -->
-            <input type="text" placeholder="Saisissez votre URL">
-            <button class="b1">Générer un QR</button>
+            <form action="">
+                {{ form.as_p }}
+                <input type="submit" value="Generate" id="">
+            </form>   
         </div>
         <div class="box">
-            <h3>Aperçu du QR Code</h3>
-            <div class="qr-preview">[QR Code Ici]</div>
-            <button class="b1">Télécharger</button>
-            <button class="b1">Copier le Code d’Intégration</button>
+
         </div>
     </div>
     <div class="footer">
         <p>&copy; QRcodereader.net - Tous droits réservés.</p>
-    </div>
+    </div> 
 </body>
 </html>
