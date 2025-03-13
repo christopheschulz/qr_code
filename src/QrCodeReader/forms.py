@@ -1,20 +1,21 @@
 from django import forms
+import qr_code
 
 QR_ERROR_CORRRECT =(
-("QR_ERROR_CORRRECT_L","L 7%"),
-("QR_ERROR_CORRRECT_M","M 15%"),
-("QR_ERROR_CORRRECT_Q","Q 25%"),
-("QR_ERROR_CORRRECT_H","H 30%")
+(qr_code.QR_ERROR_CORRECT_L,"L 7%"),
+(qr_code.QR_ERROR_CORRECT_M,"M 15%"),
+(qr_code.QR_ERROR_CORRECT_Q,"Q 25%"),
+(qr_code.QR_ERROR_CORRECT_H,"H 30%")
 )
 
 
 QR_BOX_SIZE = (
-    ("box50","50x50"),
-    ("box100","100x100"),
-    ("box150","150x150"),
-    ("box200","200x200"),
-    ("box250","250x250"),
-    ("box500","500x500"),
+    (50,"50x50"),
+    (100,"100x100"),
+    (150,"150x150"),
+    (200,"200x200"),
+    (250,"250x250"),
+    (500,"500x500"),
 )
 
 

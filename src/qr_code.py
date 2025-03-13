@@ -65,10 +65,11 @@ def get_qr_code_img_file_path():
     qr_img_folder = p / DIR_QR_IMG
     file_path = ""
     qr_img_number = 0
+    file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
     
-    while Path(file_path).exists():
-        file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
-        qr_img_number += 1
+    # while Path(file_path).exists():
+    #     file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
+    #     qr_img_number += 1
     return file_path
 
 
@@ -127,8 +128,8 @@ def load_qr_config():
 
 
 def save_qr_config(file_path,qr_version,qr_error_correct,qr_box_size,qr_border):
-    # # check si les valeurs sont ok sinon rectifie et en informe l'utilisateur
-    # qr_version,qr_error_correct,qr_box_size,qr_border = qr_code_parameters_checker(qr_version,qr_error_correct,qr_box_size,qr_border)
+   
+    qr_version,qr_error_correct,qr_box_size,qr_border = check_qr_code_config_parameters(qr_version,qr_error_correct,qr_box_size,qr_border)
     
     qr_config_dict = {}
 
