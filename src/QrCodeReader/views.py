@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from QrCodeReader.forms import QrGenerateForm
+from QrCodeReader.forms import QrGenerateForm,QrDisplay
 DIR_QR_CONFIG = "QrCodeReader/config"
 QR_CONFIG_FILE = "config.json"
 
