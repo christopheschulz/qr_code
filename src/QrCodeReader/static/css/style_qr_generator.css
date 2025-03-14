@@ -59,7 +59,27 @@ input {
     padding: 10px;
     margin-top: 10px;
 } */
-
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px; /* Espace entre le label et l'input */
+  }
+  
+input {
+    padding: 8px;
+    width: 80%;
+    font-size: 11px;
+}
+button, input[type="submit"], input[type="button"] {
+    padding: 8px 15px;
+    font-size: 14px;
+   
+    border-radius: 5px;
+   
+    border: none;
+    cursor: pointer;
+    width: auto;
+  }
 .footer {
     margin-top: 30px;
     padding: 20px;

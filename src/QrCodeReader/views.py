@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from QrCodeReader.forms import QrGenerateForm
+from QrCodeReader.forms import QrGenerateForm,QrLoader
 DIR_QR_CONFIG = "QrCodeReader/config"
 QR_CONFIG_FILE = "config.json"
 
 import qr_code
 
 def qr_reader(request):
-    return render(request,"qr_reader.html")
-
+    qr_reader_form = QrLoader()
+    return render(request,"qr_reader.html",{"form" : qr_reader_form})
 
 def qr_generator(request):
     if request.method == "POST":

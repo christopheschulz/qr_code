@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from .views import qr_reader,qr_generator,qr_history,about
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('', qr_generator, name='qrgenerator'),
@@ -27,3 +29,5 @@ urlpatterns = [
     path('about', about, name='about'),
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
