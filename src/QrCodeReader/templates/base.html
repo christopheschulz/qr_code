@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style_qr_generator.css' %}">
+    {% block title %}{% endblock %}
+    <title>Générateur de QR Code</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'qrgenerator' %}">Générateur QR Code</a>
+        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
+        <a href="{% url 'qrhistory' %}">Historique</a>
+        <a href="{% url 'about' %}">À propos</a>
+    </nav>
+    {% block content%}
+    {% endblock %}
+    <div class="footer">
+        <p>&copy; QRcodereader.net - Tous droits réservés.</p>
+    </div> 
+</body>
+</html>

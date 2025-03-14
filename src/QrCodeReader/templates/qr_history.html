@@ -1,19 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanned Items</title>
-    <link rel="stylesheet" href="{% static 'css/style_history.css' %}">
-</head>
-<body>
-    <nav>
-        <a href="{% url 'qrgenerator' %}">Générateur QR Code</a>
-        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
-        <a href="{% url 'qrhistory' %}">Historique</a>
-        <a href="{% url 'about' %}">À propos</a>
-    </nav>
+
+    {% block title %}<title>Historique</title>{% endblock %}
+    
+    {% block content %}
     <h1>Historique</h1>
     <!-- <div class="container">
         <div class="header">
@@ -31,8 +21,8 @@
             </div>
         </div>
     </div> -->
-    <div class="footer">
-        <p>&copy; QRcodereader.net - Tous droits réservés.</p>
-    </div>
-</body>
-</html>
+    {% endblock %}
+
+
+    
+    

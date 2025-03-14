@@ -20,6 +20,6 @@ QR_BOX_SIZE = (
 
 
 class QrGenerateForm(forms.Form):
-    qr_error_correction_form = forms.ChoiceField(choices=QR_ERROR_CORRRECT)
-    qr_box_size_form = forms.ChoiceField(choices=QR_BOX_SIZE)
-    text_to_convert_form = forms.CharField(max_length= 50, required=True, widget=forms.Textarea)
+    qr_error_correction_form = forms.ChoiceField(choices=QR_ERROR_CORRRECT,label="Taux de correction d'erreur")
+    qr_box_size_form = forms.ChoiceField(choices=QR_BOX_SIZE,label="Taille QR Code")
+    text_to_convert_form = forms.CharField(max_length= 50, required=True, widget=forms.Textarea,label="Entrez votre texte à convertir")
