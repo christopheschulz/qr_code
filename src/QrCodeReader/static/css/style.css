@@ -30,8 +30,8 @@ h1 {
     border: 2px solid #ddd;
     padding: 20px;
     border-radius: 10px;
-    width: 500px;
-    height: 500px;
+    width: 450px;
+    height: 450px;
 }
 .box form{
     width: 400px;
@@ -42,7 +42,7 @@ h1 {
     width: 400px;
     height: 400px;
 }
-/* .qr-options {
+.qr-options {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -54,11 +54,7 @@ h1 {
     background: rgb(255, 255, 255);
     cursor: pointer;
 }
-input {
-    width: 80%;
-    padding: 10px;
-    margin-top: 10px;
-} */
+
 label {
     display: block;
     font-weight: bold;
@@ -93,7 +89,4 @@ button, input[type="submit"], input[type="button"] {
     justify-content: center;
     align-items: center;
     height: 150px;
-}
-.b1{
-    margin-top: 10px;
 }

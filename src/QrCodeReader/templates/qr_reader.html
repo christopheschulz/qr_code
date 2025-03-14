@@ -12,13 +12,17 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" value="Télécharger" id="">
+                {% if image_url %}
+                <h4>Décodage du fichier</h4>
+                    {{result}}
+                {% endif %}
             </form>
         </div>
         <div class="box">
             {% if image_url %}
                 <h3>Image téléchargée :</h3>
                 <img src="{{ image_url }}" alt="QR Code" ">
-                {{result}}
+               
             {% endif %}
         </div>
     </div>
