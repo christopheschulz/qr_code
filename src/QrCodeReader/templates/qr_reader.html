@@ -7,13 +7,19 @@
     <h1>Lecteur QR Code</h1>
     <div class="container">
         <div class="box">
-            {{ form }}
-            <!-- <h3>Importer un fichier</h3>
-            <button>Télécharger</button> -->
+            <h3>Importer un fichier</h3>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Télécharger" id="">
+            </form>
         </div>
         <div class="box">
-            <!-- <h3>Articles numérisés</h3>
-            <p>Aucun résultat pour l’instant</p> -->
+            {% if image_url %}
+                <h3>Image téléchargée :</h3>
+                <img src="{{ image_url }}" alt="QR Code" ">
+                {{result}}
+            {% endif %}
         </div>
     </div>
     {% endblock %}

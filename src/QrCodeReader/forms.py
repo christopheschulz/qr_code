@@ -26,7 +26,7 @@ class QrGenerateForm(forms.Form):
 
 class QrLoader(forms.Form):
     qr_img = forms.ImageField(
-        label ="QR Code",
+        label ="",
         widget=forms.ClearableFileInput(attrs={
             'class' : 'form-control'
         })

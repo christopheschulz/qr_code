@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import render
 from QrCodeReader.forms import QrGenerateForm,QrLoader
 DIR_QR_CONFIG = "QrCodeReader/config"
@@ -6,8 +9,31 @@ QR_CONFIG_FILE = "config.json"
 import qr_code
 
 def qr_reader(request):
-    qr_reader_form = QrLoader()
-    return render(request,"qr_reader.html",{"form" : qr_reader_form})
+    if request.method == "POST":
+        qr_reader_form = QrLoader(request.POST, request.FILES)
+        if qr_reader_form.is_valid():
+            qr_img = qr_reader_form.cleaned_data['qr_img']
+            print(qr_img)
+
+            upload_dir = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
+            os.makedirs(upload_dir, exist_ok=True)
+
+            file_path = os.path.join(upload_dir, str(qr_img))
+            
+            with open(file_path, 'wb+') as destination:
+                for chunk in qr_img.chunks():
+                    destination.write(chunk)
+            image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
+
+            result = qr_code.read_qr_code(file_path)
+            print(result)
+           
+    else:
+        qr_reader_form = QrLoader()
+        image_url = ""
+        result = ""
+
+    return render(request,"qr_reader.html",{"form" : qr_reader_form,"result" : result,'image_url': image_url})
 
 def qr_generator(request):
     if request.method == "POST":
