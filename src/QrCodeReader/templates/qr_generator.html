@@ -26,7 +26,9 @@
             </div>
             <div class="box">
                 <h3>Aperçu du QR Code</h3>
-                <img src="{% static 'qr_img/QR000.png' %}" alt="QR Code ici">
+                {% if image_url %}
+                    <img src="{{ image_url }}" alt="QR Code" ">
+                {% endif %}
                 <!-- <div class="qr-preview">[QR Code Ici]</div> -->
                 <!-- <button class="b1">Télécharger</button> -->
                 <!-- <button class="b1">Copier le Code d’Intégration</button> -->
