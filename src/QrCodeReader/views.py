@@ -1,12 +1,13 @@
 import os
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from QrCodeReader.forms import QrGenerateForm,QrLoader
 DIR_QR_CONFIG = "QrCodeReader/config"
 QR_CONFIG_FILE = "config.json"
 
 import qr_code
+
 
 def qr_reader(request):
     if request.method == "POST":
@@ -26,7 +27,9 @@ def qr_reader(request):
             print(image_url)
 
             result = qr_code.read_qr_code(file_path)
-            print(result)
+            if result == None:
+                result = "Ce fichier n'est pas un QR Code"
+
            
     else:
         qr_reader_form = QrLoader()
@@ -35,18 +38,17 @@ def qr_reader(request):
 
     return render(request,"qr_reader.html",{"form" : qr_reader_form,"result" : result,'image_url': image_url})
 
+
 def qr_generator(request):
     if request.method == "POST":
         qr_generate_form = QrGenerateForm(request.POST)
         if qr_generate_form.is_valid():
-            print(qr_generate_form.cleaned_data)
             qr_entry = qr_generate_form.cleaned_data['text_to_convert_form']
-            
             qr_version = None
             qr_error_correct = int(qr_generate_form.cleaned_data['qr_error_correction_form'])
             qr_box_size = int(qr_generate_form.cleaned_data['qr_box_size_form'])
             
-            # attention le chiemin d'url n'est que correcte en debug
+            # attention le chemin d'url n'est que correcte en debug
             file_path = qr_code.get_file_path(qr_code.QR_CONFIG_FILE,qr_code.DIR_QR_CONFIG)
             print(file_path)
             qr_code.save_qr_config(file_path,
@@ -55,8 +57,8 @@ def qr_generator(request):
                                    qr_box_size,
                                    qr_border=4)
             qr_code.handle_generate_qr(qr_entry)
-            image_url = f"static/qr_img/QR000.png"
-            print(image_url)
+            image_url = "static/qr_img/QR000.png"
+            
     else:    
         qr_generate_form = QrGenerateForm()
         image_url = ""
@@ -66,6 +68,7 @@ def qr_generator(request):
 
 def qr_history(request):
     return render(request,"qr_history.html")
+
 
 def about(request):
     return render(request,"about.html")

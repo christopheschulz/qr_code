@@ -46,10 +46,11 @@ def read_qr_code(file):
     detector = cv2.QRCodeDetector()
     # detect and decode
     # retourne un tuple. Le texte est dans la première variable de ce tuple
-    data = detector.detectAndDecode(img) 
-    text_qr_code = data[0]
-    return text_qr_code
-
+    data,is_qr,_ = detector.detectAndDecode(img) 
+    if is_qr is not None:
+        text_qr_code = data
+        return text_qr_code
+    return None
 
 #file
 def get_file_path(file,dir):
