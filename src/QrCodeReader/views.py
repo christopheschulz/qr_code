@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from QrCodeReader.forms import QrGenerateForm,QrLoader
+
 DIR_QR_CONFIG = "QrCodeReader/config"
 QR_CONFIG_FILE = "config.json"
 
@@ -24,13 +25,13 @@ def qr_reader(request):
                 for chunk in qr_img.chunks():
                     destination.write(chunk)
             image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
-            print(image_url)
 
             result = qr_code.read_qr_code(file_path)
+            
             if result == None:
                 result = "Ce fichier n'est pas un QR Code"
+            
 
-           
     else:
         qr_reader_form = QrLoader()
         image_url = ""
@@ -58,6 +59,7 @@ def qr_generator(request):
                                    qr_border=4)
             qr_code.handle_generate_qr(qr_entry)
             image_url = "static/qr_img/QR000.png"
+            
             
     else:    
         qr_generate_form = QrGenerateForm()
