@@ -69,17 +69,21 @@ input {
     width: 80%;
     font-size: 11px;
 }
-button, input[type="submit"], input[type="button"] {
-    color: #f1f1f1 ;
-    background: #00ABE4;
-    padding: 8px 15px;
-    font-size: 14px;
-   
-    border-radius: 5px;
-   
-    border: none;
-    cursor: pointer;
+button, input[type="submit"] {
+    background-color: #3b82f6; /* Bleu vif */
+    color: white; /* Texte blanc */
+    font-size: 16px; /* Taille du texte */
+    padding: 10px 20px; /* Espacement intérieur */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis */
+    cursor: pointer; /* Curseur en main au survol */
+    font-weight: bold; /* Texte en gras */
+    transition: background-color 0.3s ease; /* Animation fluide */
     width: auto;
+  }
+button:hover, input[type="submit"]:hover {
+    background-color: #2563eb;
+
   }
 .footer {
     margin-top: 30px;
