@@ -109,3 +109,37 @@ latitude = 48.8566
 longitude = 2.3522  # Paris
 ## Générer un lien Google Maps avec les coordonnées
 google_maps_url = f"https://www.google.com/maps?q={latitude},{longitude}"
+
+
+# gestion évènement
+## Informations sur l'événement
+event_name = "Conférence IA 2025"
+date = "16 Mars 2025"
+heure = "18h00"
+lieu = "Centre de conférences, Paris"
+url_inscription = "https://www.evenement-ia2025.com"
+## Contenu du QR Code (peut contenir du texte, une URL, etc.)
+qr_data = f"""Événement: {event_name}
+Date: {date}
+Heure: {heure}
+Lieu: {lieu}
+Inscription: {url_inscription}"""
+
+
+# événment vcalendar
+## Détails de l'événement
+event_name = "Conférence IA 2025"
+description = "Une conférence sur l'intelligence artificielle."
+location = "Centre de conférences, Paris"
+start_date = "20250316T180000"  # Format YYYYMMDDTHHMMSS
+end_date = "20250316T200000"
+## Format vCalendar
+event_data = f"""BEGIN:VEVENT
+SUMMARY:{event_name}
+DESCRIPTION:{description}
+LOCATION:{location}
+DTSTART:{start_date}
+DTEND:{end_date}
+END:VEVENT"""
+## Générer le QR Code
+qr = qrcode.make(event_data)
