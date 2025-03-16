@@ -9,8 +9,8 @@
     <title>Générateur de QR Code</title>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'qrgenerator' %}">Générateur QR Code</a>
+    <nav class="navbar">
+        <a href="{% url 'qrgenerator' %}" class="active">Générateur QR Code</a>
         <a href="{% url 'qrreader' %}">Lecteur QR code</a>
         <!-- <a href="{% url 'qrhistory' %}">Historique</a> -->
         <a href="{% url 'about' %}">À propos</a>
@@ -20,5 +20,6 @@
     <div class="footer">
         <p>&copy; QRcodebykrisskool.fr - Tous droits réservés.</p>
     </div> 
+    <script src="{% static 'script/script.js' %}"></script>
 </body>
 </html>

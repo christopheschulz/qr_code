@@ -1,25 +1,37 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
+    background-color: #dae2fd; 
+    height: 100%;
     margin: 0;
     padding: 0;
     text-align: center;
+    color: #4A4A4A; 
 }
 nav {
-    background-color: #E9F1FA;
+    background-color: #f1f1f1; 
     display: flex;
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    height: px;
+    gap: 40px;
     padding: 15px;
     border-bottom: 2px solid #ddd;
 }
-nav a {
-    text-decoration: none;
+.navbar a {
     color: black;
-    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+.navbar a.active {
+    background-color: steelblue; 
+    color: white;
+    border-radius: 5px; 
 }
 h1 {
     margin: 20px 0;
+    color: #4A4A4A;
 }
 .container {
     display: flex;
@@ -40,7 +52,6 @@ h1 {
     width: 400px;
     height: 400px;
 }
-
 .box img{
     width: 400px;
     height: 400px;
@@ -54,42 +65,46 @@ h1 {
 .qr-options button {
     padding: 8px;
     border: 1px solid #ccc;
-    background: rgb(255, 255, 255);
+    background: white;
     cursor: pointer;
 }
-
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px; /* Espace entre le label et l'input */
-  }
-  
+    margin-bottom: 5px;
+    color: #4A4A4A;
+}
 input {
     padding: 8px;
     width: 80%;
     font-size: 11px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 button, input[type="submit"] {
-    background-color: #3b82f6; /* Bleu vif */
-    color: white; /* Texte blanc */
-    font-size: 16px; /* Taille du texte */
-    padding: 10px 20px; /* Espacement intérieur */
-    border: none; /* Pas de bordure */
-    border-radius: 5px; /* Coins arrondis */
-    cursor: pointer; /* Curseur en main au survol */
-    font-weight: bold; /* Texte en gras */
-    transition: background-color 0.3s ease; /* Animation fluide */
+    background-color: steelblue; 
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
     width: auto;
-  }
+}
 button:hover, input[type="submit"]:hover {
-    background-color: #2563eb;
-
-  }
+    background-color: #E69BAE; 
+}
 .footer {
     margin-top: 30px;
     padding: 20px;
-    background: #D6EAF8  ;
+    background: #f7f7f7; 
+    color: #4A4A4A;
     border-top: 2px solid #ddd;
+    width: 100%;
+    position: fixed;
+    bottom:0
 }
 .qr-preview {
     border: 2px solid #ddd;

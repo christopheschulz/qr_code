@@ -204,12 +204,12 @@ def check_qr_code_config_parameters(qr_version,qr_error_correct,qr_box_size,qr_b
     if str(qr_border).isdigit():
         qr_border = int(qr_border)
     else:
-        print("Le paramètre 'border'  doit être un int. Nouvelle valeur initialisée à 4 ")
-        qr_border = 4
+        print("Le paramètre 'border'  doit être un int. Nouvelle valeur initialisée à 1 ")
+        qr_border = 1
         parameter_changed = True
-    if qr_border < 4:
+    if qr_border < 1:
         print("Le paramètre 'border'  ne peut pas être infèrieur à 4. Nouvelle valeur initialisée à 4 ")
-        qr_border = 4
+        qr_border = 1
         parameter_changed = True
     
     if parameter_changed:
