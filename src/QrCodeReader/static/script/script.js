@@ -42,10 +42,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll(".qr-option-btn");
     const contentDivs = document.querySelectorAll(".qr-content");
 
+    // Définir le bouton URL comme actif par défaut
+    let activeButton = document.querySelector(".qr-option-btn[data-target='url-content']");
+    let activeDiv = document.getElementById("url-content");
+
     buttons.forEach(button => {
         button.addEventListener("click", function() {
             // Retirer la classe 'active' de tous les boutons
-            buttons.forEach(btn => btn.classList.remove("bg-blue-800", "text-white"));
+            buttons.forEach(btn => btn.classList.remove("bg-blue-800"));
 
             // Cacher toutes les divs de contenu
             contentDivs.forEach(div => div.classList.add("hidden"));
@@ -58,4 +62,8 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById(targetId).classList.remove("hidden");
         });
     });
+
+    // Assurer que le bouton URL est actif au démarrage
+    activeButton.classList.add("bg-blue-800", "text-white");
+    activeDiv.classList.remove("hidden");
 });

@@ -1,16 +1,87 @@
 import os
+import base64
+from io import BytesIO
+from pathlib import Path
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from QrCodeReader.forms import QrGenerateForm,QrLoader
+from django.shortcuts import render
+from .forms import (
+    QrGenerateUrl, QrGenerateurText, QrGenerateVCard, QrGeneratePhone,
+    QrGenerateEmail, QrGenerateSMS, QrGenerateWiFi, QrGenerateLocation,
+    QrGenerateEvent,QrLoader
+)
+from utils.qr_code import generate_qr_code, get_qr_code_img_file_path,read_qr_code  # Import de tes fonctions QR
 
-DIR_QR_CONFIG = "QrCodeReader/config"
-QR_CONFIG_FILE = "config.json"
+def generate_qr_code_view(request):
+    form_type = request.POST.get("form_type", "url")
+    qr_code_base64 = None
 
-import qr_code
+    forms = {
+        "url": QrGenerateUrl(),
+        "vcard": QrGenerateVCard(),
+        "phone": QrGeneratePhone(),
+        "text": QrGenerateurText(),
+        "email": QrGenerateEmail(),
+        "sms": QrGenerateSMS(),
+        "wifi": QrGenerateWiFi(),
+        "location": QrGenerateLocation(),
+        "event": QrGenerateEvent(),
+    }
 
+    form = forms.get(form_type)
+
+    if request.method == "POST":
+        form = forms.get(form_type)(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            qr_data = ""
+
+            # Récupération des valeurs du formulaire
+            qr_error_correction = int(data.get("qr_error_correction_form", 1))  # Valeur par défaut : 1 (M)
+            qr_box_size = int(data.get("qr_box_size_form", 10))  # Valeur par défaut : 10
+
+            if form_type == "url":
+                qr_data = data['url_to_convert']
+            elif form_type == "vcard":
+                qr_data = f"BEGIN:VCARD\nFN:{data['name']}\nTEL:{data['phone']}\nEMAIL:{data['email']}\nEND:VCARD"
+            elif form_type == "phone":
+                qr_data = f"tel:{data['phone']}"
+            elif form_type == "text":
+                qr_data = data['text_to_convert']
+            elif form_type == "email":
+                qr_data = f"mailto:{data['email']}?subject={data['subject']}&body={data['message']}"
+            elif form_type == "sms":
+                qr_data = f"sms:{data['phone']}?body={data['message']}"
+            elif form_type == "wifi":
+                qr_data = f"WIFI:T:{data['encryption']};S:{data['ssid']};P:{data['password']};;"
+            elif form_type == "location":
+                qr_data = f"geo:{data['latitude']},{data['longitude']}"
+            elif form_type == "event":
+                qr_data = f"BEGIN:VEVENT\nSUMMARY:{data['title']}\nLOCATION:{data['location']}\nDTSTART:{data['date']}\nEND:VEVENT"
+
+            # Génération du QR code avec les valeurs du formulaire
+            generate_qr_code(
+                qr_text=qr_data,
+                qr_version=None,  # Auto-adaptation
+                qr_error_correction=qr_error_correction,
+                qr_box_size=qr_box_size,
+                qr_border=4  # Valeur par défaut
+            )
+
+            # Charger le fichier généré et le convertir en base64
+            qr_file_path = get_qr_code_img_file_path()
+            if Path(qr_file_path).exists():
+                with open(qr_file_path, "rb") as qr_file:
+                    qr_code_base64 = base64.b64encode(qr_file.read()).decode()
+
+    # 🔥 Ajouter une gestion pour les requêtes GET
+    return render(request, "qr_generator.html", {
+        "form": form,
+        "forms": forms,
+        "qr_code_base64": qr_code_base64
+    })
 
 def qr_reader(request):
+    
     if request.method == "POST":
         qr_reader_form = QrLoader(request.POST, request.FILES)
         if qr_reader_form.is_valid():
@@ -26,46 +97,17 @@ def qr_reader(request):
                     destination.write(chunk)
             image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
 
-            result = qr_code.read_qr_code(file_path)
+            result = read_qr_code(file_path)
             
             if not result:
                 result = "Ce fichier n'est pas un QR Code"
             
-
     else:
         qr_reader_form = QrLoader()
         image_url = ""
         result = ""
     
     return render(request,"qr_reader.html",{'form' : qr_reader_form, 'result' : result, 'image_url': image_url})
-
-
-def qr_generator(request):
-    if request.method == "POST":
-        qr_generate_form = QrGenerateForm(request.POST)
-        if qr_generate_form.is_valid():
-            qr_entry = qr_generate_form.cleaned_data['text_to_convert_form']
-            qr_version = None
-            qr_error_correct = int(qr_generate_form.cleaned_data['qr_error_correction_form'])
-            qr_box_size = int(qr_generate_form.cleaned_data['qr_box_size_form'])
-            
-            # attention le chemin d'url n'est que correcte en debug
-            file_path = qr_code.get_file_path(qr_code.QR_CONFIG_FILE,qr_code.DIR_QR_CONFIG)
-            print(file_path)
-            qr_code.save_qr_config(file_path,
-                                   qr_version,
-                                   qr_error_correct,
-                                   qr_box_size,
-                                   qr_border=4)
-            qr_code.handle_generate_qr(qr_entry)
-            image_url = "static/qr_img/QR000.png"
-            
-            
-    else:    
-        qr_generate_form = QrGenerateForm()
-        image_url = ""
-
-    return render(request,"qr_generator.html",{"form" : qr_generate_form,"image_url":image_url})
 
 
 def qr_history(request):

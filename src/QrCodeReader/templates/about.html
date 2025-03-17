@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block title %}<title>À propos</title>{% endblock %}
+{% block title %}<title>À propos</title>{% endblock %}
     
-    {% block content %}
-        <h1>À propos</h1>
-    {% endblock %}
+{% block content %}
+    <div class="container mx-auto py-10 px-6">
+        <h1 class="text-2xl font-semibold text-center mb-6">À propos</h1>
+        <div class="bg-white shadow-md p-6 rounded-xl text-gray-700 text-lg">
+            <p class="mb-4">Bienvenue sur notre plateforme de génération et de lecture de QR Codes.</p>
+            <p class="mb-4">Notre mission est de fournir un outil simple et efficace pour créer et scanner des QR Codes, facilitant ainsi la communication et le partage d'informations.</p>
+            <p class="mb-4">Ce projet a été développé avec passion en utilisant Django et Tailwind CSS pour offrir une expérience utilisateur fluide et moderne.</p>
+            <p class="font-semibold">Merci d'utiliser notre service ! 🚀</p>
+        </div>
+    </div>
+{% endblock %}
+
 
 
     

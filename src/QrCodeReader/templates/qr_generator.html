@@ -21,26 +21,47 @@
                 </div>
                 
                 <form method="POST" class="space-y-4">
-                    <div id="url-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour URL
-                        {% csrf_token %}
-                        <div class="space-y-2">{{ form.as_p }}</div>
-                    </div>
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" id="form_type" value="url">
                     
-                    <div id="vcard-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour VCard</div>
-                    <div id="phone-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Téléphone</div>
-                    <div id="text-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Texte</div>
-                    <div id="email-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Email</div>
-                    <div id="sms-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour SMS</div>
-                    <div id="wifi-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour WIFI</div>
-                    <div id="location-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Emplacement</div>
-                    <div id="event-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Événement</div>
+                    <div id="url-content" class="qr-content bg-gray-100 p-4 rounded-md">
+                        {{ forms.url.as_p }}
+                    </div>
+                    <div id="vcard-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.vcard.as_p }}
+                    </div>
+                    <div id="phone-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.phone.as_p }}
+                    </div>
+                    <div id="text-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.text.as_p }}
+                    </div>
+                    <div id="email-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.email.as_p }}
+                    </div>
+                    <div id="sms-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.sms.as_p }}
+                    </div>
+                    <div id="wifi-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.wifi.as_p }}
+                    </div>
+                    <div id="location-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.location.as_p }}
+                    </div>
+                    <div id="event-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">
+                        {{ forms.event.as_p }}
+                    </div>
+
                     <input type="submit" value="Générer" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 active:bg-green-800 cursor-pointer">
-                </form>   
+                </form>
             </div>
             <div class="bg-white shadow-md p-6 rounded-xl text-center">
                 <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
                     <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+                    <a href="{{ image_url }}" download="qr_code.png" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
+                {% else %}
+                    <p>Aucun QR Code généré.</p>
                 {% endif %}
             </div>
         </div>

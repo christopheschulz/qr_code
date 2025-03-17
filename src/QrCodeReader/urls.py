@@ -16,15 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import qr_reader,qr_generator,qr_history,about
+from .views import qr_reader,generate_qr_code_view,qr_history,about
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 urlpatterns = [
-    path('', qr_generator, name='qrgenerator'),
+    path('', generate_qr_code_view, name='qrgenerator'),
     path('qrreader', qr_reader, name='qrreader'),
-    path('qrgenerator', qr_generator, name='qrgenerator'),
+    path('qrgenerator', generate_qr_code_view, name='qrgenerator'),
     path('qrhistory', qr_history, name='qrhistory'),
     path('about', about, name='about'),
     path('admin/', admin.site.urls),
