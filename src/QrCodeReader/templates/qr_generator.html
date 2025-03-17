@@ -20,7 +20,7 @@
                     <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="event-content">Événement</button>
                 </div>
                 
-                <form method="POST" class="space-y-4">
+                <form method="POST" enctype="multipart/form-data" class="space-y-4">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" id="form_type" value="url">
                     
@@ -58,8 +58,8 @@
             <div class="bg-white shadow-md p-6 rounded-xl text-center">
                 <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
-                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
-                    <a href="{{ image_url }}" download="qr_code.png" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
+                    <img src="{{ qr_code_base64 }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+                    <a href="{{ qr_code_base64 }}" download="qr_code.png" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
                 {% else %}
                     <p>Aucun QR Code généré.</p>
                 {% endif %}
