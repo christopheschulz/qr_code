@@ -4,22 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block title %}{% endblock %}
     <title>Générateur de QR Code</title>
 </head>
-<body>
-    <nav class="navbar">
-        <a href="{% url 'qrgenerator' %}" class="active">Générateur QR Code</a>
-        <a href="{% url 'qrreader' %}">Lecteur QR code</a>
-        <!-- <a href="{% url 'qrhistory' %}">Historique</a> -->
-        <a href="{% url 'about' %}">À propos</a>
-    </nav>
-    {% block content%}
-    {% endblock %}
-    <div class="footer">
-        <p>&copy; QRcodebykrisskool.fr - Tous droits réservés.</p>
-    </div> 
+<body class="bg-gray-100 text-gray-900">
+    <nav class="bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
+    <a href="{% url 'qrgenerator' %}" class="{% if request.path == '/qrgenerator' %}border-b-2 border-blue-600{% endif %} text-blue-600 font-semibold hover:underline">
+        Générateur QR Code
+    </a>
+    <a href="{% url 'qrreader' %}" class="{% if request.path == '/qrreader' %}border-b-2 border-blue-600{% endif %} text-blue-600 font-semibold hover:underline">
+        Lecteur QR Code
+    </a>
+    <!-- <a href="{% url 'qrhistory' %}" class="{% if request.path == '/qrhistory' %}border-b-2 border-blue-600{% endif %} text-blue-600 font-semibold hover:underline">
+        Historique
+    </a> -->
+    <a href="{% url 'about' %}" class="{% if request.path == '/about' %}border-b-2 border-blue-600{% endif %} text-blue-600 font-semibold hover:underline">
+        À propos
+    </a>
+</nav>
+    
+    <main class="container mx-auto py-10 px-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    <footer class="bg-white shadow-md py-4 text-center mt-10">
+        <p class="text-gray-600">&copy; QRcodebykrisskool.fr - Tous droits réservés.</p>
+    </footer>
+    
     <script src="{% static 'script/script.js' %}"></script>
 </body>
 </html>
+

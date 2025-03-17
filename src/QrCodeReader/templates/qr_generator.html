@@ -1,37 +1,48 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block title %}<title>Générateur de QR Code</title>{% endblock %}
+{% block title %}<title>Générateur de QR Code</title>{% endblock %}
     
-    {% block content %}
-        <h1>Générateur de QR Code</h1>
-        <div class="container">
-            <div class="box">
-                <!-- <div class="qr-options">
-                    <button>URL</button>
-                    <button>VCard</button>
-                    <button>Téléphone</button>
-                    <button>Texte</button>
-                    <button>Email</button>
-                    <button>SMS</button>
-                    <button>WIFI</button>
-                    <button>Emplacement</button>
-                    <button>Événement</button>
-                </div>  -->
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Générer" id="">
+{% block content %}
+    <div class="container mx-auto py-10 px-6">
+        <h1 class="text-2xl font-semibold text-center mb-6">Générateur de QR Code</h1>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white shadow-md p-6 rounded-xl">
+                <div class="grid grid-cols-3 gap-2 mb-6">
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="url-content">URL</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="vcard-content">VCard</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="phone-content">Téléphone</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="text-content">Texte</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="email-content">Email</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="sms-content">SMS</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="wifi-content">WIFI</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="location-content">Emplacement</button>
+                    <button class="qr-option-btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600" data-target="event-content">Événement</button>
+                </div>
+                
+                <form method="POST" class="space-y-4">
+                    <div id="url-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour URL
+                        {% csrf_token %}
+                        <div class="space-y-2">{{ form.as_p }}</div>
+                    </div>
+                    
+                    <div id="vcard-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour VCard</div>
+                    <div id="phone-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Téléphone</div>
+                    <div id="text-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Texte</div>
+                    <div id="email-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Email</div>
+                    <div id="sms-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour SMS</div>
+                    <div id="wifi-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour WIFI</div>
+                    <div id="location-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Emplacement</div>
+                    <div id="event-content" class="qr-content hidden bg-gray-100 p-4 rounded-md">Formulaire pour Événement</div>
+                    <input type="submit" value="Générer" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 active:bg-green-800 cursor-pointer">
                 </form>   
             </div>
-            <div class="box">
-                <h3>Aperçu du QR Code</h3>
+            <div class="bg-white shadow-md p-6 rounded-xl text-center">
+                <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
-                    <img src="{{ image_url }}" alt="QR Code" >
+                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
                 {% endif %}
-                <!-- <div class="qr-preview">[QR Code Ici]</div>
-                <button class="b1">Télécharger</button>
-                <button class="b1">Copier le Code d’Intégration</button>
-                </div> -->
             </div>
-    {% endblock %}
+        </div>
+    </div>
+{% endblock %}

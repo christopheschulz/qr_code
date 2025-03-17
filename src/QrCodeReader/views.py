@@ -28,7 +28,7 @@ def qr_reader(request):
 
             result = qr_code.read_qr_code(file_path)
             
-            if result == None:
+            if not result:
                 result = "Ce fichier n'est pas un QR Code"
             
 
@@ -36,8 +36,8 @@ def qr_reader(request):
         qr_reader_form = QrLoader()
         image_url = ""
         result = ""
-
-    return render(request,"qr_reader.html",{"form" : qr_reader_form,"result" : result,'image_url': image_url})
+    
+    return render(request,"qr_reader.html",{'form' : qr_reader_form, 'result' : result, 'image_url': image_url})
 
 
 def qr_generator(request):

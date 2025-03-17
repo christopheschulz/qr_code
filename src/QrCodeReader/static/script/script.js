@@ -36,3 +36,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const buttons = document.querySelectorAll(".qr-option-btn");
+    const contentDivs = document.querySelectorAll(".qr-content");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function() {
+            // Retirer la classe 'active' de tous les boutons
+            buttons.forEach(btn => btn.classList.remove("bg-blue-800", "text-white"));
+
+            // Cacher toutes les divs de contenu
+            contentDivs.forEach(div => div.classList.add("hidden"));
+
+            // Ajouter la classe 'active' au bouton cliqué
+            this.classList.add("bg-blue-800", "text-white");
+
+            // Afficher la div correspondante
+            const targetId = this.getAttribute("data-target");
+            document.getElementById(targetId).classList.remove("hidden");
+        });
+    });
+});

@@ -65,17 +65,31 @@ The border parameter controls how many boxes thick the border should be (the def
 
 
 # gestion d'une vcard
-vcard_data = """BEGIN:VCARD
+## VARIABLES PERSONNALISABLES
+nom = "Dupont"
+prenom = "Jean"
+entreprise = "Entreprise XYZ"
+poste = "Directeur Général"
+telephone_travail = "+33123456789"
+telephone_mobile = "+33698765432"
+email = "jean.dupont@example.com"
+site_web = "https://www.entreprise-xyz.com"
+adresse = "10 Rue Exemple"
+ville = "Paris"
+code_postal = "75001"
+pays = "France"
+## CONSTRUCTION DE LA vCard AU FORMAT 3.0
+vcard_data = f"""BEGIN:VCARD
 VERSION:3.0
-N:Dupont;Jean;;;
-FN:Jean Dupont
-ORG:Entreprise XYZ
-TITLE:Directeur Général
-TEL;TYPE=WORK,VOICE:+33123456789
-TEL;TYPE=CELL:+33698765432
-EMAIL;TYPE=WORK:jean.dupont@example.com
-URL:https://www.entreprise-xyz.com
-ADR;TYPE=WORK:;;10 Rue Exemple;Paris;;75001;France
+N:{nom};{prenom};;;
+FN:{prenom} {nom}
+ORG:{entreprise}
+TITLE:{poste}
+TEL;TYPE=WORK,VOICE:{telephone_travail}
+TEL;TYPE=CELL:{telephone_mobile}
+EMAIL;TYPE=WORK:{email}
+URL:{site_web}
+ADR;TYPE=WORK:;;{adresse};{ville};;{code_postal};{pays}
 END:VCARD"""
 
 

@@ -1,33 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block title %}<title>Lecteur QR Code</title>{% endblock %}
+{% block title %}<title>Lecteur QR Code</title>{% endblock %}
     
-    {% block content %}
-    <h1>Lecteur QR Code</h1>
-    <div class="container">
-        <div class="box">
-            <h3>Importer un fichier</h3>
-            <form method="POST" enctype="multipart/form-data">
+{% block content %}
+<div class="container mx-auto py-10 px-6">
+    <h1 class="text-2xl font-semibold text-center mb-6">Lecteur QR Code</h1>
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white shadow-md p-6 rounded-xl">
+            <h3 class="text-lg font-semibold mb-4">Importer un fichier</h3>
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="Télécharger" id="">
+                <div class="space-y-2">{{ form.as_p }}</div>
+                <input type="submit" value="Télécharger" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
                 {% if image_url %}
-                <h4>Décodage du fichier</h4>
-                    {{result}}
+                    <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
+                    <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
                 {% endif %}
             </form>
         </div>
-        <div class="box">
+        <div class="bg-white shadow-md p-6 rounded-xl text-center">
             {% if image_url %}
-                <h3>Image téléchargée :</h3>
-                <img src="{{ image_url }}" alt="QR Code" ">
-               
+                <h3 class="text-lg font-semibold mb-4">Image téléchargée :</h3>
+                <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
             {% endif %}
         </div>
     </div>
-    {% endblock %}
-
-
-    
-   
+</div>
+{% endblock %}
