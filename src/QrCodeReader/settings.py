@@ -26,7 +26,14 @@ SECRET_KEY = 'django-insecure-=30v=fmyhg82fq49&d6b=hgfvrm)besmjzglryt(@m*9c(h4cg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://qrcodebykriss.fr/","69.62.121.167"]
+ALLOWED_HOSTS = [
+    'qrcodebykriss.fr',
+    'www.qrcodebykriss.fr',
+    '127.0.0.1',
+    '69.62.121.167',
+    'localhost'
+]
+
 
 
 
