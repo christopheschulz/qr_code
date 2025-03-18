@@ -57,7 +57,7 @@ def generate_qr_code_view(request):
 
                 # Construction de qr_data selon le type
                 if form_type == "url":
-                    qr_data = data['url']
+                    qr_data = data['url_to_convert']
                 elif form_type == "vcard":
                     qr_data = f"BEGIN:VCARD\nFN:{data['name']}\nTEL:{data['phone']}\nEMAIL:{data['email']}\nEND:VCARD"
                 elif form_type == "phone":
