@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=30v=fmyhg82fq49&d6b=hgfvrm)besmjzglryt(@m*9c(h4cg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://qrcodebykriss.fr/"]
 
 
 # Application definition
