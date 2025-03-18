@@ -14,6 +14,7 @@ from utils.qr_code import generate_qr_code, get_qr_code_img_file_path, read_qr_c
 def generate_qr_code_view(request):
     form_type = request.POST.get("form_type", "url")
     qr_code_base64 = None
+    qr_file_path = ""
 
     # Stocker les classes (pas les instances) dans le dictionnaire
     forms = {
@@ -42,7 +43,6 @@ def generate_qr_code_view(request):
     }
 
     if request.method == "POST":
-        print("Post reçu:", form_type)
         form_class = forms.get(form_type)
         if form_class:
             form = form_class(request.POST)  # Instancier la classe ici
@@ -108,8 +108,9 @@ def generate_qr_code_view(request):
     # Retourner les données du contexte
     return render(request, "qr_generator.html", {
         "forms": form_instances,  # Utiliser les instances pour le rendu
-        "qr_code_base64": qr_code_base64
+        "image_url": qr_code_base64
     })
+
 
 def qr_reader(request):
     

@@ -58,8 +58,8 @@
             <div class="bg-white shadow-md p-6 rounded-xl text-center">
                 <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
-                    <img src="{{ qr_code_base64 }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
-                    <a href="{{ qr_code_base64 }}" download="qr_code.png" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
+                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+                    <a href="{{ image_url }}" download="qr_code.png" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
                 {% else %}
                     <p>Aucun QR Code généré.</p>
                 {% endif %}

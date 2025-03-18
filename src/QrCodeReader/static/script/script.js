@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Appliquer la classe active en fonction de l'URL actuelle
     setActiveLink();
 
+    
     // Ajouter un gestionnaire d'événements pour les clics sur les liens de navigation
     navLinks.forEach(link => {
         link.addEventListener("click", function() {
