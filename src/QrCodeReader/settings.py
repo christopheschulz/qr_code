@@ -29,6 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = ["https://qrcodebykriss.fr/"]
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
