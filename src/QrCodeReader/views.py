@@ -123,13 +123,13 @@ def qr_reader(request):
             os.makedirs(upload_dir, exist_ok=True)
 
             file_path = os.path.join(upload_dir, str(qr_img))
-            
+            print(file_path)
             with open(file_path, 'wb+') as destination:
                 for chunk in qr_img.chunks():
                     destination.write(chunk)
             image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
 
-            result = read_qr_code(file_path)
+            result = read_qr_code(image_url)
             
             if not result:
                 result = "Ce fichier n'est pas un QR Code"
