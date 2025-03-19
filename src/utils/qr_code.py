@@ -42,15 +42,17 @@ def generate_qr_code(qr_text,
 
 def read_qr_code(file):
     img = cv2.imread(file)
+    print(file)
     if img is None:
         print(f"Erreur : impossible de lire l'image {file}")
         return None
     detector = cv2.QRCodeDetector()
-    data, points, _ = detector.detectAndDecode(img)
-    
-    if data:
-        return data
-    return None
+    decoded_text, points, _ = detector.detectAndDecode(img)
+    if decoded_text:
+        return decoded_text
+    else:
+        print("QR détecté mais illisible ou vide")
+        return None
 
 #file
 def get_file_path(file, dir):
