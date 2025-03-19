@@ -95,4 +95,5 @@ class QrGenerateEvent(QRBaseMixin):
 
 
 class QrLoader(forms.Form):
-    qr_img = forms.ImageField(label="", widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    qr_img = forms.ImageField(label="", 
+                              widget=forms.FileInput(attrs={'accept': 'image/*'}))

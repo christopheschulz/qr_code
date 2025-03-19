@@ -124,3 +124,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+const fileInput = document.getElementById('id_qr_img');
+    const fileName = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            fileName.textContent = this.files[0].name;
+        } else {
+            fileName.textContent = 'Aucun fichier sélectionné';
+        }
+    });

@@ -11,9 +11,13 @@
             <h3 class="text-lg font-semibold mb-4">Importer un fichier</h3>
             <form method="POST" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
-                <div class="space-y-2">{{ form.as_p }}</div>
+                <div class="space-y-2 w-full">
+                    <div class="w-full overflow-hidden">
+                        {{ form.as_p }}
+                    </div>
+                </div>
                 <input type="hidden" id="form_type" name="form_type" value="">
-                <input type="submit" value="Télécharger" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
+                <input type="submit" value="Télécharger" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
                 {% if image_url %}
                     <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
                     <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
