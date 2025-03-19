@@ -12,6 +12,7 @@
             <form method="POST" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
                 <div class="space-y-2">{{ form.as_p }}</div>
+                <input type="hidden" id="form_type" name="form_type" value="">
                 <input type="submit" value="Télécharger" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
                 {% if image_url %}
                     <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
