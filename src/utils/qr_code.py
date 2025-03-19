@@ -41,16 +41,12 @@ def generate_qr_code(qr_text,
 
 
 def read_qr_code(file):
-    # read the QRCODE image
     img = cv2.imread(file)
-    # initialize the cv2 QRCode detector
     detector = cv2.QRCodeDetector()
-    # detect and decode
-    # retourne un tuple. Le texte est dans la première variable de ce tuple
-    data,is_qr,_ = detector.detectAndDecode(img) 
-    if is_qr is not None:
-        text_qr_code = data
-        return text_qr_code
+    data, points, _ = detector.detectAndDecode(img)
+    
+    if data:
+        return data
     return None
 
 #file
