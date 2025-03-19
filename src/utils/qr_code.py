@@ -2,6 +2,7 @@ import sys
 import datetime
 import json
 from pathlib import Path
+from django.conf import settings
 
 # gestion génération QR code
 import qrcode
@@ -53,20 +54,19 @@ def read_qr_code(file):
     return None
 
 #file
-def get_file_path(file,dir):
-    p = Path.cwd()
-    folder = p / dir
+def get_file_path(file, dir):
+    folder = Path(settings.BASE_DIR) / dir
     file_path = folder / file
-    if Path(file_path).exists():
+    if file_path.exists():
         return file_path
 
 
 def get_qr_code_img_file_path():
-    p = Path.cwd()
-    qr_img_folder = p / DIR_QR_IMG
-    file_path = ""
+    qr_img_folder = Path(settings.BASE_DIR) / DIR_QR_IMG
+    qr_img_folder.mkdir(parents=True, exist_ok=True)  # Assure la création du dossier
     qr_img_number = 0
     file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
+    return file_path
     
     # while Path(file_path).exists():
     #     file_path = qr_img_folder / f"QR{str(qr_img_number).zfill(3)}.png"
