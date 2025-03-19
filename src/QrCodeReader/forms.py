@@ -57,12 +57,24 @@ class QrGeneratePhone(QRBaseMixin):
 class QrGenerateEmail(QRBaseMixin):
     email = forms.EmailField(label="Email")
     subject = forms.CharField(label="Sujet", max_length=100)
-    message = forms.CharField(label="Message", widget=forms.Textarea(attrs={'rows': 4, 'cols': 40}))
+    message = forms.CharField(
+        label="Message",
+        widget=forms.Textarea(attrs={
+            'rows': 4,
+            'class': 'w-full p-2 border rounded',
+            'placeholder': 'Entrez votre message ici...'
+    }))
 
 
 class QrGenerateSMS(QRBaseMixin):
     phone = forms.CharField(label="Numéro de téléphone", max_length=20)
-    message = forms.CharField(label="Message", widget=forms.Textarea(attrs={'rows': 4, 'cols': 40}))
+    message = forms.CharField(
+        label="Message", 
+        widget=forms.Textarea(attrs={
+            'rows': 4,
+            'class': 'w-full p-2 border rounded',
+            'placeholder': 'Entrez votre message ici...'
+    }))
 
 
 class QrGenerateWiFi(QRBaseMixin):
