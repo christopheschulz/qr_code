@@ -129,7 +129,7 @@ def qr_reader(request):
                     destination.write(chunk)
             image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
 
-            result = read_qr_code(file_path)
+            result = read_qr_code(image_url)
             
             if not result:
                 result = "Ce fichier n'est pas un QR Code"
