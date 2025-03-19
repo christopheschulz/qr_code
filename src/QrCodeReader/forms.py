@@ -34,9 +34,14 @@ class QrGenerateUrl(QRBaseMixin):
 
 class QrGenerateurText(QRBaseMixin):
     text_to_convert = forms.CharField(
-        required=True, label="Entrez votre texte à convertir",
-        widget=forms.Textarea(attrs={'rows': 4, 'cols': 20})
-    )
+    required=True, 
+    label="Entrez votre texte à convertir",
+    widget=forms.Textarea(attrs={
+        'rows': 4,
+        'class': 'w-full p-2 border rounded',
+        'placeholder': 'Entrez votre texte ici...'
+    })
+)
 
 
 class QrGenerateVCard(QRBaseMixin):
