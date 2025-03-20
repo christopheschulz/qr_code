@@ -1,6 +1,7 @@
 import os
 import base64
 import hashlib
+import qrcode
 from io import BytesIO
 from pathlib import Path
 from django.conf import settings
@@ -15,7 +16,6 @@ from utils.qr_code import generate_qr_code, get_qr_code_img_file_path, read_qr_c
 def generate_qr_code_view(request):
     form_type = request.POST.get("form_type", "url")
     qr_code_base64 = None
-    qr_file_path = ""
     session_key = 'last_qr_hash'
 
     # Stocker les classes de formulaire
@@ -64,34 +64,27 @@ def generate_qr_code_view(request):
                 elif form_type == "event":
                     qr_data = f"BEGIN:VEVENT\nSUMMARY:{data['title']}\nLOCATION:{data['location']}\nDTSTART:{data['date']}\nEND:VEVENT"
 
-                # Création d'une signature unique des données pour la session
+                # Générer une signature unique (facultatif si pas de cache session)
                 qr_unique_str = f"{qr_data}|{qr_error_correction}|{qr_box_size}"
                 qr_hash = hashlib.md5(qr_unique_str.encode()).hexdigest()
 
-                # Vérification si ce QR a déjà été généré en session
-                if request.session.get(session_key) == qr_hash:
-                    print("QR déjà généré, utilisation du cache session.")
-                    qr_file_path = get_qr_code_img_file_path()
-                else:
-                    print(f"Nouvelle génération QR Code: {qr_data[:30]}...")
-                    generate_qr_code(
-                        qr_text=qr_data,
-                        qr_version=None,
-                        qr_error_correction=qr_error_correction,
-                        qr_box_size=qr_box_size,
-                        qr_border=4
-                    )
-                    qr_file_path = get_qr_code_img_file_path()
-                    request.session[session_key] = qr_hash
+                # Génération du QR Code en mémoire
+                qr = qrcode.QRCode(
+                    version=None,
+                    error_correction=qr_error_correction,
+                    box_size=qr_box_size,
+                    border=4
+                )
+                qr.add_data(qr_data)
+                qr.make(fit=True)
 
-                # Lecture du QR pour l'encoder en base64
-                if Path(qr_file_path).exists():
-                    with open(qr_file_path, "rb") as qr_file:
-                        qr_code_bytes = qr_file.read()
-                        qr_code_base64 = f"data:image/png;base64,{base64.b64encode(qr_code_bytes).decode()}"
-                        print("QR code généré ou chargé avec succès")
-                else:
-                    print(f"Erreur: Fichier QR introuvable à {qr_file_path}")
+                img = qr.make_image(fill_color="black", back_color="white")
+                buffered = BytesIO()
+                img.save(buffered, format="PNG")
+
+                # Encodage en base64 directement
+                qr_code_base64 = f"data:image/png;base64,{base64.b64encode(buffered.getvalue()).decode()}"
+
             else:
                 print(f"Formulaire invalide: {form.errors}")
         else:
