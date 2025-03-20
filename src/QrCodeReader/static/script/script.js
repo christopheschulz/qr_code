@@ -134,38 +134,3 @@ const fileInput = document.getElementById('id_qr_img');
             fileName.textContent = 'Aucun fichier sélectionné';
         }
     });
-document.addEventListener("DOMContentLoaded", function () {
-    const fileInput = document.getElementById("file-input");
-    const fileNameDisplay = document.getElementById("file-name");
-
-    if (fileInput) {
-        fileInput.addEventListener("change", function () {
-            let fileName = this.files.length ? this.files[0].name : "Aucune image sélectionnée";
-            fileNameDisplay.textContent = fileName;
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const fileInput = document.getElementById("file-input");
-    const fileNameDisplay = document.getElementById("file-name");
-
-    if (fileInput) {
-        fileInput.addEventListener("change", function () {
-            let file = this.files[0];
-
-            if (file) {
-                // Vérifie si le fichier est une image
-                if (!file.type.startsWith("image/")) {
-                    alert("Seules les images sont autorisées !");
-                    this.value = ""; // Réinitialise l'input file
-                    fileNameDisplay.textContent = "Aucune image sélectionnée";
-                    return;
-                }
-                fileNameDisplay.textContent = file.name;
-            } else {
-                fileNameDisplay.textContent = "Aucune image sélectionnée";
-            }
-        });
-    }
-});
