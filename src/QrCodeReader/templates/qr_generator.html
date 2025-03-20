@@ -66,4 +66,119 @@
             </div>
         </div>
     </div>
+    <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow">
+        <h1 class="text-3xl font-bold mb-6">🔎 Aide à la création de votre QR Code</h1>
+      
+        <!-- Options Communes -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold mb-4">⚙️ Options communes à tous les QR Codes</h2>
+          <ul class="list-disc pl-6 space-y-2">
+            <li><span class="font-semibold">Taux de correction d'erreur</span> :
+              <ul class="list-disc pl-6">
+                <li><span class="font-semibold">L (7%)</span> : Rendu optimal, QR en bon état</li>
+                <li><span class="font-semibold">M (15%)</span> : Bon compromis</li>
+                <li><span class="font-semibold">Q (25%)</span> : Plus résistant</li>
+                <li><span class="font-semibold">H (30%)</span> : Très résistant pour les surfaces exposées</li>
+              </ul>
+            </li>
+            <li><span class="font-semibold">Taille du QR Code</span> : 50x50, 100x100, 150x150, jusqu'à 500x500</li>
+            <li class="italic">💡 Plus la taille est grande, plus la lisibilité sera bonne, surtout à distance ou en impression.</li>
+          </ul>
+        </div>
+      
+        <!-- Formulaires -->
+        <div class="space-y-8">
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">🌐 QR Code URL</h2>
+            <p>Exemple : <span class="font-mono">https://www.monsite.com</span></p>
+            <p class="text-red-600">⚠️ L’URL doit commencer par http:// ou https:// et ne pas dépasser 50 caractères.</p>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📝 QR Code Texte</h2>
+            <p>Exemple : <span class="font-mono">Bienvenue sur mon site !</span></p>
+            <p class="italic">💡 Saisissez un message, une phrase ou des informations utiles.</p>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">👤 QR Code VCard (Contact)</h2>
+            <ul class="list-disc pl-6">
+              <li>Nom : <span class="font-mono">Jean Dupont</span></li>
+              <li>Téléphone : <span class="font-mono">+33612345678</span></li>
+              <li>Email : <span class="font-mono">jean.dupont@email.com</span></li>
+            </ul>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📞 QR Code Numéro de téléphone</h2>
+            <p>Exemple : <span class="font-mono">+33612345678</span></p>
+            <p class="italic">💡 En scannant, un appel est proposé.</p>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📧 QR Code Email</h2>
+            <ul class="list-disc pl-6">
+              <li>Email : <span class="font-mono">contact@exemple.com</span></li>
+              <li>Sujet : <span class="font-mono">Demande d'informations</span></li>
+              <li>Message : contenu de l’email</li>
+            </ul>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">💬 QR Code SMS</h2>
+            <ul class="list-disc pl-6">
+              <li>Numéro : <span class="font-mono">+33612345678</span></li>
+              <li>Message : contenu du SMS</li>
+            </ul>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📶 QR Code WiFi</h2>
+            <ul class="list-disc pl-6">
+              <li>SSID : nom exact du réseau</li>
+              <li>Mot de passe : laisser vide si réseau ouvert</li>
+              <li>Type de cryptage :
+                <ul class="list-disc pl-6">
+                  <li><span class="font-semibold">WPA</span> : recommandé</li>
+                  <li><span class="font-semibold">WEP</span> : ancien</li>
+                  <li><span class="font-semibold">Aucun</span> : non sécurisé</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📍 QR Code Localisation</h2>
+            <p>Latitude : <span class="font-mono">48.8566</span></p>
+            <p>Longitude : <span class="font-mono">2.3522</span></p>
+            <p class="italic">💡 Utilisez Google Maps pour récupérer les coordonnées.</p>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">📅 QR Code Événement</h2>
+            <ul class="list-disc pl-6">
+              <li>Titre : <span class="font-mono">Soirée d'anniversaire</span></li>
+              <li>Lieu : adresse de l’événement</li>
+              <li>Date et Heure : à sélectionner</li>
+            </ul>
+          </div>
+      
+          <div>
+            <h2 class="text-xl font-semibold mb-2">🖼️ Charger un QR Code existant</h2>
+            <p>Chargez une image au format <span class="font-mono">.png</span> ou <span class="font-mono">.jpg</span> contenant un QR Code à lire.</p>
+          </div>
+        </div>
+      
+        <!-- Conseils -->
+        <div class="mt-10">
+          <h2 class="text-2xl font-semibold mb-4">✅ Conseils généraux</h2>
+          <ul class="list-disc pl-6 space-y-2">
+            <li>Relisez vos informations avant de générer le QR Code.</li>
+            <li>Utilisez un bon contraste : fond clair et QR foncé pour une meilleure lisibilité.</li>
+            <li>Plus la densité des données est élevée, plus le QR doit être grand.</li>
+          </ul>
+        </div>
+      </section>
+      
 {% endblock %}
