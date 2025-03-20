@@ -12,14 +12,29 @@
             <form method="POST" enctype="multipart/form-data" class="space-y-4">
                 {% csrf_token %}
                 <div class="space-y-2 w-full">
-                    <div class="w-full overflow-hidden">
-                        {{ form.as_p }}
+                    <div class="w-full overflow-hidden flex flex-col items-center">
+                        <!-- Label stylisé qui remplace l'input file -->
+                        <label for="file-input" class="cursor-pointer bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition">
+                            Choisir une image
+                        </label>
+                        <!-- Input file caché qui accepte uniquement les images -->
+                        <input type="file" id="file-input" name="qr_img" class="hidden" accept="image/*">
+                        <!-- Zone pour afficher le nom du fichier sélectionné -->
+                        <span id="file-name" class="text-gray-500 mt-2">Aucune image sélectionnée</span>
                     </div>
                 </div>
                 <input type="hidden" id="form_type" name="form_type" value="">
                 <input type="submit" value="Télécharger" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
+                <!-- Afficher les erreurs du formulaire -->
+                {% if form.qr_img.errors %}
+                    <div class="text-red-500">
+                        {% for error in form.qr_img.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 {% if image_url %}
-                    <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
+                    <h4 class="text-md font-semibold mt-4">Résultat du décodage</h4>
                     <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
                 {% endif %}
             </form>
@@ -32,4 +47,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
