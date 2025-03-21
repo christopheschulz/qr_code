@@ -1,42 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     // ================= NAVIGATION PRINCIPALE =================
     const navLinks = document.querySelectorAll(".navbar .nav-link");
 
     function setActiveNavLink() {
         const currentPath = window.location.pathname;
 
-        // Reset complet de la nav
         navLinks.forEach(link => {
             link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
             link.classList.add("text-black-600", "hover:underline");
-        });
 
-        // Active celui qui correspond à l'URL
-        let found = false;
-        navLinks.forEach(link => {
-            if (link.href.includes(currentPath)) {
+            const linkPath = new URL(link.href).pathname;
+            if (linkPath === currentPath) {
                 link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
                 link.classList.remove("text-black-600");
-                found = true;
+                // Optionnel : stocker l'actif en localStorage
+                localStorage.setItem("activeNav", link.getAttribute("href"));
             }
         });
-
-        // Si aucun lien ne correspond, check le localStorage
-        const savedActiveNav = localStorage.getItem("activeNav");
-        if (!found && savedActiveNav) {
-            navLinks.forEach(link => {
-                if (link.getAttribute("href") === savedActiveNav) {
-                    link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-                    link.classList.remove("text-black-600");
-                }
-            });
-        }
     }
 
     setActiveNavLink();
 
-    // Gestion du clic sur la nav
     navLinks.forEach(link => {
         link.addEventListener("click", function () {
             navLinks.forEach(l => {
@@ -54,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const contentDivs = document.querySelectorAll(".qr-content");
     const formTypeInput = document.getElementById("form_type");
 
-    // Fonction qui active/désactive les champs selon le bloc visible
     function toggleFormFields() {
         contentDivs.forEach(div => {
             const isHidden = div.classList.contains("hidden");
@@ -75,26 +58,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     toggleFormFields();
 
-    // Gestion du clic sur les options QR
     qrButtons.forEach(button => {
         button.addEventListener("click", function () {
-            // Reset toutes les options
             qrButtons.forEach(btn => {
                 btn.classList.remove("bg-blue-800", "text-white");
                 btn.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
             });
 
-            // Active l'option cliquée
             this.classList.remove("bg-blue-500", "hover:bg-blue-600");
             this.classList.add("bg-blue-800", "text-white");
 
-            // Affiche le bon formulaire
             contentDivs.forEach(div => div.classList.add("hidden"));
             const targetId = this.getAttribute("data-target");
             const targetDiv = document.getElementById(targetId);
             targetDiv.classList.remove("hidden");
 
-            // Met à jour le type de formulaire
             const formType = targetId.split('-')[0];
             formTypeInput.value = formType;
             console.log("Type de formulaire mis à jour:", formType);
@@ -103,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Active le bouton URL par défaut si présent
     const defaultButton = document.querySelector(".qr-option-btn[data-target='url-content']");
     if (defaultButton) {
         defaultButton.classList.remove("bg-blue-500", "hover:bg-blue-600");
@@ -115,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
     if (form) {
         form.addEventListener("submit", function (e) {
-            // Avant la soumission, réactive les champs du bloc visible
             const activeDiv = document.querySelector(".qr-content:not(.hidden)");
             if (activeDiv) {
                 const fields = activeDiv.querySelectorAll("input, select, textarea");
