@@ -9,27 +9,30 @@
     {% block title %}{% endblock %}
     <title>Générateur de QR Code</title>
 </head>
+
 <body class="bg-gray-100 text-gray-900">
+
+    <!-- ✅ Navigation principale -->
     <nav class="navbar bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
-        <a href="{% url 'qrgenerator' %}" class="py-2 {% if request.path == '/qrgenerator' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-            Générateur QR Code
-        </a>
-        <a href="{% url 'qrreader' %}" class="py-2 {% if request.path == '/qrreader' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-            Lecteur QR Code
-        </a>
-        <a href="{% url 'about' %}" class="py-2 {% if request.path == '/about' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-            À propos
-        </a>
+        <a href="{% url 'qrgenerator' %}" class="nav-link text-black-600 font-semibold py-2 px-4 rounded-lg hover:underline">Générateur QR Code</a>
+        <a href="{% url 'qrreader' %}" class="nav-link text-black-600 font-semibold py-2 px-4 rounded-lg hover:underline">Lecteur QR Code</a>
+        <!-- Historique désactivé pour l’instant -->
+        <!-- <a href="{% url 'qrhistory' %}" class="nav-link text-black-600 font-semibold py-2 px-4 rounded-lg hover:underline">Historique</a> -->
+        <a href="{% url 'about' %}" class="nav-link text-black-600 font-semibold py-2 px-4 rounded-lg hover:underline">À propos</a>
     </nav>
-    
+
+    <!-- ✅ Contenu principal -->
     <main class="container mx-auto py-10 px-6">
         {% block content %}
         {% endblock %}
     </main>
-    
+
+    <!-- ✅ Footer -->
     <footer class="bg-white shadow-md py-6 mt-10">
         <div class="container mx-auto text-center">
-            <p class="text-gray-600 text-sm">&copy; 2025 <a href="https://qrcodebykriss.fr" class="font-semibold hover:underline">qrcodebykriss.fr</a> - Tous droits réservés.</p>
+            <p class="text-gray-600 text-sm">&copy; 2025 
+                <a href="https://qrcodebykriss.fr" class="font-semibold hover:underline">qrcodebykriss.fr</a> - Tous droits réservés.
+            </p>
             <div class="mt-4 flex justify-center space-x-6">
                 <a href="{% url 'about' %}" class="text-gray-500 hover:text-gray-800">À propos</a>
                 <a href="https://github.com/christopheschulz" target="_blank" class="text-gray-500 hover:text-gray-800">GitHub</a>
@@ -37,8 +40,8 @@
             </div>
         </div>
     </footer>
-    
+
+    <!-- ✅ Script global -->
     <script src="{% static 'script/script.js' %}"></script>
 </body>
 </html>
-
