@@ -1,29 +1,47 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     // ================= NAVIGATION PRINCIPALE =================
     const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-    // Met la nav active selon l'URL
     function setActiveNavLink() {
         const currentPath = window.location.pathname;
+
+        // Reset complet de la nav
+        navLinks.forEach(link => {
+            link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
+            link.classList.add("text-black-600", "hover:underline");
+        });
+
+        // Active celui qui correspond à l'URL
+        let found = false;
         navLinks.forEach(link => {
             if (link.href.includes(currentPath)) {
                 link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
                 link.classList.remove("text-black-600");
-            } else {
-                link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-                link.classList.add("text-black-600");
+                found = true;
             }
         });
+
+        // Si aucun lien ne correspond, check le localStorage
+        const savedActiveNav = localStorage.getItem("activeNav");
+        if (!found && savedActiveNav) {
+            navLinks.forEach(link => {
+                if (link.getAttribute("href") === savedActiveNav) {
+                    link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+                    link.classList.remove("text-black-600");
+                }
+            });
+        }
     }
+
     setActiveNavLink();
 
-    // Clic sur la nav : applique la classe active et sauvegarde
+    // Gestion du clic sur la nav
     navLinks.forEach(link => {
-        link.addEventListener("click", function() {
+        link.addEventListener("click", function () {
             navLinks.forEach(l => {
                 l.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-                l.classList.add("text-black-600");
+                l.classList.add("text-black-600", "hover:underline");
             });
             this.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
             this.classList.remove("text-black-600");
@@ -31,23 +49,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Récupère la nav active depuis le localStorage
-    const savedActiveNav = localStorage.getItem("activeNav");
-    if (savedActiveNav) {
-        navLinks.forEach(link => {
-            if (link.getAttribute("href") === savedActiveNav) {
-                link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-                link.classList.remove("text-black-600");
-            }
-        });
-    }
-
     // ================= GESTION DU GENERATEUR QR =================
     const qrButtons = document.querySelectorAll(".qr-option-btn");
     const contentDivs = document.querySelectorAll(".qr-content");
     const formTypeInput = document.getElementById("form_type");
 
-    // Fonction pour activer/désactiver les champs en fonction du bloc visible
+    // Fonction qui active/désactive les champs selon le bloc visible
     function toggleFormFields() {
         contentDivs.forEach(div => {
             const isHidden = div.classList.contains("hidden");
@@ -68,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     toggleFormFields();
 
-    // Clic sur une option QR : change la couleur et le formulaire actif
+    // Gestion du clic sur les options QR
     qrButtons.forEach(button => {
-        button.addEventListener("click", function() {
+        button.addEventListener("click", function () {
             // Reset toutes les options
             qrButtons.forEach(btn => {
                 btn.classList.remove("bg-blue-800", "text-white");
@@ -87,17 +94,16 @@ document.addEventListener("DOMContentLoaded", function() {
             const targetDiv = document.getElementById(targetId);
             targetDiv.classList.remove("hidden");
 
-            // Met à jour le champ caché du type de formulaire
+            // Met à jour le type de formulaire
             const formType = targetId.split('-')[0];
             formTypeInput.value = formType;
             console.log("Type de formulaire mis à jour:", formType);
 
-            // Met à jour les champs
             toggleFormFields();
         });
     });
 
-    // Active l'option URL par défaut au chargement
+    // Active le bouton URL par défaut si présent
     const defaultButton = document.querySelector(".qr-option-btn[data-target='url-content']");
     if (defaultButton) {
         defaultButton.classList.remove("bg-blue-500", "hover:bg-blue-600");
@@ -105,11 +111,11 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("url-content").classList.remove("hidden");
     }
 
-    // ================= FORMULAIRE QR =================
+    // ================= FORMULAIRE - GESTION DES CHAMPS =================
     const form = document.querySelector("form");
     if (form) {
-        form.addEventListener("submit", function(e) {
-            // Avant la soumission, réactive les champs du bloc actif
+        form.addEventListener("submit", function (e) {
+            // Avant la soumission, réactive les champs du bloc visible
             const activeDiv = document.querySelector(".qr-content:not(.hidden)");
             if (activeDiv) {
                 const fields = activeDiv.querySelectorAll("input, select, textarea");
@@ -129,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const fileName = document.getElementById('file-name');
 
     if (fileInput) {
-        fileInput.addEventListener('change', function() {
+        fileInput.addEventListener('change', function () {
             if (this.files.length > 0) {
                 fileName.textContent = this.files[0].name;
             } else {
