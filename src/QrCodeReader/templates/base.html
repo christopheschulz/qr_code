@@ -10,28 +10,32 @@
     <title>Générateur de QR Code</title>
 </head>
 <body class="bg-gray-100 text-gray-900">
-    <nav class="bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
-    <a href="{% url 'qrgenerator' %}" class="{% if request.path == '/qrgenerator' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-        Générateur QR Code
-    </a>
-    <a href="{% url 'qrreader' %}" class="{% if request.path == '/qrreader' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-        Lecteur QR Code
-    </a>
-    <!-- <a href="{% url 'qrhistory' %}" class="{% if request.path == '/qrhistory' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-        Historique
-    </a> -->
-    <a href="{% url 'about' %}" class="{% if request.path == '/about' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
-        À propos
-    </a>
-</nav>
+    <nav class="navbar bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
+        <a href="{% url 'qrgenerator' %}" class="py-2 {% if request.path == '/qrgenerator' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
+            Générateur QR Code
+        </a>
+        <a href="{% url 'qrreader' %}" class="py-2 {% if request.path == '/qrreader' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
+            Lecteur QR Code
+        </a>
+        <a href="{% url 'about' %}" class="py-2 {% if request.path == '/about' %}border-b-2 border-black-600{% endif %} text-black-600 font-semibold hover:underline">
+            À propos
+        </a>
+    </nav>
     
     <main class="container mx-auto py-10 px-6">
         {% block content %}
         {% endblock %}
     </main>
     
-    <footer class="bg-white shadow-md py-4 text-center mt-10">
-        <p class="text-gray-600">&copy; qrcodebykriss.fr - Tous droits réservés.</p>
+    <footer class="bg-white shadow-md py-6 mt-10">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-600 text-sm">&copy; 2025 <a href="https://qrcodebykriss.fr" class="font-semibold hover:underline">qrcodebykriss.fr</a> - Tous droits réservés.</p>
+            <div class="mt-4 flex justify-center space-x-6">
+                <a href="{% url 'about' %}" class="text-gray-500 hover:text-gray-800">À propos</a>
+                <a href="https://github.com/christopheschulz" target="_blank" class="text-gray-500 hover:text-gray-800">GitHub</a>
+                <a href="mailto:krisskoolbycode@etik.com" class="text-gray-500 hover:text-gray-800">Contact</a>
+            </div>
+        </div>
     </footer>
     
     <script src="{% static 'script/script.js' %}"></script>
