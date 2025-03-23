@@ -3,17 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".navbar .nav-link");
 
     function setActiveNavLink() {
-        const currentPath = window.location.pathname;
-
+        const currentPath = window.location.pathname.replace(/\/$/, '');
         navLinks.forEach(link => {
+            const linkPath = new URL(link.href).pathname.replace(/\/$/, '');
+    
             link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
             link.classList.add("text-black-600", "hover:underline");
-
-            const linkPath = new URL(link.href).pathname;
-            if (linkPath === currentPath) {
+    
+            if (currentPath === linkPath || currentPath.endsWith(linkPath)) {
                 link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
                 link.classList.remove("text-black-600");
-                // Optionnel : stocker l'actif en localStorage
                 localStorage.setItem("activeNav", link.getAttribute("href"));
             }
         });
