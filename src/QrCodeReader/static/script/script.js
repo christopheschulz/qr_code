@@ -120,3 +120,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+function downloadBase64QR() {
+    const qrImg = document.getElementById('qrImage');
+    const base64Data = qrImg.getAttribute('data-base64');
+
+    const defaultName = "MonQRcode.png";
+    const fileName = prompt("Entrez le nom du fichier :", defaultName);
+
+    if (fileName === null || fileName.trim() === "") {
+        console.log("Téléchargement annulé par l'utilisateur.");
+        return;
+    }
+
+    const link = document.createElement('a');
+    link.href = base64Data;
+    link.download = fileName.trim();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
