@@ -56,29 +56,14 @@
                 </form>
             </div>
             <div class="bg-white shadow-md p-6 rounded-xl text-center">
-              <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
-          
-              {% if image_url %}
-                  <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md" id="qrImage">
-          
-                  <!-- Desktop -->
-                  <a id="downloadLink"
-                     href="{{ image_url }}"
-                     download="qr_code.png"
-                     target="_blank"
-                     class="block mt-4 text-blue-500 hover:underline hidden">
-                      📥 Télécharger le QR Code
-                  </a>
-          
-                  <!-- Mobile -->
-                  <button id="mobileShare"
-                          class="block mt-4 text-blue-500 hover:underline hidden">
-                      📱 Partager / Sauvegarder le QR Code
-                  </button>
-              {% else %}
-                  <p>Aucun QR Code généré.</p>
-              {% endif %}
-          </div>
+                <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
+                {% if image_url %}
+                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+                    <a href="{{ image_url }}" download="qr_code.png" target="_blank" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
+                {% else %}
+                    <p>Aucun QR Code généré.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
     <section class="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow">
