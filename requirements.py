@@ -1,0 +1,8 @@
+asgiref==3.8.1
+Django==5.1.7
+numpy==2.2.3
+opencv-python==4.11.0.86
+pillow==11.1.0
+pyzbar==0.1.9
+qrcode==8.0
+sqlparse==0.5.3

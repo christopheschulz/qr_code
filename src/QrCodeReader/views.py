@@ -2,6 +2,8 @@ import os
 import base64
 import hashlib
 import qrcode
+import cv2
+import numpy as np
 from io import BytesIO
 from pathlib import Path
 from django.conf import settings
@@ -98,10 +100,23 @@ def generate_qr_code_view(request):
     })
 
 
+def read_qr_with_cv2(img_data):
+    # img_data est déjà en binaire
+    file_bytes = np.asarray(bytearray(img_data), dtype=np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
+    detector = cv2.QRCodeDetector()
+    data, bbox, _ = detector.detectAndDecode(img)
+
+    if bbox is not None and data:
+        return data
+    return None
+
+
 def qr_reader(request):
     qr_reader_form = QrLoader()
-    image_url = ""
     result = ""
+    image_base64 = ""
 
     if request.method == "POST":
         qr_reader_form = QrLoader(request.POST, request.FILES)
@@ -110,25 +125,54 @@ def qr_reader(request):
             if not qr_img.content_type.startswith('image/'):
                 qr_reader_form.add_error('qr_img', 'Le fichier téléchargé n\'est pas une image valide.')
             else:
-                upload_dir = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
-                os.makedirs(upload_dir, exist_ok=True)
+                img_data = qr_img.read()  # ⚠️ LIRE UNE FOIS
 
-                file_path = os.path.join(upload_dir, str(qr_img))
-                with open(file_path, 'wb+') as destination:
-                    for chunk in qr_img.chunks():
-                        destination.write(chunk)
-
-                image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
-                print(image_url)
-                print(file_path)
-
-                result = read_qr_code(file_path)
-                print(result)
+                # Passer img_data à la détection
+                result = read_qr_with_cv2(img_data)
 
                 if not result:
-                    result = "Ce fichier n'est pas un QR Code"
+                    result = "Ce fichier n'est pas un QR Code valide."
 
-    return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': image_url})
+                # Encodage pour affichage
+                image_base64 = base64.b64encode(img_data).decode('utf-8')
+    return render(request, "qr_reader.html", {
+        'form': qr_reader_form,
+        'result': result,
+        'image_url': image_base64
+    })
+
+
+# def qr_reader(request):
+#     qr_reader_form = QrLoader()
+#     image_url = ""
+#     result = ""
+
+#     if request.method == "POST":
+#         qr_reader_form = QrLoader(request.POST, request.FILES)
+#         if qr_reader_form.is_valid():
+#             qr_img = qr_reader_form.cleaned_data['qr_img']
+#             if not qr_img.content_type.startswith('image/'):
+#                 qr_reader_form.add_error('qr_img', 'Le fichier téléchargé n\'est pas une image valide.')
+#             else:
+#                 upload_dir = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
+#                 os.makedirs(upload_dir, exist_ok=True)
+
+#                 file_path = os.path.join(upload_dir, str(qr_img))
+#                 with open(file_path, 'wb+') as destination:
+#                     for chunk in qr_img.chunks():
+#                         destination.write(chunk)
+
+#                 image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
+#                 print(image_url)
+#                 print(file_path)
+
+#                 result = read_qr_code(file_path)
+#                 print(result)
+
+#                 if not result:
+#                     result = "Ce fichier n'est pas un QR Code"
+
+#     return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': image_url})
 
 
 def qr_history(request):

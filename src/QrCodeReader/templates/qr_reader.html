@@ -27,7 +27,7 @@
         <div class="bg-white shadow-md p-6 rounded-xl text-center">
             <h3 class="text-lg font-semibold mb-4">Image téléchargée :</h3>
             {% if image_url %}
-                <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+            <img src="data:image/png;base64,{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
             {% endif %}
         </div>
     </div>
@@ -46,8 +46,9 @@
         <li>Évitez les images floues ou sombres.</li>
     </ul>
     <p class="mt-4"><strong>ℹ️ Important :</strong><br>
-    L’image que vous téléchargez est <strong>stockée sur notre serveur afin d’être traitée par notre lecteur</strong>.<br>
-    <strong>Seule la dernière image envoyée est sauvegardée.</strong></p>
+        Le QR Code est <strong>chargé en temps réel dans votre navigateur</strong> à partir du fichier choisit.<br>
+        Aucune image n’est stockée sur notre serveur. 
+      </p>  
 </div>
 
 {% endblock %}
