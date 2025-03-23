@@ -119,49 +119,50 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
-// ================= GESTION DU TELECHARGEMENT / PARTAGE QR CODE =================
-const qrImage = document.getElementById('qrImage');
-const downloadLink = document.getElementById('downloadLink');
-const mobileShare = document.getElementById('mobileShare');
 
-if (qrImage) {
-    const imageUrl = qrImage.getAttribute('src');
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // ================= GESTION DU TELECHARGEMENT / PARTAGE QR CODE =================
+    const qrImage = document.getElementById('qrImage');
+    const downloadLink = document.getElementById('downloadLink');
+    const mobileShare = document.getElementById('mobileShare');
 
-    console.log("QR Code détecté, image URL:", imageUrl);
-    console.log("Appareil mobile ? ", isMobile);
+    if (qrImage) {
+        const imageUrl = qrImage.getAttribute('src');
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    if (isMobile) {
-        if (mobileShare) {
-            mobileShare.classList.remove('hidden');
-            mobileShare.addEventListener('click', async () => {
-                try {
-                    const response = await fetch(imageUrl);
-                    const blob = await response.blob();
-                    const file = new File([blob], "qr_code.png", { type: "image/png" });
+        console.log("QR Code détecté, image URL:", imageUrl);
+        console.log("Appareil mobile ? ", isMobile);
 
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            files: [file],
-                            title: 'QR Code',
-                            text: 'Voici ton QR Code à sauvegarder'
-                        });
-                    } else {
+        if (isMobile) {
+            if (mobileShare) {
+                mobileShare.classList.remove('hidden');
+                mobileShare.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch(imageUrl);
+                        const blob = await response.blob();
+                        const file = new File([blob], "qr_code.png", { type: "image/png" });
+
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({
+                                files: [file],
+                                title: 'QR Code',
+                                text: 'Voici ton QR Code à sauvegarder'
+                            });
+                        } else {
+                            window.open(imageUrl, '_blank');
+                        }
+                    } catch (error) {
+                        console.error("Erreur de partage :", error);
                         window.open(imageUrl, '_blank');
                     }
-                } catch (error) {
-                    console.error("Erreur de partage :", error);
-                    window.open(imageUrl, '_blank');
-                }
-            });
+                });
+            }
+        } else {
+            if (downloadLink) {
+                downloadLink.classList.remove('hidden');
+                console.log("Lien de téléchargement affiché");
+            }
         }
     } else {
-        if (downloadLink) {
-            downloadLink.classList.remove('hidden');
-            console.log("Lien de téléchargement affiché");
-        }
+        console.log("Pas de QR Code détecté");
     }
-} else {
-    console.log("Pas de QR Code détecté");
-}
+});
