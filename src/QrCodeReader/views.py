@@ -133,8 +133,8 @@ def qr_reader(request):
                 qr_reader_form.add_error('qr_img', '❌ Le fichier téléchargé n\'est pas une image valide.')
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
-            if qr_img.size > 2 * 1024 * 1024:
-                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (2 Mo max).')
+            if qr_img.size > 1 * 1024 * 1024:
+                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (1 Mo max).')
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
             # Lecture des données binaires
