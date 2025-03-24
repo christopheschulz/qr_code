@@ -1,31 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ================= NAVIGATION PRINCIPALE =================
-    const navLinks = document.querySelectorAll(".navbar .nav-link");
+   // ================= NAVIGATION PRINCIPALE =================
+   const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-    function setActiveNavLink() {
-        const currentPath = window.location.pathname;
-        const currentPage = currentPath.split('/').filter(Boolean).pop();
+   function setActiveNavLink() {
+       const currentPath = window.location.pathname;
+       const currentPage = currentPath.split('/').filter(Boolean).pop(); // Récupère qrgenerator ou qrreader
+   
+       navLinks.forEach(link => {
+           const linkPath = new URL(link.href, window.location.origin).pathname;
+           const linkPage = linkPath.split('/').filter(Boolean).pop();
+   
+           link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
+           link.classList.add("text-black-600", "hover:underline");
+   
+           if (currentPage === linkPage) {
+               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+               link.classList.remove("text-black-600");
+           }
+   
+           // Cas spécifique : racine
+           if (!currentPage && link.href.endsWith('/')) {
+               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+               link.classList.remove("text-black-600");
+           }
+       });
+   }
+   
+   setActiveNavLink();
 
-        navLinks.forEach(link => {
-            const linkPath = new URL(link.href, window.location.origin).pathname;
-            const linkPage = linkPath.split('/').filter(Boolean).pop();
-
-            link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-            link.classList.add("text-black-600", "hover:underline");
-
-            if (currentPage === linkPage) {
-                link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-                link.classList.remove("text-black-600");
-            }
-
-            if (!currentPage && link.href.endsWith('/')) {
-                link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-                link.classList.remove("text-black-600");
-            }
-        });
-    }
-
-    setActiveNavLink();
 
     // ================= GESTION DU GENERATEUR QR =================
     const qrButtons = document.querySelectorAll(".qr-option-btn");
@@ -84,38 +86,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ================= FORMULAIRE - GESTION DES CHAMPS =================
     const form = document.querySelector("form");
-    const fileInput = document.getElementById('id_qr_img');
-    const fileName = document.getElementById('file-name');
-
-    if (fileInput) {
-        fileInput.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                const file = this.files[0];
-                const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-                const maxSize = 2 * 1024 * 1024; // 2 Mo
-
-                if (!validTypes.includes(file.type)) {
-                    alert('Le fichier doit être une image (png, jpg, jpeg, webp)');
-                    this.value = '';
-                    fileName.textContent = 'Aucun fichier sélectionné';
-                    return;
-                }
-
-                if (file.size > maxSize) {
-                    alert('Le fichier est trop volumineux (max 2 Mo)');
-                    this.value = '';
-                    fileName.textContent = 'Aucun fichier sélectionné';
-                    return;
-                }
-
-                fileName.textContent = file.name;
-            } else {
-                fileName.textContent = 'Aucun fichier sélectionné';
-            }
-        });
-    }
-
     if (form) {
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+                    const maxSize = 2 * 1024 * 1024; // 2 Mo
+        
+                    if (!validTypes.includes(file.type)) {
+                        alert('Le fichier doit être une image (png, jpg, jpeg, webp)');
+                        this.value = '';
+                        fileName.textContent = 'Aucun fichier sélectionné';
+                        return;
+                    }
+        
+                    if (file.size > maxSize) {
+                        alert('Le fichier est trop volumineux (max 2 Mo)');
+                        this.value = '';
+                        fileName.textContent = 'Aucun fichier sélectionné';
+                        return;
+                    }
+        
+                    fileName.textContent = file.name;
+                } else {
+                    fileName.textContent = 'Aucun fichier sélectionné';
+                }
+            });
+        }
         form.addEventListener("submit", function (e) {
             const activeDiv = document.querySelector(".qr-content:not(.hidden)");
             if (activeDiv) {
@@ -132,6 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ================= UPLOAD - NOM DU FICHIER =================
+    const fileInput = document.getElementById('id_qr_img');
+    const fileName = document.getElementById('file-name');
+
     if (fileInput) {
         fileInput.addEventListener('change', function () {
             if (this.files.length > 0) {
@@ -139,33 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 fileName.textContent = 'Aucun fichier sélectionné';
             }
-        });
-    }
-
-    // ================= TÉLÉCHARGEMENT DU QR CODE =================
-    const downloadBtn = document.getElementById('downloadQrBtn');
-
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const imageUrl = this.getAttribute('href');
-
-            fetch(imageUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-
-                    // Demande à l'utilisateur de choisir un nom de fichier
-                    let filename = prompt("Entrez le nom du fichier (sans extension) :", "qr_code");
-                    if (!filename) filename = "qr_code";
-                    a.download = `${filename}.png`;
-
-                    a.click();
-                    window.URL.revokeObjectURL(blobUrl);
-                })
-                .catch(console.error);
         });
     }
 });
