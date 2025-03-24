@@ -1,43 +1,32 @@
 document.addEventListener("DOMContentLoaded", function () {
    // ================= NAVIGATION PRINCIPALE =================
-    const navLinks = document.querySelectorAll(".navbar .nav-link");
+   const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-    // Fonction d'extraction du "endpoint" (dernier segment de l'URL)
-    function extractLastPart(path) {
-        const parts = path.split('/').filter(Boolean); // supprime les vides
-        return parts.pop(); // récupère la dernière partie
-    }
-
-    function setActiveNavLink() {
-        const savedActive = localStorage.getItem("activeNav");
-        const currentPath = window.location.pathname;
-        const currentLast = extractLastPart(currentPath);
-
-        navLinks.forEach(link => {
-            const linkPath = new URL(link.href, window.location.origin).pathname;
-            const linkLast = extractLastPart(linkPath);
-
-            // Reset des classes
-            link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-            link.classList.add("text-black-600", "hover:underline");
-
-            // Match soit le localStorage soit le segment final
-            if (savedActive === link.getAttribute("href") || currentLast === linkLast) {
-                link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-                link.classList.remove("text-black-600");
-            }
-        });
-    }
-
-    setActiveNavLink();
-
-    // Clic => on enregistre le href dans localStorage pour garder l'état après reload
-    navLinks.forEach(link => {
-        link.addEventListener("click", function () {
-            localStorage.setItem("activeNav", this.getAttribute("href"));
-        });
-    });
-
+   function setActiveNavLink() {
+       const currentPath = window.location.pathname;
+       const currentPage = currentPath.split('/').filter(Boolean).pop(); // Récupère qrgenerator ou qrreader
+   
+       navLinks.forEach(link => {
+           const linkPath = new URL(link.href, window.location.origin).pathname;
+           const linkPage = linkPath.split('/').filter(Boolean).pop();
+   
+           link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
+           link.classList.add("text-black-600", "hover:underline");
+   
+           if (currentPage === linkPage) {
+               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+               link.classList.remove("text-black-600");
+           }
+   
+           // Cas spécifique : racine
+           if (!currentPage && link.href.endsWith('/')) {
+               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+               link.classList.remove("text-black-600");
+           }
+       });
+   }
+   
+   setActiveNavLink();
 
 
     // ================= GESTION DU GENERATEUR QR =================
