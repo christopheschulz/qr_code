@@ -23,10 +23,10 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('', generate_qr_code_view, name='qrgenerator'),
+    path('', generate_qr_code_view, name='index'),
     path('qrreader', qr_reader, name='qrreader'),
     path('qrgenerator', generate_qr_code_view, name='qrgenerator'),
-    path('qrhistory', qr_history, name='qrhistory'),
+    # path('qrhistory', qr_history, name='qrhistory'),
     path('about', about, name='about'),
     path('admin/', admin.site.urls),
     path('google6630a1c4a0298bf9.html', TemplateView.as_view(template_name='verification/google6630a1c4a0298bf9.html')),

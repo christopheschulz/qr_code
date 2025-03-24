@@ -142,38 +142,6 @@ def qr_reader(request):
     })
 
 
-# def qr_reader(request):
-#     qr_reader_form = QrLoader()
-#     image_url = ""
-#     result = ""
-
-#     if request.method == "POST":
-#         qr_reader_form = QrLoader(request.POST, request.FILES)
-#         if qr_reader_form.is_valid():
-#             qr_img = qr_reader_form.cleaned_data['qr_img']
-#             if not qr_img.content_type.startswith('image/'):
-#                 qr_reader_form.add_error('qr_img', 'Le fichier téléchargé n\'est pas une image valide.')
-#             else:
-#                 upload_dir = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
-#                 os.makedirs(upload_dir, exist_ok=True)
-
-#                 file_path = os.path.join(upload_dir, str(qr_img))
-#                 with open(file_path, 'wb+') as destination:
-#                     for chunk in qr_img.chunks():
-#                         destination.write(chunk)
-
-#                 image_url = f"{settings.MEDIA_URL}qr_codes/{str(qr_img)}"
-#                 print(image_url)
-#                 print(file_path)
-
-#                 result = read_qr_code(file_path)
-#                 print(result)
-
-#                 if not result:
-#                     result = "Ce fichier n'est pas un QR Code"
-
-#     return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': image_url})
-
 
 def qr_history(request):
     return render(request, "qr_history.html")
