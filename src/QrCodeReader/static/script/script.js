@@ -1,31 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
     // ================= NAVIGATION PRINCIPALE =================
-const navLinks = document.querySelectorAll(".navbar .nav-link");
+    const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-    // Fonction pour appliquer l'état actif en fonction du localStorage ou de l'URL
     function setActiveNavLink() {
         const savedActive = localStorage.getItem("activeNav");
-        const currentPath = window.location.pathname.replace(/\/$/, ''); // enlever slash final
-
+        const currentPath = window.location.pathname.replace(/\/$/, '');
+    
         navLinks.forEach(link => {
-            const linkPath = new URL(link.href).pathname.replace(/\/$/, '');
-
-            // Reset des classes
+            const linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/$/, '');
+    
+            // Normalisation pour ne prendre que la dernière partie de l'URL si besoin
+            const linkLastPart = linkPath.split('/').filter(Boolean).pop();
+            const currentLastPart = currentPath.split('/').filter(Boolean).pop();
+    
             link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
             link.classList.add("text-black-600", "hover:underline");
-
-            // Si correspondance avec le localStorage OU l'URL actuelle
-            if (savedActive === link.getAttribute("href") || currentPath === linkPath) {
+    
+            if (savedActive === link.getAttribute("href") || currentLastPart === linkLastPart) {
                 link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
                 link.classList.remove("text-black-600");
             }
         });
     }
-
-    // Appliquer dès le chargement
+    
     setActiveNavLink();
-
-    // Sur le clic, on stocke le lien dans le localStorage
+    
     navLinks.forEach(link => {
         link.addEventListener("click", function () {
             localStorage.setItem("activeNav", this.getAttribute("href"));
