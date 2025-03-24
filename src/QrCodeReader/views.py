@@ -133,8 +133,8 @@ def qr_reader(request):
                 qr_reader_form.add_error('qr_img', '❌ Le fichier téléchargé n\'est pas une image valide.')
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
-            if qr_img.size > 2 * 1024 * 1024:
-                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (2 Mo max).')
+            if qr_img.size > 4 * 1024 * 1024:
+                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (4 Mo max).')
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
             # Lecture des données binaires
@@ -143,7 +143,8 @@ def qr_reader(request):
             # ✅ Appel de ta fonction utilitaire
             result = read_qr_with_cv2(img_data)
             if not result:
-                result = "❌ Ce fichier n'est pas un QR Code valide ou est corrompu."
+                qr_reader_form.add_error('qr_img', "❌ Ce fichier n'est pas un QR Code valide ou est corrompu.")
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': ''})
 
             # Encodage Base64 pour l'affichage
             image_base64 = base64.b64encode(img_data).decode('utf-8')
