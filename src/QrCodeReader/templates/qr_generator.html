@@ -59,8 +59,9 @@
                 <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
                     <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
-                    <a href="{{ image_url }}" download="qr_code.png" target="_blank" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a>
-                {% else %}
+                    <!-- <a href="{{ image_url }}" download="qr_code.png" target="_blank" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a> -->
+                    <p class="text-lg font-semibold mt-4">Pour télécharger le QR code clic droit (desktop) ou appuie long (mobile) sur l'image et choisissez enregistrer. </p>
+                    {% else %}
                     <p>Aucun QR Code généré.</p>
                 {% endif %}
             </div>
