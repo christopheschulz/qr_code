@@ -1,33 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
-   // ================= NAVIGATION PRINCIPALE =================
-   const navLinks = document.querySelectorAll(".navbar .nav-link");
 
-   function setActiveNavLink() {
-       const currentPath = window.location.pathname;
-       const currentPage = currentPath.split('/').filter(Boolean).pop(); // Récupère qrgenerator ou qrreader
-   
-       navLinks.forEach(link => {
-           const linkPath = new URL(link.href, window.location.origin).pathname;
-           const linkPage = linkPath.split('/').filter(Boolean).pop();
-   
-           link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-           link.classList.add("text-black-600", "hover:underline");
-   
-           if (currentPage === linkPage) {
-               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-               link.classList.remove("text-black-600");
-           }
-   
-           // Cas spécifique : racine
-           if (!currentPage && link.href.endsWith('/')) {
-               link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-               link.classList.remove("text-black-600");
-           }
-       });
-   }
-   
-   setActiveNavLink();
+    // ================= NAVIGATION PRINCIPALE =================
+    const navLinks = document.querySelectorAll(".navbar .nav-link");
+    const currentPath = window.location.pathname;
 
+    navLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        console.log("Current:", currentPath, "Link:", linkPath);
+
+        link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
+        link.classList.add("text-black-600", "hover:underline");
+
+        if (currentPath === linkPath) {
+            link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
+            link.classList.remove("text-black-600");
+        }
+    });
 
     // ================= GESTION DU GENERATEUR QR =================
     const qrButtons = document.querySelectorAll(".qr-option-btn");
@@ -40,12 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const fields = div.querySelectorAll("input, select, textarea");
             fields.forEach(field => {
                 if (isHidden) {
-                    field.setAttribute("disabled", "disabled");
-                } else {
-                    field.removeAttribute("disabled");
                     if (field.hasAttribute("required")) {
                         field.dataset.wasRequired = "true";
                         field.removeAttribute("required");
+                    }
+                    field.setAttribute("disabled", "disabled");
+                } else {
+                    field.removeAttribute("disabled");
+                    if (field.dataset.wasRequired === "true") {
+                        field.setAttribute("required", "required");
                     }
                 }
             });
@@ -77,43 +68,46 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Active l'option URL par défaut
     const defaultButton = document.querySelector(".qr-option-btn[data-target='url-content']");
     if (defaultButton) {
-        defaultButton.classList.remove("bg-blue-500", "hover:bg-blue-600");
-        defaultButton.classList.add("bg-blue-800", "text-white");
-        document.getElementById("url-content").classList.remove("hidden");
+        defaultButton.click();
     }
 
     // ================= FORMULAIRE - GESTION DES CHAMPS =================
     const form = document.querySelector("form");
-    if (form) {
-        if (fileInput) {
-            fileInput.addEventListener('change', function () {
-                if (this.files.length > 0) {
-                    const file = this.files[0];
-                    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
-                    const maxSize = 2 * 1024 * 1024; // 2 Mo
-        
-                    if (!validTypes.includes(file.type)) {
-                        alert('Le fichier doit être une image (png, jpg, jpeg, webp)');
-                        this.value = '';
-                        fileName.textContent = 'Aucun fichier sélectionné';
-                        return;
-                    }
-        
-                    if (file.size > maxSize) {
-                        alert('Le fichier est trop volumineux (max 2 Mo)');
-                        this.value = '';
-                        fileName.textContent = 'Aucun fichier sélectionné';
-                        return;
-                    }
-        
-                    fileName.textContent = file.name;
-                } else {
+    const fileInput = document.getElementById('id_qr_img');
+    const fileName = document.getElementById('file-name');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+                const maxSize = 2 * 1024 * 1024; // 2 Mo
+
+                if (!validTypes.includes(file.type)) {
+                    alert('Le fichier doit être une image (png, jpg, jpeg, webp)');
+                    this.value = '';
                     fileName.textContent = 'Aucun fichier sélectionné';
+                    return;
                 }
-            });
-        }
+
+                if (file.size > maxSize) {
+                    alert('Le fichier est trop volumineux (max 2 Mo)');
+                    this.value = '';
+                    fileName.textContent = 'Aucun fichier sélectionné';
+                    return;
+                }
+
+                fileName.textContent = file.name;
+            } else {
+                fileName.textContent = 'Aucun fichier sélectionné';
+            }
+        });
+    }
+
+    if (form) {
         form.addEventListener("submit", function (e) {
             const activeDiv = document.querySelector(".qr-content:not(.hidden)");
             if (activeDiv) {
@@ -130,9 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ================= UPLOAD - NOM DU FICHIER =================
-    const fileInput = document.getElementById('id_qr_img');
-    const fileName = document.getElementById('file-name');
-
     if (fileInput) {
         fileInput.addEventListener('change', function () {
             if (this.files.length > 0) {
@@ -142,4 +133,5 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
 });
