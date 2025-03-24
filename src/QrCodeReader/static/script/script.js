@@ -1,36 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
     // ================= NAVIGATION PRINCIPALE =================
-    const navLinks = document.querySelectorAll(".navbar .nav-link");
+const navLinks = document.querySelectorAll(".navbar .nav-link");
 
+    // Fonction pour appliquer l'état actif en fonction du localStorage ou de l'URL
     function setActiveNavLink() {
-        const currentPath = window.location.pathname.replace(/\/$/, '');
+        const savedActive = localStorage.getItem("activeNav");
+        const currentPath = window.location.pathname.replace(/\/$/, ''); // enlever slash final
+
         navLinks.forEach(link => {
             const linkPath = new URL(link.href).pathname.replace(/\/$/, '');
-    
+
+            // Reset des classes
             link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
             link.classList.add("text-black-600", "hover:underline");
-    
-            if (currentPath === linkPath || currentPath.endsWith(linkPath)) {
+
+            // Si correspondance avec le localStorage OU l'URL actuelle
+            if (savedActive === link.getAttribute("href") || currentPath === linkPath) {
                 link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
                 link.classList.remove("text-black-600");
-                localStorage.setItem("activeNav", link.getAttribute("href"));
             }
         });
     }
 
+    // Appliquer dès le chargement
     setActiveNavLink();
 
+    // Sur le clic, on stocke le lien dans le localStorage
     navLinks.forEach(link => {
         link.addEventListener("click", function () {
-            navLinks.forEach(l => {
-                l.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-                l.classList.add("text-black-600", "hover:underline");
-            });
-            this.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-            this.classList.remove("text-black-600");
             localStorage.setItem("activeNav", this.getAttribute("href"));
         });
     });
+
 
     // ================= GESTION DU GENERATEUR QR =================
     const qrButtons = document.querySelectorAll(".qr-option-btn");
