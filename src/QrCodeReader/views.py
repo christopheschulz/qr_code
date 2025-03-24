@@ -101,16 +101,22 @@ def generate_qr_code_view(request):
 
 
 def read_qr_with_cv2(img_data):
-    # img_data est déjà en binaire
-    file_bytes = np.asarray(bytearray(img_data), dtype=np.uint8)
-    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    try:
+        # Convertir les bytes en image OpenCV
+        np_arr = np.asarray(bytearray(img_data), dtype=np.uint8)
+        img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+        if img_cv2 is None:
+            raise ValueError("Impossible de décoder l'image (image corrompue)")
 
-    detector = cv2.QRCodeDetector()
-    data, bbox, _ = detector.detectAndDecode(img)
+        detector = cv2.QRCodeDetector()
+        data, bbox, _ = detector.detectAndDecode(img_cv2)
 
-    if bbox is not None and data:
-        return data
-    return None
+        if bbox is not None and data:
+            return data
+        return None
+    except Exception as e:
+        print("Erreur de lecture QR :", e)
+        return None
 
 
 def qr_reader(request):
@@ -122,19 +128,26 @@ def qr_reader(request):
         qr_reader_form = QrLoader(request.POST, request.FILES)
         if qr_reader_form.is_valid():
             qr_img = qr_reader_form.cleaned_data['qr_img']
+
             if not qr_img.content_type.startswith('image/'):
-                qr_reader_form.add_error('qr_img', 'Le fichier téléchargé n\'est pas une image valide.')
-            else:
-                img_data = qr_img.read()  # ⚠️ LIRE UNE FOIS
+                qr_reader_form.add_error('qr_img', '❌ Le fichier téléchargé n\'est pas une image valide.')
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
-                # Passer img_data à la détection
-                result = read_qr_with_cv2(img_data)
+            if qr_img.size > 2 * 1024 * 1024:
+                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (2 Mo max).')
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
 
-                if not result:
-                    result = "Ce fichier n'est pas un QR Code valide."
+            # Lecture des données binaires
+            img_data = qr_img.read()
 
-                # Encodage pour affichage
-                image_base64 = base64.b64encode(img_data).decode('utf-8')
+            # ✅ Appel de ta fonction utilitaire
+            result = read_qr_with_cv2(img_data)
+            if not result:
+                result = "❌ Ce fichier n'est pas un QR Code valide ou est corrompu."
+
+            # Encodage Base64 pour l'affichage
+            image_base64 = base64.b64encode(img_data).decode('utf-8')
+
     return render(request, "qr_reader.html", {
         'form': qr_reader_form,
         'result': result,

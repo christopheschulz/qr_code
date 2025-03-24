@@ -90,6 +90,33 @@ document.addEventListener("DOMContentLoaded", function () {
     // ================= FORMULAIRE - GESTION DES CHAMPS =================
     const form = document.querySelector("form");
     if (form) {
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    const file = this.files[0];
+                    const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+                    const maxSize = 2 * 1024 * 1024; // 2 Mo
+        
+                    if (!validTypes.includes(file.type)) {
+                        alert('Le fichier doit être une image (png, jpg, jpeg, webp)');
+                        this.value = '';
+                        fileName.textContent = 'Aucun fichier sélectionné';
+                        return;
+                    }
+        
+                    if (file.size > maxSize) {
+                        alert('Le fichier est trop volumineux (max 2 Mo)');
+                        this.value = '';
+                        fileName.textContent = 'Aucun fichier sélectionné';
+                        return;
+                    }
+        
+                    fileName.textContent = file.name;
+                } else {
+                    fileName.textContent = 'Aucun fichier sélectionné';
+                }
+            });
+        }
         form.addEventListener("submit", function (e) {
             const activeDiv = document.querySelector(".qr-content:not(.hidden)");
             if (activeDiv) {
