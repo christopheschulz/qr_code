@@ -4,19 +4,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".navbar .nav-link");
     const currentPath = window.location.pathname;
 
+    // Fonction pour nettoyer et normaliser un chemin
+    function normalizePath(path) {
+        // Supprimer les slashes au début et à la fin
+        path = path.replace(/^\/+|\/+$/g, '');
+        // Supprimer les paramètres de requête s'il y en a
+        path = path.split('?')[0];
+        return path;
+    }
+
+    // Fonction pour vérifier si un lien est actif
+    function isLinkActive(linkPath, currentPath) {
+        const normalizedLinkPath = normalizePath(linkPath);
+        const normalizedCurrentPath = normalizePath(currentPath);
+
+        // Cas spécial pour la page d'accueil
+        if (normalizedLinkPath === '' && (normalizedCurrentPath === '' || normalizedCurrentPath === 'index')) {
+            return true;
+        }
+
+        // Pour les autres pages
+        return normalizedCurrentPath === normalizedLinkPath;
+    }
+
     navLinks.forEach(link => {
         const linkPath = new URL(link.href).pathname;
         
-        // Nettoyer les chemins pour la comparaison
-        const cleanCurrentPath = currentPath.replace(/\/$/, '');
-        const cleanLinkPath = linkPath.replace(/\/$/, '');
-        
-        // Vérifier si le chemin actuel commence par le chemin du lien
-        // ou si le chemin du lien est '/' et le chemin actuel est vide
-        if (cleanCurrentPath === cleanLinkPath || 
-            (cleanLinkPath === '/' && cleanCurrentPath === '') ||
-            (cleanCurrentPath.startsWith(cleanLinkPath) && cleanLinkPath !== '/')) {
-            
+        if (isLinkActive(linkPath, currentPath)) {
             link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
             link.classList.remove("text-black-600", "hover:underline");
         } else {
