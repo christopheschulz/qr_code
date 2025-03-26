@@ -6,14 +6,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     navLinks.forEach(link => {
         const linkPath = new URL(link.href).pathname;
-        console.log("Current:", currentPath, "Link:", linkPath);
-
-        link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
-        link.classList.add("text-black-600", "hover:underline");
-
-        if (currentPath === linkPath) {
+        
+        // Nettoyer les chemins pour la comparaison
+        const cleanCurrentPath = currentPath.replace(/\/$/, '');
+        const cleanLinkPath = linkPath.replace(/\/$/, '');
+        
+        // Vérifier si le chemin actuel commence par le chemin du lien
+        // ou si le chemin du lien est '/' et le chemin actuel est vide
+        if (cleanCurrentPath === cleanLinkPath || 
+            (cleanLinkPath === '/' && cleanCurrentPath === '') ||
+            (cleanCurrentPath.startsWith(cleanLinkPath) && cleanLinkPath !== '/')) {
+            
             link.classList.add("bg-blue-500", "text-white", "hover:bg-blue-600");
-            link.classList.remove("text-black-600");
+            link.classList.remove("text-black-600", "hover:underline");
+        } else {
+            link.classList.remove("bg-blue-500", "text-white", "hover:bg-blue-600");
+            link.classList.add("text-black-600", "hover:underline");
         }
     });
 
@@ -26,25 +34,32 @@ document.addEventListener("DOMContentLoaded", function () {
     function setupQrCodeDownload() {
         const downloadButton = document.getElementById('download-qr');
         const qrImage = document.getElementById('qr-code-image');
+        const mobileHelpText = document.getElementById('mobile-download-help');
 
         if (downloadButton && qrImage) {
-            downloadButton.addEventListener('click', function() {
-                // Détecter si c'est un appareil mobile
-                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                
-                if (isMobile) {
-                    // Sur mobile, on ouvre l'image dans un nouvel onglet
-                    window.open(qrImage.src, '_blank');
-                } else {
-                    // Sur desktop, on télécharge l'image
+            // Détecter si c'est un appareil mobile
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            // Gérer l'affichage des éléments selon le type d'appareil
+            if (isMobile) {
+                downloadButton.style.display = 'none';
+                if (mobileHelpText) {
+                    mobileHelpText.style.display = 'block';
+                }
+            } else {
+                if (mobileHelpText) {
+                    mobileHelpText.style.display = 'none';
+                }
+                // Sur desktop, configurer le téléchargement
+                downloadButton.addEventListener('click', function() {
                     const link = document.createElement('a');
                     link.href = qrImage.src;
                     link.download = 'qr_code.png';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                }
-            });
+                });
+            }
         }
     }
 
