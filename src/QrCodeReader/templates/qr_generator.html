@@ -58,8 +58,10 @@
             <div class="bg-white shadow-md p-6 rounded-xl text-center">
                 <h3 class="text-lg font-semibold mb-4">Aperçu du QR Code</h3>
                 {% if image_url %}
-                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
-                    <!-- <a href="{{ image_url }}" download="qr_code.png" target="_blank" class="block mt-4 text-blue-500 hover:underline">Télécharger QR Code</a> -->
+                    <img src="{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md" id="qr-code-image">
+                    <button id="download-qr" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 active:bg-blue-800 cursor-pointer">
+                        Télécharger le QR Code
+                    </button>
                     <p class="text-lg font-semibold mt-4">Pour télécharger le QR code clic droit (desktop) ou appuie long (mobile) sur l'image et choisissez enregistrer. </p>
                     {% else %}
                     <p>Aucun QR Code généré.</p>
@@ -93,7 +95,7 @@
           <div>
             <h2 class="text-xl font-semibold mb-2">🌐 QR Code URL</h2>
             <p>Exemple : <span class="font-mono">https://www.monsite.com</span></p>
-            <p class="text-red-600">⚠️ L’URL doit commencer par http:// ou https:// et ne pas dépasser 50 caractères.</p>
+            <p class="text-red-600">⚠️ L'URL doit commencer par http:// ou https:// et ne pas dépasser 50 caractères.</p>
           </div>
       
           <div>
@@ -122,7 +124,7 @@
             <ul class="list-disc pl-6">
               <li>Email : <span class="font-mono">contact@exemple.com</span></li>
               <li>Sujet : <span class="font-mono">Demande d'informations</span></li>
-              <li>Message : contenu de l’email</li>
+              <li>Message : contenu de l'email</li>
             </ul>
           </div>
       
@@ -160,7 +162,7 @@
             <h2 class="text-xl font-semibold mb-2">📅 QR Code Événement</h2>
             <ul class="list-disc pl-6">
               <li>Titre : <span class="font-mono">Soirée d'anniversaire</span></li>
-              <li>Lieu : adresse de l’événement</li>
+              <li>Lieu : adresse de l'événement</li>
               <li>Date et Heure : à sélectionner</li>
             </ul>
           </div>
@@ -182,7 +184,7 @@
         </div>
           <p class="mt-4"><strong>ℹ️ Important :</strong><br>
             Le QR Code est <strong>généré en temps réel dans votre navigateur</strong> à partir des informations que vous saisissez.<br>
-            Aucune image n’est stockée sur notre serveur. Vous pouvez <strong>télécharger ou utiliser directement</strong> le QR Code affiché.
+            Aucune image n'est stockée sur notre serveur. Vous pouvez <strong>télécharger ou utiliser directement</strong> le QR Code affiché.
           </p>  
       
 {% endblock %}

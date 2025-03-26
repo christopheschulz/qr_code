@@ -22,6 +22,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const contentDivs = document.querySelectorAll(".qr-content");
     const formTypeInput = document.getElementById("form_type");
 
+    // Fonction pour télécharger le QR code
+    function setupQrCodeDownload() {
+        const downloadButton = document.getElementById('download-qr');
+        const qrImage = document.getElementById('qr-code-image');
+
+        if (downloadButton && qrImage) {
+            downloadButton.addEventListener('click', function() {
+                // Détecter si c'est un appareil mobile
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                if (isMobile) {
+                    // Sur mobile, on ouvre l'image dans un nouvel onglet
+                    window.open(qrImage.src, '_blank');
+                } else {
+                    // Sur desktop, on télécharge l'image
+                    const link = document.createElement('a');
+                    link.href = qrImage.src;
+                    link.download = 'qr_code.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            });
+        }
+    }
+
+    // Appeler la fonction de téléchargement
+    setupQrCodeDownload();
+
     function toggleFormFields() {
         contentDivs.forEach(div => {
             const isHidden = div.classList.contains("hidden");
