@@ -8,12 +8,18 @@ from io import BytesIO
 from pathlib import Path
 from django.conf import settings
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from datetime import datetime
 from .forms import (
     QrGenerateUrl, QrGenerateurText, QrGenerateVCard, QrGeneratePhone,
     QrGenerateEmail, QrGenerateSMS, QrGenerateWiFi, QrGenerateLocation,
     QrGenerateEvent, QrLoader
 )
 from utils.qr_code import generate_qr_code, get_qr_code_img_file_path, read_qr_code
+import json
 
 def generate_qr_code_view(request):
     form_type = request.POST.get("form_type", "url")
@@ -163,3 +169,9 @@ def qr_history(request):
 
 def about(request):
     return render(request, "about.html")
+
+def privacy_policy(request):
+    context = {
+        'current_date': datetime.now()
+    }
+    return render(request, 'privacy.html', context)
