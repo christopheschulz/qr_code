@@ -29,7 +29,7 @@ class QRBaseMixin(forms.Form):
 
 
 class QrGenerateUrl(QRBaseMixin):
-    url_to_convert = forms.URLField(max_length=50, required=True, label="Entrez votre URL à convertir")
+    url_to_convert = forms.URLField(max_length=500, required=True, label="Entrez votre URL à convertir")
 
 
 class QrGenerateurText(QRBaseMixin):
