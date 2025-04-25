@@ -1,6 +1,6 @@
 # qr_code
 
-python version 3.13
+python version 3.12
 ```
 # import for generate qr_code
 import qrcode
@@ -8,15 +8,7 @@ import qrcode.constants
 # import for read qr_code
 import cv2
 ```
-
-# parameters:
-
-    Use -g to generate a QR code, followed by the text to be encoded.
-
-    Use -r, followed by the QR code image filename, to extract and decode its contents.
-
-    Use -c to manage config
-
+# 
 
 # parameters definition:
 - version=1
