@@ -81,55 +81,67 @@
 
             <!-- Form Section -->
             <div class="p-6">
-                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form method="POST" class="space-y-6">
                     {% csrf_token %}
-                    <input type="hidden" name="form_type" id="form_type" value="url">
+                    <input type="hidden" name="form_type" id="form_type" value="{{ current_form_type|default:'url' }}">
                     
                     <!-- URL Form -->
-                    <div id="url-content" class="space-y-4">
+                    <div id="url-content" class="space-y-4{% if current_form_type != 'url' %} hidden{% endif %}">
                         {{ forms.url.as_p }}
                     </div>
                     
                     <!-- Text Form -->
-                    <div id="text-content" class="space-y-4 hidden">
+                    <div id="text-content" class="space-y-4{% if current_form_type != 'text' %} hidden{% endif %}">
                         {{ forms.text.as_p }}
                     </div>
                     
                     <!-- Email Form -->
-                    <div id="email-content" class="space-y-4 hidden">
+                    <div id="email-content" class="space-y-4{% if current_form_type != 'email' %} hidden{% endif %}">
                         {{ forms.email.as_p }}
                     </div>
                     
                     <!-- Phone Form -->
-                    <div id="phone-content" class="space-y-4 hidden">
+                    <div id="phone-content" class="space-y-4{% if current_form_type != 'phone' %} hidden{% endif %}">
                         {{ forms.phone.as_p }}
                     </div>
                     
                     <!-- SMS Form -->
-                    <div id="sms-content" class="space-y-4 hidden">
+                    <div id="sms-content" class="space-y-4{% if current_form_type != 'sms' %} hidden{% endif %}">
                         {{ forms.sms.as_p }}
                     </div>
                     
                     <!-- WiFi Form -->
-                    <div id="wifi-content" class="space-y-4 hidden">
+                    <div id="wifi-content" class="space-y-4{% if current_form_type != 'wifi' %} hidden{% endif %}">
                         {{ forms.wifi.as_p }}
                     </div>
                     
                     <!-- VCard/Contact Form -->
-                    <div id="vcard-content" class="space-y-4 hidden">
+                    <div id="vcard-content" class="space-y-4{% if current_form_type != 'vcard' %} hidden{% endif %}">
                         {{ forms.vcard.as_p }}
                     </div>
                     
                     <!-- Location Form -->
-                    <div id="location-content" class="space-y-4 hidden">
+                    <div id="location-content" class="space-y-4{% if current_form_type != 'location' %} hidden{% endif %}">
                         {{ forms.location.as_p }}
                     </div>
                     
                     <!-- Event Form -->
-                    <div id="event-content" class="space-y-4 hidden">
+                    <div id="event-content" class="space-y-4{% if current_form_type != 'event' %} hidden{% endif %}">
                         {{ forms.event.as_p }}
                     </div>
 
+
+                    {% if form_errors %}
+                        <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                            <h4 class="text-red-800 font-medium mb-2">Erreurs de validation :</h4>
+                            <ul class="text-red-700 text-sm space-y-1">
+                                {% for error in form_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
                     <button type="submit" class="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200">
                         Générer le QR Code
                     </button>
@@ -145,7 +157,7 @@
             <div class="p-6 text-center">
                 {% if image_url %}
                     <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                        <img src="{{ image_url }}" alt="QR Code généré" class="mx-auto max-w-full h-auto" id="qr-code-image">
+                        <img src="{{ image_url }}" alt="QR Code généré" class="mx-auto w-64 h-64 object-contain" id="qr-code-image" data-download-url="{{ download_url|default:image_url }}">
                     </div>
                     <button id="download-qr" class="w-full bg-gray-900 text-white py-3 px-6 rounded-xl font-medium hover:bg-gray-800 transition-colors duration-200">
                         Télécharger
@@ -154,9 +166,10 @@
                         Appui long sur l'image puis "Enregistrer l'image"
                     </p>
                 {% else %}
-                    <div class="bg-gray-50 rounded-xl p-12 mb-6">
-                        <div class="w-32 h-32 bg-gray-200 rounded-lg mx-auto mb-4"></div>
-                        <p class="text-gray-500">Votre QR code apparaîtra ici</p>
+                    <div class="bg-gray-50 rounded-xl p-6 mb-6">
+                        <div class="w-64 h-64 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                            <p class="text-gray-500 text-center">Votre QR code apparaîtra ici</p>
+                        </div>
                     </div>
                     <button disabled class="w-full bg-gray-200 text-gray-400 py-3 px-6 rounded-xl font-medium cursor-not-allowed">
                         Télécharger

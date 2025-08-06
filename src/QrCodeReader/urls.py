@@ -23,7 +23,7 @@ from django.conf import settings
 
 
 urlpatterns = [
-    path('', generate_qr_code_view, name='index'),
+    path('', generate_qr_code_view, name='generate_qr_code_view'),
     path('qrreader', qr_reader, name='qrreader'),
     path('qrgenerator', generate_qr_code_view, name='qrgenerator'),
     # path('qrhistory', qr_history, name='qrhistory'),
