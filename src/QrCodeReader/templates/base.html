@@ -11,22 +11,20 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
-
-    <!-- ✅ Navigation principale -->
-    <nav class="navbar bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
+    <!-- Navigation principale -->
+    <nav class="bg-white shadow-md py-4 px-6 flex justify-center space-x-6">
         <a href="{% url 'index' %}" class="nav-link font-semibold py-2 px-4 rounded-lg">Générateur QR Code</a>
         <a href="{% url 'qrreader' %}" class="nav-link font-semibold py-2 px-4 rounded-lg">Lecteur QR Code</a>
         <a href="{% url 'about' %}" class="nav-link font-semibold py-2 px-4 rounded-lg">À propos</a>
     </nav>
-    
 
-    <!-- ✅ Contenu principal -->
+    <!-- Contenu principal -->
     <main class="container mx-auto py-10 px-6">
         {% block content %}
         {% endblock %}
     </main>
 
-    <!-- ✅ Footer -->
+    <!-- Footer -->
     <footer class="bg-white shadow-md py-6 mt-10">
         <div class="container mx-auto text-center">
             <p class="text-gray-600 text-sm">&copy; 2025 
@@ -41,7 +39,8 @@
         </div>
     </footer>
 
-    <!-- ✅ Script global -->
-    <script src="{% static 'script/script.js' %}"></script>
+    <!-- Scripts globaux -->
+    <script src="{% static 'script/navigation.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

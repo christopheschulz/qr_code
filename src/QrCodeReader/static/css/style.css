@@ -1,0 +1,31 @@
+/* =================================================================
+   STYLES PERSONNALISÉS POUR L'APPLICATION QR CODE
+   Utilisation obligatoire de Tailwind CSS
+   ================================================================= */
+
+/* Styles personnalisés additionnels seulement */
+.nav-link.active {
+    background-color: #3b82f6 !important;
+    color: white !important;
+}
+
+/* État actif seulement - le reste utilise les classes Tailwind normales */
+.qr-option-btn.active {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+}
+
+.qr-option-btn.active svg {
+    color: white !important;
+}
+
+.qr-option-btn.active span {
+    color: white !important;
+}
+
+/* Responsive mobile pour la grille des boutons QR */
+@media (max-width: 768px) {
+    .qr-option-grid-mobile {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

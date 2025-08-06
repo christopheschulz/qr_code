@@ -4,51 +4,53 @@
 {% block title %}<title>Lecteur QR Code</title>{% endblock %}
     
 {% block content %}
-<div class="container mx-auto py-10 px-6">
-    <h1 class="text-2xl font-semibold text-center mb-6">Lecteur QR Code</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white shadow-md p-6 rounded-xl">
-            <h3 class="text-lg font-semibold mb-4 text-center">Importer un fichier</h3>
-            <form method="POST" enctype="multipart/form-data" class="space-y-4">
-                {% csrf_token %}
-                <div class="space-y-2 w-full">
-                    <div class="w-full text-center overflow-hidden">
-                        {{ form.as_p }}
-                    </div>
+<h1 class="text-2xl font-semibold text-center mb-6">Lecteur QR Code</h1>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white shadow-md p-6 rounded-xl">
+        <h3 class="text-lg font-semibold mb-4 text-center">Importer un fichier</h3>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div class="space-y-2 w-full">
+                <div class="w-full text-center overflow-hidden">
+                    {{ form.as_p }}
                 </div>
-                <input type="hidden" id="form_type" name="form_type" value="">
-                <input type="submit" value="Télécharger" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer">
-                {% if image_url %}
-                    <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
-                    <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
-                {% endif %}
-            </form>
-        </div>
-        <div class="bg-white shadow-md p-6 rounded-xl text-center">
-            <h3 class="text-lg font-semibold mb-4">Image téléchargée :</h3>
+            </div>
+            <input type="hidden" id="form_type" name="form_type" value="">
+            <input type="submit" value="Télécharger" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer transition-colors duration-200">
             {% if image_url %}
-            <img src="data:image/png;base64,{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+                <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
+                <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
             {% endif %}
-        </div>
+        </form>
+    </div>
+    <div class="bg-white shadow-md p-6 rounded-xl text-center">
+        <h3 class="text-lg font-semibold mb-4">Image téléchargée :</h3>
+        {% if image_url %}
+        <img src="data:image/png;base64,{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
+        {% endif %}
     </div>
 </div>
 <div class="bg-white shadow-md p-6 rounded-xl">
     <h4 class="font-semibold mb-2">📌 Comment utiliser le lecteur de QR Code ?</h4>
     <ul class="list-disc list-inside text-left space-y-1">
         <li>Cliquez sur <strong>"Choisir un fichier"</strong> pour importer une photo contenant un QR Code.</li>
-        <li>Seuls les <strong>formats image</strong> sont acceptés (photo ou capture d’écran du QR Code).</li>
-        <li>Appuyez sur <strong>"Télécharger"</strong> pour lancer l’analyse.</li>
-        <li>Le contenu du QR Code s’affichera automatiquement en dessous.</li>
+        <li>Seuls les <strong>formats image</strong> sont acceptés (photo ou capture d'écran du QR Code).</li>
+        <li>Appuyez sur <strong>"Télécharger"</strong> pour lancer l'analyse.</li>
+        <li>Le contenu du QR Code s'affichera automatiquement en dessous.</li>
     </ul>
     <p class="mt-4"><strong>👉 Conseils pour un bon résultat :</strong></p>
     <ul class="list-disc list-inside text-left space-y-1">
-        <li>Assurez-vous que le QR Code soit <strong>net, lisible et bien centré</strong> sur l’image.</li>
+        <li>Assurez-vous que le QR Code soit <strong>net, lisible et bien centré</strong> sur l'image.</li>
         <li>Évitez les images floues ou sombres.</li>
     </ul>
     <p class="mt-4"><strong>ℹ️ Important :</strong><br>
-        Le QR Code est <strong>chargé en temps réel dans votre navigateur</strong> à partir du fichier choisit.<br>
-        Aucune image n’est stockée sur notre serveur. 
-      </p>  
+        Le QR Code est <strong>chargé en temps réel dans votre navigateur</strong> à partir du fichier choisi.<br>
+        Aucune image n'est stockée sur notre serveur.
+    </p>  
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'script/qr-reader.js' %}"></script>
 {% endblock %}
