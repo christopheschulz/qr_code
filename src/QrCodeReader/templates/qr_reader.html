@@ -4,50 +4,182 @@
 {% block title %}<title>Lecteur QR Code</title>{% endblock %}
     
 {% block content %}
-<h1 class="text-2xl font-semibold text-center mb-6">Lecteur QR Code</h1>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white shadow-md p-6 rounded-xl">
-        <h3 class="text-lg font-semibold mb-4 text-center">Importer un fichier</h3>
-        <form method="POST" enctype="multipart/form-data" class="space-y-4">
-            {% csrf_token %}
-            <div class="space-y-2 w-full">
-                <div class="w-full text-center overflow-hidden">
-                    {{ form.as_p }}
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Lecteur de QR Code</h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Décodez instantanément vos QR codes en téléchargeant une image. 
+            Rapide, sécurisé et sans stockage de vos données.
+        </p>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+        <!-- Upload Panel -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+            <div class="p-6 border-b border-gray-100">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">Importer votre QR Code</h2>
+                <p class="text-gray-600">Sélectionnez une image contenant un QR code à décoder</p>
+            </div>
+            
+            <div class="p-6">
+                <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="space-y-4">
+                        {{ form.as_p }}
+                    </div>
+                    <input type="hidden" id="form_type" name="form_type" value="">
+                    <button type="submit" class="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Décoder le QR Code
+                    </button>
+                </form>
+                
+                <!-- Results Section -->
+                {% if image_url and result %}
+                    <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+                        <h3 class="text-lg font-semibold text-green-800 mb-3">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Contenu décodé
+                        </h3>
+                        <div class="bg-white p-4 rounded-lg border">
+                            <p class="text-gray-900 break-all">{{ result }}</p>
+                        </div>
+                        {% if result|slice:":4" == "http" %}
+                            <a href="{{ result }}" target="_blank" class="inline-flex items-center mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Ouvrir le lien
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900">Image téléchargée</h3>
+            </div>
+            <div class="p-6 text-center">
+                {% if image_url %}
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <img src="data:image/png;base64,{{ image_url }}" alt="QR Code téléchargé" class="mx-auto max-w-full h-auto rounded-lg shadow-md">
+                    </div>
+                {% else %}
+                    <div class="bg-gray-50 rounded-xl p-12">
+                        <div class="w-32 h-32 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500">Votre image QR code apparaîtra ici</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Guide d'utilisation -->
+    <div class="max-w-4xl mx-auto mt-16 bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div class="p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Guide d'utilisation</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Comment utiliser le lecteur</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <span class="text-blue-600 text-xs font-bold">1</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">Sélectionnez un fichier</span> - Cliquez sur "Choisir un fichier" pour importer votre image
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <span class="text-blue-600 text-xs font-bold">2</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">Décodez</span> - Cliquez sur "Décoder le QR Code" pour analyser l'image
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <span class="text-blue-600 text-xs font-bold">3</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">Récupérez le contenu</span> - Le texte décodé s'affiche automatiquement
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Formats supportés</h3>
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border">JPG</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border">PNG</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border">GIF</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border">BMP</span>
+                                <span class="px-3 py-1 bg-white rounded-full text-xs font-medium text-gray-700 border">WEBP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Conseils pour un bon résultat</h3>
+                        <div class="space-y-3 text-sm text-gray-600">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                </div>
+                                <div>Image nette et bien cadrée</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                </div>
+                                <div>QR code bien centré dans l'image</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                </div>
+                                <div>Bon éclairage et contraste élevé</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                </div>
+                                <div>Éviter les reflets et les ombres</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Confidentialité</h3>
+                        <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                            <p class="text-sm text-blue-800">
+                                <strong>100% sécurisé</strong> - Vos images sont traitées localement dans votre navigateur. 
+                                Aucune image n'est transmise ou stockée sur nos serveurs.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <input type="hidden" id="form_type" name="form_type" value="">
-            <input type="submit" value="Télécharger" class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer transition-colors duration-200">
-            {% if image_url %}
-                <h4 class="text-md font-semibold mt-4">Décodage du fichier</h4>
-                <p class="bg-gray-100 p-4 rounded-md">{{ result }}</p>
-            {% endif %}
-        </form>
+        </div>
     </div>
-    <div class="bg-white shadow-md p-6 rounded-xl text-center">
-        <h3 class="text-lg font-semibold mb-4">Image téléchargée :</h3>
-        {% if image_url %}
-        <img src="data:image/png;base64,{{ image_url }}" alt="QR Code" class="mx-auto rounded-lg shadow-md">
-        {% endif %}
-    </div>
-</div>
-<div class="bg-white shadow-md p-6 rounded-xl">
-    <h4 class="font-semibold mb-2">📌 Comment utiliser le lecteur de QR Code ?</h4>
-    <ul class="list-disc list-inside text-left space-y-1">
-        <li>Cliquez sur <strong>"Choisir un fichier"</strong> pour importer une photo contenant un QR Code.</li>
-        <li>Seuls les <strong>formats image</strong> sont acceptés (photo ou capture d'écran du QR Code).</li>
-        <li>Appuyez sur <strong>"Télécharger"</strong> pour lancer l'analyse.</li>
-        <li>Le contenu du QR Code s'affichera automatiquement en dessous.</li>
-    </ul>
-    <p class="mt-4"><strong>👉 Conseils pour un bon résultat :</strong></p>
-    <ul class="list-disc list-inside text-left space-y-1">
-        <li>Assurez-vous que le QR Code soit <strong>net, lisible et bien centré</strong> sur l'image.</li>
-        <li>Évitez les images floues ou sombres.</li>
-    </ul>
-    <p class="mt-4"><strong>ℹ️ Important :</strong><br>
-        Le QR Code est <strong>chargé en temps réel dans votre navigateur</strong> à partir du fichier choisi.<br>
-        Aucune image n'est stockée sur notre serveur.
-    </p>  
-</div>
 
 {% endblock %}
 

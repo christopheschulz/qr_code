@@ -1,12 +1,34 @@
 /**
  * GESTION DE LA NAVIGATION PRINCIPALE
- * Gère l'état actif des liens de navigation
+ * Gère l'état actif des liens de navigation et le menu mobile
  */
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("🔍 Navigation script chargé");
     
-    const navLinks = document.querySelectorAll("nav .nav-link");
+    // Gestion du menu mobile
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                // Changer l'icône du bouton (hamburger → croix)
+                mobileMenuButton.querySelector('svg:first-child').classList.add('hidden');
+                mobileMenuButton.querySelector('svg:last-child').classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                // Changer l'icône du bouton (croix → hamburger)
+                mobileMenuButton.querySelector('svg:first-child').classList.remove('hidden');
+                mobileMenuButton.querySelector('svg:last-child').classList.add('hidden');
+            }
+        });
+    }
+    
+    // Gestion des liens actifs
+    const navLinks = document.querySelectorAll(".nav-link");
     const currentPath = window.location.pathname;
     
     console.log("📍 Chemin actuel:", currentPath);
@@ -14,9 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fonction pour nettoyer et normaliser un chemin
     function normalizePath(path) {
-        // Supprimer les slashes au début et à la fin
         path = path.replace(/^\/+|\/+$/g, '');
-        // Supprimer les paramètres de requête s'il y en a
         path = path.split('?')[0];
         return path;
     }
@@ -33,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
         }
 
-        // Pour les autres pages
         return normalizedCurrentPath === normalizedLinkPath;
     }
 
@@ -44,20 +63,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`🔗 Lien ${index + 1}: ${link.textContent.trim()} - ${linkPath} - Actif: ${isActive}`);
         
         if (isActive) {
-            // Ajouter les classes pour l'état actif
-            link.classList.add("bg-blue-500", "text-white");
-            link.classList.remove("text-gray-600", "hover:underline");
-            // Forcer les styles directement pour s'assurer qu'ils sont appliqués
-            link.style.backgroundColor = "#3b82f6";
-            link.style.color = "white";
-            console.log("✅ Classes et styles ajoutés pour lien actif");
+            link.classList.add("active");
+            console.log("✅ Classe active ajoutée pour lien actif");
         } else {
-            // Retirer les classes d'état actif et remettre les classes normales
-            link.classList.remove("bg-blue-500", "text-white");
-            link.classList.add("text-gray-600", "hover:underline");
-            // Retirer les styles forcés
-            link.style.backgroundColor = "";
-            link.style.color = "";
+            link.classList.remove("active");
         }
     });
 });
