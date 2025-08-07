@@ -36,10 +36,11 @@
     
     /* Tooltip styles */
     .tooltip {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        margin-left: 4px;
+        position: relative !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        margin-left: 4px !important;
+        vertical-align: middle !important;
     }
     
     .tooltip .tooltip-trigger {
@@ -79,6 +80,7 @@
         transition: all 0.3s ease !important;
         z-index: 1000 !important;
         pointer-events: none !important;
+        display: none !important;
     }
     
     .tooltip .tooltip-content::after {
@@ -95,6 +97,7 @@
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
+        display: block !important;
     }
     
     /* Responsive mobile - tooltip à gauche si pas assez de place */
