@@ -158,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setupCharacterCounters();
     
     // Configuration de l'infobulle pour le taux de correction d'erreur
-    setupErrorCorrectionTooltip();
     
     // Mettre à jour les compteurs quand le niveau de correction change
     const errorCorrectionSelect = document.querySelector('select[name="qr_error_correction_form"]');
@@ -402,38 +401,3 @@ function setupCharacterCounters() {
     }
 }
 
-/**
- * Configuration de l'infobulle pour le champ de correction d'erreur
- */
-function setupErrorCorrectionTooltip() {
-    const errorCorrectionSelect = document.querySelector('select[name="qr_error_correction_form"]');
-    if (!errorCorrectionSelect) return;
-    
-    // Trouver le label associé au champ
-    const label = errorCorrectionSelect.closest('p')?.querySelector('label');
-    if (!label) return;
-    
-    // Créer l'infobulle
-    const tooltip = document.createElement('div');
-    tooltip.className = 'tooltip';
-    tooltip.innerHTML = `
-        <div class="tooltip-trigger">?</div>
-        <div class="tooltip-content">
-            <div class="font-semibold mb-2">💡 Capacités maximales selon le niveau :</div>
-            <div class="space-y-1 text-sm">
-                <div><strong>Faible (7%)</strong> : 2,953 caractères • 7,089 chiffres</div>
-                <div><strong>Moyen (15%)</strong> : 2,331 caractères • 5,596 chiffres</div>
-                <div><strong>Élevé (25%)</strong> : 1,663 caractères • 3,993 chiffres</div>
-                <div><strong>Maximum (30%)</strong> : 1,273 caractères • 3,057 chiffres</div>
-            </div>
-            <div class="text-xs mt-2 opacity-80">
-                ⚖️ Plus le niveau est élevé, plus le QR résiste aux dommages, mais moins il peut contenir de données.
-            </div>
-        </div>
-    `;
-    
-    // Ajouter l'infobulle au label
-    label.style.display = 'flex';
-    label.style.alignItems = 'center';
-    label.appendChild(tooltip);
-}

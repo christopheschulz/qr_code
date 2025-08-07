@@ -34,3 +34,14 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Configuration pour servir les fichiers statiques
+# En développement (DEBUG=True), Django sert automatiquement depuis STATICFILES_DIRS
+# En production, on force le service depuis STATIC_ROOT (après collectstatic)
+if settings.DEBUG:
+    # Développement : servir depuis STATICFILES_DIRS
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+else:
+    # Production : servir depuis STATIC_ROOT (normalement fait par nginx/apache)
+    # Ligne temporaire pour tests - à supprimer en vraie production !
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
