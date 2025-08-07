@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'src/QrCodeReader/static',
+    BASE_DIR / 'QrCodeReader/static',
 ]
 
 MEDIA_URL = '/media/'
