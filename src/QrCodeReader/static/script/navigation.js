@@ -4,17 +4,20 @@
  */
 
 // TEST URGENT : Vérifier si le script se charge
-alert("🚨 NAVIGATION JS CHARGÉ - Version de test");
 console.log("🚨 NAVIGATION JS CHARGÉ - Version de test");
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔍 Navigation script chargé");
+    console.log("🔍 Navigation script - DOM Ready");
     
     // Gestion du menu mobile uniquement
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
     
+    console.log("📱 Mobile button found:", !!mobileMenuButton);
+    console.log("📱 Mobile menu found:", !!mobileMenu);
+    
     if (mobileMenuButton && mobileMenu) {
+        console.log("✅ Ajout du listener sur le bouton mobile");
         mobileMenuButton.addEventListener('click', function() {
             const isHidden = mobileMenu.classList.contains('hidden');
             if (isHidden) {
