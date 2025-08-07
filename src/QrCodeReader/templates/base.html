@@ -35,6 +35,53 @@
     }
     
     
+    /* Tooltip simple */
+    .info-tooltip {
+        position: relative;
+        display: inline-block;
+        margin-left: 5px;
+        color: #3b82f6;
+        cursor: help;
+        font-weight: bold;
+    }
+    
+    .info-tooltip .tooltip-text {
+        visibility: hidden;
+        width: 300px;
+        background-color: #1f2937;
+        color: white;
+        text-align: left;
+        border-radius: 8px;
+        padding: 12px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -150px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: normal;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-tooltip .tooltip-text::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #1f2937 transparent transparent transparent;
+    }
+    
+    .info-tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }
+    
     </style>
     {% block title %}{% endblock %}
     <title>Générateur de QR Code</title>
