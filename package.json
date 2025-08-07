@@ -1,0 +1,25 @@
+{
+  "name": "qr_code",
+  "version": "1.0.0",
+  "description": "python version 3.12 ``` # import for generate qr_code import qrcode import qrcode.constants # import for read qr_code import cv2 ``` #",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "./tailwindcss-macos-arm64 -i src/QrCodeReader/static/css/tailwind-input.css -o src/QrCodeReader/static/css/tailwind-output.css --minify",
+    "watch-css": "./tailwindcss-macos-arm64 -i src/QrCodeReader/static/css/tailwind-input.css -o src/QrCodeReader/static/css/tailwind-output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christopheschulz/qr_code.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christopheschulz/qr_code/issues"
+  },
+  "homepage": "https://github.com/christopheschulz/qr_code#readme",
+  "devDependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}
