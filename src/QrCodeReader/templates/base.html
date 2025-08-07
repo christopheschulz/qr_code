@@ -34,13 +34,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-1">
-                        <a href="{% url 'generate_qr_code_view' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                        <a href="{% url 'generate_qr_code_view' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200{% if active_page == 'generator' %} active{% endif %}">
                             Générateur
                         </a>
-                        <a href="{% url 'qrreader' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                        <a href="{% url 'qrreader' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200{% if active_page == 'reader' %} active{% endif %}">
                             Lecteur
                         </a>
-                        <a href="{% url 'about' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200">
+                        <a href="{% url 'about' %}" class="nav-link inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200{% if active_page == 'about' %} active{% endif %}">
                             À propos
                         </a>
                     </div>
@@ -62,13 +62,13 @@
             <!-- Mobile menu -->
             <div class="mobile-menu hidden md:hidden">
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 rounded-lg mt-2">
-                    <a href="{% url 'generate_qr_code_view' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200">
+                    <a href="{% url 'generate_qr_code_view' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200{% if active_page == 'generator' %} active{% endif %}">
                         Générateur QR Code
                     </a>
-                    <a href="{% url 'qrreader' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200">
+                    <a href="{% url 'qrreader' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200{% if active_page == 'reader' %} active{% endif %}">
                         Lecteur QR Code
                     </a>
-                    <a href="{% url 'about' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200">
+                    <a href="{% url 'about' %}" class="nav-link mobile-nav-link flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200{% if active_page == 'about' %} active{% endif %}">
                         À propos
                     </a>
                 </div>

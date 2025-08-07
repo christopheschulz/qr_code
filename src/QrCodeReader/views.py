@@ -254,7 +254,8 @@ def generate_qr_code_view(request):
         "download_url": qr_code_download_base64,
         "form_errors": form_errors,
         "current_form_type": form_type,  # Maintenir le type actuel
-        "capacity_info": capacity_info  # Informations sur les capacités
+        "capacity_info": capacity_info,  # Informations sur les capacités
+        "active_page": "generator"  # Ajouter le contexte de page active
     })
 
 
@@ -289,11 +290,11 @@ def qr_reader(request):
 
             if not qr_img.content_type.startswith('image/'):
                 qr_reader_form.add_error('qr_img', '❌ Le fichier téléchargé n\'est pas une image valide.')
-                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': '', 'active_page': 'reader'})
 
             if qr_img.size > 4 * 1024 * 1024:
                 qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (4 Mo max).')
-                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': ''})
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': '', 'active_page': 'reader'})
 
             # Lecture des données binaires
             img_data = qr_img.read()
@@ -302,7 +303,7 @@ def qr_reader(request):
             result = read_qr_with_cv2(img_data)
             if not result:
                 qr_reader_form.add_error('qr_img', "❌ Ce fichier n'est pas un QR Code valide ou est corrompu.")
-                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': ''})
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': '', 'active_page': 'reader'})
 
             # Encodage Base64 pour l'affichage
             image_base64 = base64.b64encode(img_data).decode('utf-8')
@@ -310,7 +311,8 @@ def qr_reader(request):
     return render(request, "qr_reader.html", {
         'form': qr_reader_form,
         'result': result,
-        'image_url': image_base64
+        'image_url': image_base64,
+        'active_page': 'reader'
     })
 
 
@@ -320,10 +322,11 @@ def qr_history(request):
 
 
 def about(request):
-    return render(request, "about.html")
+    return render(request, "about.html", {'active_page': 'about'})
 
 def privacy_policy(request):
     context = {
-        'current_date': datetime.now()
+        'current_date': datetime.now(),
+        'active_page': 'privacy'
     }
     return render(request, 'privacy.html', context)
