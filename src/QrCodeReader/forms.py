@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.safestring import mark_safe
 import utils.qr_code as qr_code
 
 QR_ERROR_CORRRECT = (
@@ -14,7 +15,7 @@ class QRBaseMixin(forms.Form):
     """Mixin pour inclure les champs QR communs à plusieurs formulaires."""
     qr_error_correction_form = forms.ChoiceField(
         choices=QR_ERROR_CORRRECT, 
-        label="""Taux de correction d'erreur <div class="tooltip inline-flex items-center ml-1">
+        label=mark_safe("""Taux de correction d'erreur <div class="tooltip inline-flex items-center ml-1">
             <div class="tooltip-trigger">?</div>
             <div class="tooltip-content">
                 <div class="font-semibold mb-2">💡 Capacités maximales selon le niveau :</div>
@@ -28,7 +29,7 @@ class QRBaseMixin(forms.Form):
                     ⚖️ Plus le niveau est élevé, plus le QR résiste aux dommages, mais moins il peut contenir de données.
                 </div>
             </div>
-        </div>""",
+        </div>"""),
         widget=forms.Select(attrs={
             'class': 'w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
         })
