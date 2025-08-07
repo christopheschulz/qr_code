@@ -15,9 +15,9 @@ class QRBaseMixin(forms.Form):
     """Mixin pour inclure les champs QR communs à plusieurs formulaires."""
     qr_error_correction_form = forms.ChoiceField(
         choices=QR_ERROR_CORRRECT, 
-        label=mark_safe("""Taux de correction d'erreur <span class="tooltip inline-flex items-center ml-1">
+        label=mark_safe("""Taux de correction d'erreur <span class="tooltip">
             <span class="tooltip-trigger">?</span>
-            <span class="tooltip-content">
+            <div class="tooltip-content">
                 <div class="font-semibold mb-2">💡 Capacités maximales selon le niveau :</div>
                 <div class="space-y-1 text-sm">
                     <div><strong>Faible (7%)</strong> : 2,953 caractères • 7,089 chiffres</div>
@@ -28,7 +28,7 @@ class QRBaseMixin(forms.Form):
                 <div class="text-xs mt-2 opacity-80">
                     ⚖️ Plus le niveau est élevé, plus le QR résiste aux dommages, mais moins il peut contenir de données.
                 </div>
-            </span>
+            </div>
         </span>"""),
         widget=forms.Select(attrs={
             'class': 'w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
