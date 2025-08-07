@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <!-- Styles spécifiques qui doivent avoir la priorité -->
+    <style>
+    .qr-option-btn.active {
+        background-color: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+        color: white !important;
+    }
+    
+    .qr-option-btn.active svg {
+        color: white !important;
+    }
+    
+    .qr-option-btn.active span {
+        color: white !important;
+    }
+    </style>
     {% block title %}{% endblock %}
     <title>Générateur de QR Code</title>
 </head>

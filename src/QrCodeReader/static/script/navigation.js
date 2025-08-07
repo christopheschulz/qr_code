@@ -3,21 +3,14 @@
  * Gère uniquement le menu mobile (l'état actif est géré côté serveur)
  */
 
-// TEST URGENT : Vérifier si le script se charge
-console.log("🚨 NAVIGATION JS CHARGÉ - Version de test");
-
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔍 Navigation script - DOM Ready");
+    console.log("🔍 Navigation script chargé");
     
     // Gestion du menu mobile uniquement
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
     
-    console.log("📱 Mobile button found:", !!mobileMenuButton);
-    console.log("📱 Mobile menu found:", !!mobileMenu);
-    
     if (mobileMenuButton && mobileMenu) {
-        console.log("✅ Ajout du listener sur le bouton mobile");
         mobileMenuButton.addEventListener('click', function() {
             const isHidden = mobileMenu.classList.contains('hidden');
             if (isHidden) {

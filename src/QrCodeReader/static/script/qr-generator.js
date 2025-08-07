@@ -3,10 +3,8 @@
  * Système complètement refait
  */
 
-console.log("🚨 QR-GENERATOR JS CHARGÉ - Version de test");
-
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔄 Initialisation du générateur QR - DOM Ready");
+    console.log("🔄 Initialisation du générateur QR...");
     
     // Éléments DOM
     const buttons = document.querySelectorAll(".qr-option-btn");
@@ -14,18 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
     
     console.log(`📋 Boutons trouvés: ${buttons.length}`);
-    console.log("📋 Form type input:", !!formTypeInput);
-    console.log("📋 Form found:", !!form);
-    
-    if (buttons.length === 0) {
-        console.error("❌ ERREUR: Aucun bouton .qr-option-btn trouvé!");
-        return;
-    }
-    
-    if (!formTypeInput) {
-        console.error("❌ ERREUR: Element #form_type introuvable!");
-        return;
-    }
     
     // Liste de tous les formulaires possibles
     const formIds = [
@@ -101,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function activateButton(button) {
         button.classList.add('active');
         console.log(`🔵 Bouton activé: ${button.textContent.trim()}`);
+        console.log(`🔍 Classes du bouton:`, button.className);
+        console.log(`🎨 Style background:`, getComputedStyle(button).backgroundColor);
     }
     
     // Gestion des clics sur les boutons

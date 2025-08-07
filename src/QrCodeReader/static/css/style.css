@@ -26,6 +26,7 @@
 .qr-option-btn.active {
     background-color: #3b82f6 !important;
     border-color: #3b82f6 !important;
+    color: white !important;
 }
 
 .qr-option-btn.active svg {
@@ -33,6 +34,15 @@
 }
 
 .qr-option-btn.active span {
+    color: white !important;
+}
+
+/* Forcer l'état actif avec plus de spécificité */
+button.qr-option-btn.active,
+.qr-option-btn.active:hover,
+.qr-option-btn.active:focus {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
     color: white !important;
 }
 
