@@ -3,6 +3,10 @@
  * Gère uniquement le menu mobile (l'état actif est géré côté serveur)
  */
 
+// TEST URGENT : Vérifier si le script se charge
+alert("🚨 NAVIGATION JS CHARGÉ - Version de test");
+console.log("🚨 NAVIGATION JS CHARGÉ - Version de test");
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("🔍 Navigation script chargé");
     
