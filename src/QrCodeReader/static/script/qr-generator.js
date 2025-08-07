@@ -87,8 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function activateButton(button) {
         button.classList.add('active');
         console.log(`🔵 Bouton activé: ${button.textContent.trim()}`);
-        console.log(`🔍 Classes du bouton:`, button.className);
-        console.log(`🎨 Style background:`, getComputedStyle(button).backgroundColor);
     }
     
     // Gestion des clics sur les boutons
