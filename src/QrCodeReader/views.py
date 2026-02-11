@@ -330,3 +330,10 @@ def privacy_policy(request):
         'active_page': 'privacy'
     }
     return render(request, 'privacy.html', context)
+
+def mentions_legales(request):
+    context = {
+        'current_date': datetime.now(),
+        'active_page': 'mentions_legales'
+    }
+    return render(request, "mentions_legales.html", context)

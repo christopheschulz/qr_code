@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>Mentions Légales - qrcodebykriss.fr</title>{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10 px-6">
+    <h1 class="text-3xl font-bold mb-8">Mentions légales</h1>
+
+    <p class="text-sm text-gray-500 italic mb-8">Dernière mise à jour : {{ current_date|date:"d/m/Y" }}</p>
+
+    <div class="prose max-w-none space-y-6">
+        <p class="text-gray-600">
+            Conformément aux dispositions des articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site les informations suivantes.
+        </p>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">1. Éditeur du site</h2>
+            <div class="text-gray-600 space-y-2">
+                <p><strong>Raison sociale :</strong> Auto-entrepreneur Schulz Christophe Andre Erwin</p>
+                <p><strong>Nom commercial :</strong> Code By Kriss</p>
+                <p><strong>Adresse :</strong> 60 rue François 1er, 75008 Paris, France</p>
+                <p><strong>SIRET :</strong> 989 052 840 000 18</p>
+                <p><strong>Email :</strong> <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline">contact@codebykriss.fr</a></p>
+                <p><strong>Activité :</strong> Développement d'applications web et mobiles</p>
+            </div>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">2. Directeur de la publication</h2>
+            <p class="text-gray-600">
+                <strong>Nom :</strong> Christophe Schulz
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">3. Hébergeur</h2>
+            <div class="text-gray-600 space-y-2">
+                <p><strong>Nom :</strong> GitHub, Inc. (GitHub Pages)</p>
+                <p><strong>Adresse :</strong> 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis</p>
+                <p><strong>Site web :</strong> <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">https://github.com</a></p>
+            </div>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">4. Propriété intellectuelle</h2>
+            <p class="text-gray-600">
+                L'ensemble du contenu de ce site (textes, images, graphismes, logo, icônes, etc.) est la propriété exclusive de l'éditeur, à l'exception des marques, logos ou contenus appartenant à d'autres sociétés partenaires ou auteurs. Toute reproduction, distribution, modification, adaptation, retransmission ou publication de ces différents éléments est strictement interdite sans l'accord exprès par écrit de l'éditeur.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">5. Données personnelles</h2>
+            <p class="text-gray-600">
+                Pour plus d'informations sur la collecte et le traitement des données personnelles, veuillez consulter notre <a href="{% url 'privacy' %}" class="text-blue-600 hover:underline">Politique de confidentialité</a>.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">6. Cookies</h2>
+            <p class="text-gray-600">
+                Ce site n'utilise aucun cookie de tracking ou de marketing. Seuls les cookies techniques nécessaires au bon fonctionnement du site peuvent être utilisés.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">7. Responsabilité</h2>
+            <p class="text-gray-600 mb-3">
+                Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois contenir des inexactitudes, des omissions ou des lacunes.
+            </p>
+            <p class="text-gray-600">
+                Si vous constatez une lacune, erreur ou ce qui paraît être un dysfonctionnement, merci de bien vouloir le signaler par email en décrivant le problème de la manière la plus précise possible.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">8. Liens hypertextes</h2>
+            <p class="text-gray-600">
+                Les liens hypertextes mis en place dans le cadre du présent site web en direction d'autres ressources présentes sur le réseau Internet ne sauraient engager la responsabilité de Code By Kriss.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">9. Droit applicable</h2>
+            <p class="text-gray-600">
+                Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents.
+            </p>
+        </section>
+
+        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
+            <h2 class="text-xl font-semibold mb-4">10. Contact</h2>
+            <p class="text-gray-600">
+                Pour toute question concernant ces mentions légales, vous pouvez nous contacter par email à <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline">contact@codebykriss.fr</a>.
+            </p>
+        </section>
+    </div>
+</div>
+{% endblock %}

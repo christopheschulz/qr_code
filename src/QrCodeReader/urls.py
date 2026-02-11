@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import qr_reader,generate_qr_code_view,qr_history,about,privacy_policy
+from .views import qr_reader,generate_qr_code_view,qr_history,about,privacy_policy,mentions_legales
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -29,6 +29,7 @@ urlpatterns = [
     # path('qrhistory', qr_history, name='qrhistory'),
     path('about', about, name='about'),
     path('privacy', privacy_policy, name='privacy'),
+    path('mentions-legales', mentions_legales, name='mentions_legales'),
     path('admin/', admin.site.urls),
     path('google6630a1c4a0298bf9.html', TemplateView.as_view(template_name='verification/google6630a1c4a0298bf9.html')),
 ]
