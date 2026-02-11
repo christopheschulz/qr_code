@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>Page non trouvée - QR Code by Kriss</title>{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto text-center py-20">
+    <h1 class="text-6xl font-bold text-gray-300 mb-4">404</h1>
+    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Page non trouvée</h2>
+    <p class="text-gray-600 mb-8">La page que vous recherchez n'existe pas ou a été déplacée.</p>
+    <a href="{% url 'generate_qr_code_view' %}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200">
+        Retour à l'accueil
+    </a>
+</div>
+{% endblock %}

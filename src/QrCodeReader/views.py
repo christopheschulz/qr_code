@@ -1,26 +1,42 @@
-import os
 import base64
-import hashlib
+import logging
 import qrcode
 import qrcode.constants
-import cv2
-import numpy as np
 from io import BytesIO
-from pathlib import Path
-from django.conf import settings
+from urllib.parse import quote
+from PIL import Image
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+from django.http import JsonResponse
 from datetime import datetime
 from .forms import (
     QrGenerateUrl, QrGenerateurText, QrGenerateVCard, QrGeneratePhone,
     QrGenerateEmail, QrGenerateSMS, QrGenerateWiFi, QrGenerateLocation,
     QrGenerateEvent, QrLoader
 )
-from utils.qr_code import generate_qr_code, get_qr_code_img_file_path, read_qr_code
-import json
+from utils.qr_code import read_qr_code_from_bytes
+
+logger = logging.getLogger(__name__)
+
+
+def sanitize_qr_field(value, field_type='text'):
+    """Sanitise les entrées utilisateur pour les formats de données QR."""
+    if value is None:
+        return ''
+    value = str(value).strip()
+    if field_type == 'wifi':
+        value = value.replace('\\', '\\\\')
+        value = value.replace(';', '\\;')
+        value = value.replace(',', '\\,')
+        value = value.replace('"', '\\"')
+        value = value.replace(':', '\\:')
+    elif field_type == 'vcard':
+        value = value.replace('\\', '\\\\')
+        value = value.replace(';', '\\;')
+        value = value.replace(',', '\\,')
+        value = value.replace('\n', '\\n')
+    elif field_type == 'url_param':
+        value = quote(value, safe='')
+    return value
 
 def validate_form_by_type(form, form_type):
     """Validation personnalisée selon le type de formulaire actif"""
@@ -88,7 +104,6 @@ def generate_qr_code_view(request):
     form_type = request.POST.get("form_type", "url")
     qr_code_base64 = None
     qr_code_download_base64 = None
-    session_key = 'last_qr_hash'
     form_errors = []
 
     # Stocker les classes de formulaire
@@ -113,11 +128,11 @@ def generate_qr_code_view(request):
     }
 
     if request.method == "POST":
-        print(f"📝 POST reçu - Form type: {form_type}")
+        logger.debug("POST reçu - Form type: %s", form_type)
         form_class = forms.get(form_type)
         if form_class:
             form = form_class(request.POST)
-            print(f"📋 Formulaire créé: {form_class.__name__}")
+            logger.debug("Formulaire créé: %s", form_class.__name__)
             
             # Validation personnalisée selon le type de formulaire
             is_form_valid = validate_form_by_type(form, form_type)
@@ -137,29 +152,40 @@ def generate_qr_code_view(request):
                 qr_error_correction = error_correction_map.get(qr_error_correction_value, qrcode.constants.ERROR_CORRECT_M)
                 qr_data = ""
 
-                # Construction des données à encoder
+                # Construction des données à encoder (avec sanitization)
                 if form_type == "url":
                     qr_data = data['url_to_convert']
                 elif form_type == "vcard":
-                    qr_data = f"BEGIN:VCARD\nFN:{data['name']}\nTEL:{data['phone']}\nEMAIL:{data['email']}\nEND:VCARD"
+                    name = sanitize_qr_field(data['name'], 'vcard')
+                    phone = sanitize_qr_field(data['phone'], 'vcard')
+                    email = sanitize_qr_field(data['email'], 'vcard')
+                    qr_data = f"BEGIN:VCARD\nVERSION:3.0\nFN:{name}\nTEL:{phone}\nEMAIL:{email}\nEND:VCARD"
                 elif form_type == "phone":
-                    qr_data = f"tel:{data['phone']}"
+                    qr_data = f"tel:{sanitize_qr_field(data['phone'])}"
                 elif form_type == "text":
                     qr_data = data['text_to_convert']
                 elif form_type == "email":
-                    qr_data = f"mailto:{data['email']}?subject={data['subject']}&body={data['message']}"
+                    email = sanitize_qr_field(data['email'])
+                    subject = sanitize_qr_field(data['subject'], 'url_param')
+                    message = sanitize_qr_field(data['message'], 'url_param')
+                    qr_data = f"mailto:{email}?subject={subject}&body={message}"
                 elif form_type == "sms":
-                    qr_data = f"sms:{data['phone']}?body={data['message']}"
+                    phone = sanitize_qr_field(data['phone'])
+                    message = sanitize_qr_field(data['message'], 'url_param')
+                    qr_data = f"sms:{phone}?body={message}"
                 elif form_type == "wifi":
-                    qr_data = f"WIFI:T:{data['encryption']};S:{data['ssid']};P:{data['password']};;"
+                    ssid = sanitize_qr_field(data['ssid'], 'wifi')
+                    password = sanitize_qr_field(data['password'], 'wifi')
+                    encryption = data['encryption']  # ChoiceField, valeur sûre
+                    qr_data = f"WIFI:T:{encryption};S:{ssid};P:{password};;"
                 elif form_type == "location":
                     qr_data = f"geo:{data['latitude']},{data['longitude']}"
                 elif form_type == "event":
-                    qr_data = f"BEGIN:VEVENT\nSUMMARY:{data['title']}\nLOCATION:{data['location']}\nDTSTART:{data['date']}\nEND:VEVENT"
-
-                # Générer une signature unique (facultatif si pas de cache session)
-                qr_unique_str = f"{qr_data}|{qr_error_correction}|10"  # box_size fixe
-                qr_hash = hashlib.md5(qr_unique_str.encode()).hexdigest()
+                    title = sanitize_qr_field(data['title'], 'vcard')
+                    location = sanitize_qr_field(data.get('location', ''), 'vcard')
+                    date_val = data['date']
+                    date_str = date_val.strftime('%Y%m%dT%H%M%S') if hasattr(date_val, 'strftime') else str(date_val)
+                    qr_data = f"BEGIN:VEVENT\nSUMMARY:{title}\nLOCATION:{location}\nDTSTART:{date_str}\nEND:VEVENT"
 
                 # Génération du QR Code avec taille automatique
                 qr = qrcode.QRCode(
@@ -179,8 +205,8 @@ def generate_qr_code_view(request):
                 qr_code_base64 = f"data:image/png;base64,{base64.b64encode(buffered.getvalue()).decode()}"
                 qr_code_download_base64 = qr_code_base64  # Même image
                 
-                print(f"✅ QR code généré avec succès pour: {qr_data[:50]}...")
-                print(f"📱 Image générée: {img.size}, Version QR: {qr.version}")
+                logger.info("QR code généré pour: %s...", qr_data[:50])
+                logger.debug("Image: %s, Version QR: %s", img.size, qr.version)
                 
                 # Si c'est une requête normale (pas AJAX), stocker les données en session et rediriger
                 if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -202,15 +228,15 @@ def generate_qr_code_view(request):
                 for field, errors in form.errors.items():
                     for error in errors:
                         form_errors.append(f"{field}: {error}")
-                print(f"Formulaire invalide: {form.errors}")
+                logger.warning("Formulaire invalide: %s", form.errors)
                 
                 # Mettre à jour l'instance du formulaire avec les erreurs pour l'affichage
                 form_instances[form_type] = form
         else:
             form_errors.append(f"Type de formulaire inconnu: {form_type}")
-            print(f"Type de formulaire inconnu: {form_type}")
+            logger.warning("Type de formulaire inconnu: %s", form_type)
     else:
-        print("Requête GET reçue")
+        logger.debug("Requête GET reçue")
         
         # Récupérer les résultats depuis la session (pattern PRG)
         session_result = request.session.pop('qr_generation_result', None)
@@ -236,7 +262,7 @@ def generate_qr_code_view(request):
                 
                 form = form_class(form_data)
                 form_instances[form_type] = form
-                print(f"✅ Données restaurées depuis la session pour {form_type}")
+                logger.debug("Données restaurées depuis la session pour %s", form_type)
 
     # Si c'est une requête AJAX, retourner du JSON
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -259,23 +285,7 @@ def generate_qr_code_view(request):
     })
 
 
-def read_qr_with_cv2(img_data):
-    try:
-        # Convertir les bytes en image OpenCV
-        np_arr = np.asarray(bytearray(img_data), dtype=np.uint8)
-        img_cv2 = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        if img_cv2 is None:
-            raise ValueError("Impossible de décoder l'image (image corrompue)")
-
-        detector = cv2.QRCodeDetector()
-        data, bbox, _ = detector.detectAndDecode(img_cv2)
-
-        if bbox is not None and data:
-            return data
-        return None
-    except Exception as e:
-        print("Erreur de lecture QR :", e)
-        return None
+ALLOWED_IMAGE_FORMATS = {'png', 'jpeg', 'gif', 'bmp', 'webp'}
 
 
 def qr_reader(request):
@@ -288,21 +298,26 @@ def qr_reader(request):
         if qr_reader_form.is_valid():
             qr_img = qr_reader_form.cleaned_data['qr_img']
 
-            if not qr_img.content_type.startswith('image/'):
-                qr_reader_form.add_error('qr_img', '❌ Le fichier téléchargé n\'est pas une image valide.')
-                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': '', 'active_page': 'reader'})
-
             if qr_img.size > 4 * 1024 * 1024:
-                qr_reader_form.add_error('qr_img', '❌ Le fichier est trop volumineux (4 Mo max).')
+                qr_reader_form.add_error('qr_img', 'Le fichier est trop volumineux (4 Mo max).')
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': '', 'active_page': 'reader'})
 
             # Lecture des données binaires
             img_data = qr_img.read()
 
-            # ✅ Appel de ta fonction utilitaire
-            result = read_qr_with_cv2(img_data)
+            # Validation des magic bytes via Pillow
+            try:
+                pil_img = Image.open(BytesIO(img_data))
+                pil_img.verify()
+                if pil_img.format and pil_img.format.lower() not in ALLOWED_IMAGE_FORMATS:
+                    raise ValueError("Format non supporté")
+            except Exception:
+                qr_reader_form.add_error('qr_img', 'Le fichier n\'est pas une image valide (PNG, JPEG, GIF, BMP, WEBP).')
+                return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': '', 'image_url': '', 'active_page': 'reader'})
+
+            result = read_qr_code_from_bytes(img_data)
             if not result:
-                qr_reader_form.add_error('qr_img', "❌ Ce fichier n'est pas un QR Code valide ou est corrompu.")
+                qr_reader_form.add_error('qr_img', "Ce fichier n'est pas un QR Code valide ou est corrompu.")
                 return render(request, "qr_reader.html", {'form': qr_reader_form, 'result': result, 'image_url': '', 'active_page': 'reader'})
 
             # Encodage Base64 pour l'affichage
@@ -337,3 +352,7 @@ def mentions_legales(request):
         'active_page': 'mentions_legales'
     }
     return render(request, "mentions_legales.html", context)
+
+
+def health_check(request):
+    return JsonResponse({'status': 'ok'})

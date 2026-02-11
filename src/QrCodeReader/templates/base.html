@@ -4,9 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}Générateur et lecteur de QR codes gratuit. Créez des QR codes pour URL, texte, WiFi, vCard, email, SMS et plus encore. Rapide, sécurisé et sans inscription.{% endblock %}">
+    <meta name="author" content="codebykriss.fr">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}Générateur de QR Code - QR Code by Kriss{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Générateur et lecteur de QR codes gratuit. Rapide, sécurisé et sans inscription.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qrcodebykriss.fr{% block og_url %}{% endblock %}">
+    <meta property="og:site_name" content="QR Code by Kriss">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://qrcodebykriss.fr{% block canonical_path %}{% endblock %}">
+
     <link rel="stylesheet" href="{% static 'css/tailwind-output.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+
     <!-- Styles spécifiques qui doivent avoir la priorité -->
     <style>
     .qr-option-btn.active {
@@ -88,6 +102,11 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900">
+    <!-- Skip to content (accessibilité) -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+        Aller au contenu principal
+    </a>
+
     <!-- Navigation principale -->
     <header class="bg-white shadow-lg border-b border-gray-100">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -125,7 +144,7 @@
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
-                    <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-200">
+                    <button type="button" aria-label="Ouvrir le menu de navigation" aria-expanded="false" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-200">
                         <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -154,7 +173,7 @@
     </header>
 
     <!-- Contenu principal -->
-    <main class="container mx-auto py-10 px-6">
+    <main id="main-content" class="container mx-auto py-10 px-6">
         {% block content %}
         {% endblock %}
     </main>

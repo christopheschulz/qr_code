@@ -1,0 +1,162 @@
+/* Styles pour le lecteur QR Code */
+
+/* Styles pour les onglets */
+.tab-button.active {
+    color: #2563eb !important;
+    border-bottom-color: #2563eb !important;
+    border-bottom-width: 2px;
+}
+
+.tab-button:not(.active) {
+    color: #6b7280 !important;
+    border-bottom-color: transparent !important;
+}
+
+.tab-button:hover:not(.active) {
+    color: #374151 !important;
+    border-bottom-color: #d1d5db !important;
+}
+
+/* Forcer l'affichage du contenu */
+.tab-content:not(.hidden) {
+    display: block !important;
+}
+
+/* Styles pour l'onglet webcam */
+#camera-content {
+    color: #374151 !important;
+}
+
+#camera-content h3 {
+    color: #111827 !important;
+}
+
+#camera-content p {
+    color: #6b7280 !important;
+}
+
+#start-camera {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease-in-out;
+}
+
+#start-camera:hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+#stop-camera {
+    background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease-in-out;
+}
+
+#stop-camera:hover {
+    background: linear-gradient(135deg, #b91c1c, #991b1b) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+#camera-container {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9) !important;
+    border: 2px solid #e2e8f0 !important;
+}
+
+#camera-video {
+    border: 3px solid #e2e8f0;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+#camera-status {
+    color: #4b5563 !important;
+    font-weight: 500 !important;
+}
+
+#camera-error {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
+    border: 2px solid #fecaca !important;
+}
+
+#camera-error p {
+    color: #b91c1c !important;
+    font-weight: 500 !important;
+}
+
+/* Styles des boutons de résultat */
+.result-button-link {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease-in-out !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-shadow: none !important;
+    line-height: 1.2 !important;
+}
+
+.result-button-link:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.result-button-copy {
+    background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 6px -1px rgba(107, 114, 128, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease-in-out !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-shadow: none !important;
+    line-height: 1.2 !important;
+}
+
+.result-button-copy:hover {
+    background: linear-gradient(135deg, #4b5563, #374151) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 15px -3px rgba(107, 114, 128, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.result-button-link svg,
+.result-button-copy svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    fill: none !important;
+    margin-right: 8px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+/* Animation fade-in */
+@keyframes fade-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
