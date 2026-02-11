@@ -2,7 +2,10 @@ import base64
 import logging
 import qrcode
 import qrcode.constants
-from qrcode.exceptions import DataOverflowError
+try:
+    from qrcode.exceptions import DataOverflowError
+except ImportError:
+    DataOverflowError = ValueError
 from io import BytesIO
 from urllib.parse import quote
 from PIL import Image
