@@ -75,6 +75,7 @@ button.qr-option-btn.active,
 
 .info-tooltip .tooltip-text,
 .info-tooltip .tooltip-content {
+    display: none;
     position: absolute;
     bottom: 130%;
     left: 50%;
@@ -87,9 +88,6 @@ button.qr-option-btn.active,
     line-height: 1.5;
     width: 300px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
     z-index: 1000;
     font-weight: normal;
 }
@@ -107,8 +105,7 @@ button.qr-option-btn.active,
 
 .info-tooltip:hover .tooltip-text,
 .info-tooltip:hover .tooltip-content {
-    opacity: 1;
-    visibility: visible;
+    display: block !important;
 }
 
 /* --- Accordeon guide --- */

@@ -29,7 +29,26 @@ class QRBaseMixin(forms.Form):
     """Mixin pour inclure les champs QR communs à plusieurs formulaires."""
     qr_error_correction_form = forms.ChoiceField(
         choices=QR_ERROR_CORRECT,
-        label=mark_safe('Taux de correction d\'erreur <span class="info-tooltip">?<span class="tooltip-text">Capacités maximales selon le niveau :<br>• Faible (7%) : 2,953 caractères<br>• Moyen (15%) : 2,331 caractères<br>• Élevé (25%) : 1,663 caractères<br>• Maximum (30%) : 1,273 caractères<br><br>Plus le niveau est élevé, plus le QR résiste aux dommages, mais moins il peut contenir de données.</span></span>'),
+        label=mark_safe(
+            'Taux de correction d\'erreur '
+            '<span style="position:relative;display:inline-flex;align-items:center;margin-left:4px"'
+            ' onmouseenter="this.lastElementChild.style.display=\'block\'"'
+            ' onmouseleave="this.lastElementChild.style.display=\'none\'">'
+            '<span style="width:16px;height:16px;background:#3b82f6;color:#fff;border-radius:50%;'
+            'display:inline-flex;align-items:center;justify-content:center;font-size:11px;'
+            'font-weight:bold;cursor:help">?</span>'
+            '<span style="display:none;position:absolute;top:24px;left:50%;transform:translateX(-50%);'
+            'background:#fff;color:#374151;padding:12px 16px;border-radius:12px;font-size:12px;'
+            'line-height:1.5;width:280px;z-index:1000;font-weight:normal;'
+            'border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.08)">'
+            'Capacités maximales :<br>'
+            '• Faible (7%) : 2 953 car.<br>'
+            '• Moyen (15%) : 2 331 car.<br>'
+            '• Élevé (25%) : 1 663 car.<br>'
+            '• Maximum (30%) : 1 273 car.<br><br>'
+            'Plus le niveau est élevé, plus le QR résiste aux dommages.'
+            '</span></span>'
+        ),
         widget=forms.Select(attrs={
             'class': FORM_INPUT_CSS
         })
