@@ -130,6 +130,202 @@ class ReaderViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
 
 
+# ============================================================
+# Tests de sécurité : emojis, données trop volumineuses, pas de 500
+# ============================================================
+
+class GeneratorSecurityTest(TestCase):
+    """Vérifie que les entrées invalides donnent des erreurs propres et jamais une 500."""
+
+    def setUp(self):
+        self.client = Client()
+
+    # --- Emojis rejetés (pas de page 500) ---
+
+    def test_post_emoji_in_text_no_500(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'text',
+            'text_to_convert': 'Hello 😀',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, 'Server Error')
+        self.assertContains(resp, 'emojis')
+
+    def test_post_emoji_in_vcard_no_500(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'vcard',
+            'name': 'Jean 🎉',
+            'phone': '+33612345678',
+            'email': 'jean@example.com',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'emojis')
+
+    def test_post_emoji_in_wifi_no_500(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'wifi',
+            'ssid': 'WiFi🔥',
+            'password': 'pass123',
+            'encryption': 'WPA',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'emojis')
+
+    # --- Emojis rejetés via AJAX ---
+
+    def test_ajax_emoji_returns_error_json(self):
+        resp = self.client.post(
+            reverse('generate_qr_code_view'),
+            {
+                'form_type': 'text',
+                'text_to_convert': 'Test 🎉🔥',
+                'qr_error_correction_form': 1,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertFalse(data['success'])
+        self.assertTrue(len(data['errors']) > 0)
+        self.assertTrue(any('emojis' in e for e in data['errors']))
+
+    # --- Données trop volumineuses ---
+
+    def test_oversized_text_shows_capacity_error(self):
+        """Texte > capacité QR au niveau H (1273 octets) affiche une erreur, pas une 500."""
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'text',
+            'text_to_convert': 'A' * 1300,
+            'qr_error_correction_form': 3,  # H = max 1273 octets
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'volumineuses')
+
+    def test_ajax_oversized_text_returns_error_json(self):
+        resp = self.client.post(
+            reverse('generate_qr_code_view'),
+            {
+                'form_type': 'text',
+                'text_to_convert': 'A' * 1300,
+                'qr_error_correction_form': 3,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertFalse(data['success'])
+        self.assertTrue(any('volumineuses' in e for e in data['errors']))
+
+    # --- Tous les types de QR codes génèrent correctement ---
+
+    def test_post_vcard_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'vcard',
+            'name': 'Jean Dupont',
+            'phone': '+33612345678',
+            'email': 'jean@example.com',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    def test_post_phone_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'phone',
+            'phone': '+33612345678',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    def test_post_email_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'email',
+            'email': 'test@example.com',
+            'subject': 'Bonjour',
+            'message': 'Hello world',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    def test_post_sms_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'sms',
+            'phone': '+33612345678',
+            'message': 'Bonjour',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    def test_post_location_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'location',
+            'latitude': 48.8566,
+            'longitude': 2.3522,
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    def test_post_event_qr_code(self):
+        resp = self.client.post(reverse('generate_qr_code_view'), {
+            'form_type': 'event',
+            'title': 'Conference',
+            'location': 'Paris',
+            'date': '2025-06-15 14:00',
+            'qr_error_correction_form': 1,
+        })
+        self.assertEqual(resp.status_code, 302)
+
+    # --- AJAX pour tous les types ---
+
+    def test_ajax_vcard_success(self):
+        resp = self.client.post(
+            reverse('generate_qr_code_view'),
+            {
+                'form_type': 'vcard',
+                'name': 'Jean Dupont',
+                'phone': '+33612345678',
+                'email': 'jean@example.com',
+                'qr_error_correction_form': 1,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        data = resp.json()
+        self.assertTrue(data['success'])
+        self.assertIn('data:image/png;base64,', data['image_url'])
+
+    def test_ajax_wifi_success(self):
+        resp = self.client.post(
+            reverse('generate_qr_code_view'),
+            {
+                'form_type': 'wifi',
+                'ssid': 'MonReseau',
+                'password': 'motdepasse',
+                'encryption': 'WPA',
+                'qr_error_correction_form': 1,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        data = resp.json()
+        self.assertTrue(data['success'])
+
+    # --- Accents français acceptés (pas de faux positif) ---
+
+    def test_french_accents_generate_qr(self):
+        resp = self.client.post(
+            reverse('generate_qr_code_view'),
+            {
+                'form_type': 'text',
+                'text_to_convert': 'Rendez-vous au café à côté de la bibliothèque',
+                'qr_error_correction_form': 1,
+            },
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest',
+        )
+        data = resp.json()
+        self.assertTrue(data['success'])
+
+
 class StaticPagesTest(TestCase):
     def setUp(self):
         self.client = Client()

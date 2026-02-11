@@ -34,5 +34,8 @@ src/staticfiles/
 # Environment variables
 .env
 
+# Node
+node_modules/
+
 # Claude Code
 .claude/

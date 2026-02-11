@@ -25,6 +25,20 @@ def _clean_phone_number(value):
     return cleaned
 
 
+def _validate_qr_characters(value):
+    """Rejette les caractères non supportés par les QR codes (hors Latin-1)."""
+    if not value:
+        return value
+    try:
+        str(value).encode('latin-1')
+    except UnicodeEncodeError:
+        raise forms.ValidationError(
+            "Ce champ contient des caractères non supportés (emojis, caractères spéciaux). "
+            "Seuls les caractères latins sont autorisés."
+        )
+    return value
+
+
 class QRBaseMixin(forms.Form):
     """Mixin pour inclure les champs QR communs à plusieurs formulaires."""
     qr_error_correction_form = forms.ChoiceField(
@@ -54,6 +68,13 @@ class QRBaseMixin(forms.Form):
         })
     )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        for field_name, value in cleaned_data.items():
+            if isinstance(value, str):
+                _validate_qr_characters(value)
+        return cleaned_data
+
 
 class QrGenerateUrl(QRBaseMixin):
     url_to_convert = forms.URLField(
@@ -69,12 +90,14 @@ class QrGenerateUrl(QRBaseMixin):
 
 class QrGenerateurText(QRBaseMixin):
     text_to_convert = forms.CharField(
+        max_length=2953,
         required=False,  # Tous les formulaires sont rendus sur la même page ; validé côté serveur par validate_form_by_type()
         label="Entrez votre texte à convertir",
         widget=forms.Textarea(attrs={
             'rows': 4,
             'class': FORM_INPUT_CSS,
-            'placeholder': 'Entrez votre texte ici...'
+            'placeholder': 'Entrez votre texte ici...',
+            'maxlength': '2953',
         })
     )
 
@@ -140,10 +163,12 @@ class QrGenerateEmail(QRBaseMixin):
     )
     message = forms.CharField(
         label="Message",
+        max_length=2000,
         widget=forms.Textarea(attrs={
             'rows': 4,
             'class': FORM_INPUT_CSS,
-            'placeholder': 'Entrez votre message ici...'
+            'placeholder': 'Entrez votre message ici...',
+            'maxlength': '2000',
         })
     )
 
@@ -159,10 +184,12 @@ class QrGenerateSMS(QRBaseMixin):
     )
     message = forms.CharField(
         label="Message",
+        max_length=1600,
         widget=forms.Textarea(attrs={
             'rows': 4,
             'class': FORM_INPUT_CSS,
-            'placeholder': 'Entrez votre message ici...'
+            'placeholder': 'Entrez votre message ici...',
+            'maxlength': '1600',
         })
     )
 

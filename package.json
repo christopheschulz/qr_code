@@ -6,7 +6,7 @@
   "scripts": {
     "build-css": "./tailwindcss-macos-arm64 -i src/QrCodeReader/static/css/tailwind-input.css -o src/QrCodeReader/static/css/tailwind-output.css --minify",
     "watch-css": "./tailwindcss-macos-arm64 -i src/QrCodeReader/static/css/tailwind-input.css -o src/QrCodeReader/static/css/tailwind-output.css --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/christopheschulz/qr_code#readme",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "tailwindcss": "^4.1.11"
   }
 }

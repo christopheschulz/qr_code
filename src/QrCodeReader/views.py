@@ -2,6 +2,7 @@ import base64
 import logging
 import qrcode
 import qrcode.constants
+from qrcode.exceptions import DataOverflowError
 from io import BytesIO
 from urllib.parse import quote
 from PIL import Image
@@ -187,47 +188,85 @@ def generate_qr_code_view(request):
                     date_str = date_val.strftime('%Y%m%dT%H%M%S') if hasattr(date_val, 'strftime') else str(date_val)
                     qr_data = f"BEGIN:VEVENT\nSUMMARY:{title}\nLOCATION:{location}\nDTSTART:{date_str}\nEND:VEVENT"
 
-                # Génération du QR Code avec taille automatique
-                qr = qrcode.QRCode(
-                    version=None,  # Taille automatique selon les données
-                    error_correction=qr_error_correction,
-                    box_size=10,   # Taille fixe raisonnable
-                    border=4
-                )
-                qr.add_data(qr_data)
-                qr.make(fit=True)
+                # Validation de la taille des données avant génération
+                data_bytes = len(qr_data.encode('utf-8'))
+                capacity = get_qr_capacity_info(qr_error_correction_value)
+                max_bytes = capacity['byte']
 
-                img = qr.make_image(fill_color="black", back_color="white")
-                buffered = BytesIO()
-                img.save(buffered, format="PNG")
+                if data_bytes > max_bytes:
+                    form_errors.append(
+                        f"Les données sont trop volumineuses ({data_bytes} octets) "
+                        f"pour le niveau de correction choisi "
+                        f"({capacity['description']}, max {max_bytes} octets). "
+                        f"Réduisez le contenu ou choisissez un niveau de correction plus faible."
+                    )
+                else:
+                    # Génération du QR Code avec taille automatique
+                    try:
+                        qr = qrcode.QRCode(
+                            version=None,  # Taille automatique selon les données
+                            error_correction=qr_error_correction,
+                            box_size=10,   # Taille fixe raisonnable
+                            border=4
+                        )
+                        qr.add_data(qr_data)
+                        qr.make(fit=True)
 
-                # Une seule image pour affichage et téléchargement
-                qr_code_base64 = f"data:image/png;base64,{base64.b64encode(buffered.getvalue()).decode()}"
-                qr_code_download_base64 = qr_code_base64  # Même image
-                
-                logger.info("QR code généré pour: %s...", qr_data[:50])
-                logger.debug("Image: %s, Version QR: %s", img.size, qr.version)
-                
-                # Si c'est une requête normale (pas AJAX), stocker les données en session et rediriger
-                if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    # Stocker les résultats en session pour PRG pattern
-                    request.session['qr_generation_result'] = {
-                        'image_url': qr_code_base64,
-                        'download_url': qr_code_download_base64,
-                        'form_type': form_type,
-                        'form_data': dict(request.POST)
-                    }
-                    # Redirection pour éviter la resoumission
-                    return redirect('generate_qr_code_view')
-                
-                # Conserver les données du formulaire actuel après génération réussie (AJAX uniquement)
-                form_instances[form_type] = form
+                        img = qr.make_image(fill_color="black", back_color="white")
+                        buffered = BytesIO()
+                        img.save(buffered, format="PNG")
+
+                        # Une seule image pour affichage et téléchargement
+                        qr_code_base64 = f"data:image/png;base64,{base64.b64encode(buffered.getvalue()).decode()}"
+                        qr_code_download_base64 = qr_code_base64  # Même image
+
+                        logger.info("QR code généré pour: %s...", qr_data[:50])
+                        logger.debug("Image: %s, Version QR: %s", img.size, qr.version)
+
+                    except (ValueError, DataOverflowError) as e:
+                        logger.warning("Données trop volumineuses pour le QR code: %s", e)
+                        form_errors.append(
+                            "Les données dépassent la capacité maximale du QR code. "
+                            "Réduisez le contenu ou choisissez un niveau de correction d'erreur plus faible."
+                        )
+                    except MemoryError:
+                        logger.error("Erreur mémoire lors de la génération du QR code")
+                        form_errors.append(
+                            "Erreur mémoire lors de la génération. Veuillez réduire la quantité de données."
+                        )
+                    except Exception as e:
+                        logger.error("Erreur inattendue lors de la génération du QR code: %s", e)
+                        form_errors.append(
+                            "Une erreur inattendue est survenue lors de la génération du QR code. "
+                            "Veuillez réessayer ou modifier vos données."
+                        )
+
+                # Redirection ou mise à jour uniquement si la génération a réussi
+                if qr_code_base64:
+                    if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        # Stocker les résultats en session pour PRG pattern
+                        request.session['qr_generation_result'] = {
+                            'image_url': qr_code_base64,
+                            'download_url': qr_code_download_base64,
+                            'form_type': form_type,
+                            'form_data': dict(request.POST)
+                        }
+                        # Redirection pour éviter la resoumission
+                        return redirect('generate_qr_code_view')
+                    # Conserver les données du formulaire actuel après génération réussie (AJAX uniquement)
+                    form_instances[form_type] = form
+                else:
+                    # Conserver le formulaire avec les données pour ré-affichage en cas d'erreur
+                    form_instances[form_type] = form
 
             else:
                 # Collecter toutes les erreurs de formulaire
                 for field, errors in form.errors.items():
                     for error in errors:
-                        form_errors.append(f"{field}: {error}")
+                        if field == '__all__':
+                            form_errors.append(str(error))
+                        else:
+                            form_errors.append(f"{field}: {error}")
                 logger.warning("Formulaire invalide: %s", form.errors)
                 
                 # Mettre à jour l'instance du formulaire avec les erreurs pour l'affichage

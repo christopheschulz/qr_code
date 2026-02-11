@@ -185,3 +185,221 @@ class QrLoaderTest(TestCase):
     def test_no_file(self):
         form = QrLoader(data={})
         self.assertFalse(form.is_valid())
+
+
+# ============================================================
+# Tests de validation des caractères (rejet hors Latin-1)
+# ============================================================
+
+class CharacterValidationTest(TestCase):
+    """Vérifie que les emojis et caractères non-Latin-1 sont rejetés
+    sur tous les types de formulaires via QRBaseMixin.clean()."""
+
+    def test_emoji_rejected_in_text(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Bonjour 😀',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn('__all__', form.errors)
+
+    def test_emoji_rejected_in_url(self):
+        form = QrGenerateUrl(data={
+            'url_to_convert': 'https://example.com/😀',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_emoji_rejected_in_vcard_name(self):
+        form = QrGenerateVCard(data={
+            'name': 'Jean 🎉 Dupont',
+            'phone': '+33 6 12 34 56 78',
+            'email': 'jean@example.com',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_emoji_rejected_in_wifi_ssid(self):
+        form = QrGenerateWiFi(data={
+            'ssid': 'WiFi🔥',
+            'password': 'password',
+            'encryption': 'WPA',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_emoji_rejected_in_sms_message(self):
+        form = QrGenerateSMS(data={
+            'phone': '+33 6 12 34 56 78',
+            'message': 'Hello 👍',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_emoji_rejected_in_email_subject(self):
+        form = QrGenerateEmail(data={
+            'email': 'test@example.com',
+            'subject': 'Sujet 🚀',
+            'message': 'Hello',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_emoji_rejected_in_event_title(self):
+        form = QrGenerateEvent(data={
+            'title': 'Concert 🎵',
+            'location': 'Paris',
+            'date': '2025-06-15 14:00',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_chinese_characters_rejected(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Hello 你好世界',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_arabic_characters_rejected(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Bienvenue مرحبا',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_cyrillic_characters_rejected(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Привет мир',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_french_accents_accepted(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Café résumé naïve àéîõü ç',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_german_characters_accepted(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'über Straße Mädchen',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_latin1_symbols_accepted(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': '©2024 ®marque £50 ¥100 §1',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_error_message_is_user_friendly(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'Test 😀',
+            'qr_error_correction_form': 1,
+        })
+        form.is_valid()
+        all_errors = form.errors.get('__all__', [])
+        self.assertTrue(any('emojis' in str(e) for e in all_errors))
+
+
+# ============================================================
+# Tests des limites max_length
+# ============================================================
+
+class MaxLengthValidationTest(TestCase):
+    """Vérifie que les champs sans max_length d'origine sont maintenant limités."""
+
+    def test_text_max_length_respected(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'A' * 2953,
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_text_exceeds_max_length(self):
+        form = QrGenerateurText(data={
+            'text_to_convert': 'A' * 2954,
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn('text_to_convert', form.errors)
+
+    def test_email_message_max_length_respected(self):
+        form = QrGenerateEmail(data={
+            'email': 'test@example.com',
+            'subject': 'Test',
+            'message': 'A' * 2000,
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_email_message_exceeds_max_length(self):
+        form = QrGenerateEmail(data={
+            'email': 'test@example.com',
+            'subject': 'Test',
+            'message': 'A' * 2001,
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn('message', form.errors)
+
+    def test_sms_message_max_length_respected(self):
+        form = QrGenerateSMS(data={
+            'phone': '+33 6 12 34 56 78',
+            'message': 'A' * 1600,
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_sms_message_exceeds_max_length(self):
+        form = QrGenerateSMS(data={
+            'phone': '+33 6 12 34 56 78',
+            'message': 'A' * 1601,
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn('message', form.errors)
+
+
+# ============================================================
+# Tests du nettoyage des numéros de téléphone (cas limites)
+# ============================================================
+
+class PhoneCleaningTest(TestCase):
+    """Vérifie le nettoyage et la validation des numéros de téléphone."""
+
+    def test_phone_with_special_chars_cleaned(self):
+        form = QrGeneratePhone(data={
+            'phone': '+33 (0)6-12-34-56-78',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+        # Les caractères spéciaux injectés doivent être nettoyés
+        self.assertNotIn('!', form.cleaned_data.get('phone', ''))
+
+    def test_phone_strips_injected_chars(self):
+        """Les caractères non-téléphone sont supprimés."""
+        form = QrGeneratePhone(data={
+            'phone': '+33;612345678',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+        self.assertNotIn(';', form.cleaned_data['phone'])
+
+    def test_phone_exactly_6_digits(self):
+        form = QrGeneratePhone(data={
+            'phone': '123456',
+            'qr_error_correction_form': 1,
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_phone_5_digits_rejected(self):
+        form = QrGeneratePhone(data={
+            'phone': '12345',
+            'qr_error_correction_form': 1,
+        })
+        self.assertFalse(form.is_valid())

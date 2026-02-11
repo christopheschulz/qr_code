@@ -156,6 +156,9 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Configuration du compteur de caractères
     setupCharacterCounters();
+
+    // Validation en temps réel des caractères non supportés
+    setupCharacterValidation();
     
     // Configuration de l'infobulle pour le taux de correction d'erreur
     
@@ -273,18 +276,33 @@ async function downloadQrCodeWithDialog(qrImage) {
  */
 function handleFormSubmission(event) {
     event.preventDefault(); // Empêcher la soumission normale
-    
+
     const form = event.target;
-    const formData = new FormData(form);
     const submitButton = form.querySelector('button[type="submit"]');
-    
+
+    // Vérification côté client avant envoi
+    const visibleInputs = form.querySelectorAll('input:not([disabled]):not([type="hidden"]), textarea:not([disabled])');
+    let hasInvalidChars = false;
+    visibleInputs.forEach(input => {
+        if (input.value && containsInvalidChars(input.value)) {
+            hasInvalidChars = true;
+            validateFieldCharacters(input);
+        }
+    });
+    if (hasInvalidChars) {
+        displayErrors(['Certains champs contiennent des caractères non supportés (emojis, caractères spéciaux). Corrigez-les avant de générer.']);
+        return;
+    }
+
+    const formData = new FormData(form);
+
     // Indication visuelle de chargement
     const originalText = submitButton.textContent;
     submitButton.textContent = 'Génération en cours...';
     submitButton.disabled = true;
-    
+
     console.log('📤 Envoi AJAX du formulaire...');
-    
+
     fetch(form.action || window.location.pathname, {
         method: 'POST',
         body: formData,
@@ -292,11 +310,21 @@ function handleFormSubmission(event) {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erreur serveur (${response.status})`);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('✅ Réponse AJAX reçue:', data);
-        
+
         if (data.success) {
+            // Supprimer le bandeau d'erreur s'il existe
+            const existingBanner = document.getElementById('ajax-error-banner');
+            if (existingBanner) {
+                existingBanner.remove();
+            }
             // Mettre à jour l'aperçu avec le QR code
             updatePreview(data.image_url, data.download_url);
         } else {
@@ -306,13 +334,14 @@ function handleFormSubmission(event) {
     })
     .catch(error => {
         console.error('❌ Erreur AJAX:', error);
-        // En cas d'erreur, faire une soumission normale
-        form.submit();
+        displayErrors([
+            'Une erreur de communication est survenue. Veuillez vérifier votre connexion internet et réessayer.'
+        ]);
     })
     .finally(() => {
-        // Restaurer le bouton
+        // Restaurer le bouton (sauf si bloqué par validation caractères)
         submitButton.textContent = originalText;
-        submitButton.disabled = false;
+        updateSubmitButtonState();
     });
 }
 
@@ -320,30 +349,160 @@ function handleFormSubmission(event) {
  * Met à jour l'aperçu avec le nouveau QR code
  */
 function updatePreview(imageUrl, downloadUrl) {
-    const previewContainer = document.querySelector('.bg-white.rounded-2xl.shadow-lg.border.border-gray-100:last-child');
-    const previewContent = previewContainer.querySelector('.p-6.text-center');
-    
+    // Chercher le panneau d'aperçu (colonne droite dans la grille)
+    const previewContent = document.querySelector('.p-6.text-center');
+
+    if (!previewContent) {
+        console.warn('Panneau d\'aperçu non trouvé');
+        return;
+    }
+
     if (imageUrl) {
         previewContent.innerHTML = `
-            <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                <img src="${imageUrl}" alt="QR Code généré" class="mx-auto w-64 h-64 object-contain" id="qr-code-image" data-download-url="${downloadUrl || imageUrl}">
+            <div class="bg-gray-50 rounded-xl p-6 mb-5 animate-scale-in">
+                <img src="${imageUrl}" alt="QR Code généré" class="mx-auto w-48 h-48 object-contain" id="qr-code-image" data-download-url="${downloadUrl || imageUrl}">
             </div>
-            <button id="download-qr" class="w-full bg-gray-900 text-white py-3 px-6 rounded-xl font-medium hover:bg-gray-800 transition-colors duration-200">
+            <button id="download-qr" class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-blue-700 transition-colors duration-200 inline-flex items-center justify-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
                 Télécharger
             </button>
         `;
-        
+
         // Réinitialiser le système de téléchargement
         setupQrCodeDownload();
     }
 }
 
 /**
- * Affiche les erreurs de validation
+ * Échappe les caractères HTML pour prévenir l'injection XSS
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Affiche les erreurs de validation dans un bandeau rouge
  */
 function displayErrors(errors) {
     console.log('Affichage des erreurs:', errors);
-    // TODO: Implémenter l'affichage des erreurs
+
+    if (!errors || errors.length === 0) {
+        return;
+    }
+
+    // Supprimer tout bandeau d'erreur existant
+    const existingBanner = document.getElementById('ajax-error-banner');
+    if (existingBanner) {
+        existingBanner.remove();
+    }
+
+    // Construire le HTML du bandeau (même style que le template Django)
+    const errorList = errors.map(err => `<li>${escapeHtml(err)}</li>`).join('');
+    const errorDiv = document.createElement('div');
+    errorDiv.id = 'ajax-error-banner';
+    errorDiv.className = 'bg-red-50 border border-red-200 rounded-xl p-4';
+    errorDiv.innerHTML = `
+        <h4 class="text-red-800 font-medium mb-2">Erreurs de validation :</h4>
+        <ul class="text-red-700 text-sm space-y-1">
+            ${errorList}
+        </ul>
+    `;
+
+    // Insérer avant le bouton "Générer" dans le formulaire
+    const form = document.querySelector('form');
+    const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+    if (submitButton) {
+        submitButton.parentNode.insertBefore(errorDiv, submitButton);
+    }
+
+    // Faire défiler vers le bandeau d'erreur
+    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/**
+ * Vérifie si une chaîne contient des caractères hors Latin-1 (emojis, CJK, etc.)
+ */
+function containsInvalidChars(str) {
+    for (let i = 0; i < str.length; i++) {
+        const code = str.charCodeAt(i);
+        if (code > 0xFF) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Met à jour l'état du bouton Générer selon la validité des champs visibles
+ */
+function updateSubmitButtonState() {
+    const submitButton = document.querySelector('form button[type="submit"]');
+    if (!submitButton) return;
+
+    // Ne vérifier que les avertissements dans les sections de formulaire visibles (non-hidden)
+    let hasInvalid = false;
+    document.querySelectorAll('.char-validation-warning').forEach(warning => {
+        const section = warning.closest('[id$="-content"]');
+        if (!section || !section.classList.contains('hidden')) {
+            hasInvalid = true;
+        }
+    });
+
+    if (hasInvalid) {
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        submitButton.classList.remove('hover:bg-blue-700');
+    } else {
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        submitButton.classList.add('hover:bg-blue-700');
+    }
+}
+
+/**
+ * Validation en temps réel des caractères non supportés (emojis, etc.)
+ */
+function setupCharacterValidation() {
+    const textInputs = document.querySelectorAll('input[type="text"], input[type="url"], input[type="email"], textarea');
+
+    textInputs.forEach(input => {
+        input.addEventListener('input', function () {
+            validateFieldCharacters(this);
+        });
+        // Vérifier l'état initial
+        validateFieldCharacters(input);
+    });
+}
+
+/**
+ * Valide les caractères d'un champ et affiche/masque l'avertissement inline
+ */
+function validateFieldCharacters(input) {
+    // Supprimer l'avertissement existant pour ce champ
+    let warning = input.parentNode.querySelector('.char-validation-warning');
+
+    if (input.value && containsInvalidChars(input.value)) {
+        if (!warning) {
+            warning = document.createElement('div');
+            warning.className = 'char-validation-warning text-xs mt-1 text-red-600 font-medium';
+            warning.textContent = 'Caractères non supportés détectés (emojis, caractères spéciaux). Seuls les caractères latins sont autorisés.';
+            input.parentNode.appendChild(warning);
+        }
+        input.classList.add('border-red-400');
+        input.classList.remove('border-gray-300');
+    } else {
+        if (warning) {
+            warning.remove();
+        }
+        input.classList.remove('border-red-400');
+        input.classList.add('border-gray-300');
+    }
+
+    updateSubmitButtonState();
 }
 
 /**
@@ -399,5 +558,10 @@ function setupCharacterCounters() {
         counter.className = `character-counter text-xs mt-1 text-right ${colorClass}`;
         counter.textContent = `${currentLength} / ${maxCapacity} caractères`;
     }
+}
+
+// Export pour les tests (Node.js) - ignoré dans le navigateur
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { containsInvalidChars, escapeHtml };
 }
 
