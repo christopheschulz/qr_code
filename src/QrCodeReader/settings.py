@@ -142,14 +142,6 @@ STATICFILES_DIRS = [
     BASE_DIR / 'QrCodeReader/static',
 ]
 
-# Cache-busting : ajoute un hash au nom des fichiers statiques
-# tailwind-output.css → tailwind-output.a1b2c3d4e5f6.css
-# Quand le contenu change, l'URL change → le navigateur re-télécharge
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "QrCodeReader.storage.CacheBustingStorage",
-    },
-}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
