@@ -1,31 +1,48 @@
 /**
  * GESTION DE LA NAVIGATION PRINCIPALE
- * Gère uniquement le menu mobile (l'état actif est géré côté serveur)
+ * Menu mobile avec animation slide-down + gestion accordeon guide
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("🔍 Navigation script chargé");
-    
-    // Gestion du menu mobile uniquement
+    // --- Menu mobile ---
     const mobileMenuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
-    
+
     if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener('click', function() {
-            const isHidden = mobileMenu.classList.contains('hidden');
-            if (isHidden) {
-                mobileMenu.classList.remove('hidden');
-                // Changer l'icône du bouton (hamburger → croix)
-                mobileMenuButton.querySelector('svg:first-child').classList.add('hidden');
-                mobileMenuButton.querySelector('svg:last-child').classList.remove('hidden');
-            } else {
-                mobileMenu.classList.add('hidden');
-                // Changer l'icône du bouton (croix → hamburger)
+            const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
+            if (isOpen) {
+                // Fermer
+                mobileMenu.style.maxHeight = '0px';
                 mobileMenuButton.querySelector('svg:first-child').classList.remove('hidden');
                 mobileMenuButton.querySelector('svg:last-child').classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+            } else {
+                // Ouvrir
+                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                mobileMenuButton.querySelector('svg:first-child').classList.add('hidden');
+                mobileMenuButton.querySelector('svg:last-child').classList.remove('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'true');
             }
         });
     }
-    
-    console.log("✅ Menu mobile configuré");
+
+    // --- Accordeon guide d'utilisation ---
+    const guideToggle = document.querySelector('.guide-accordion-toggle');
+    const guideContent = document.querySelector('.guide-accordion-content');
+
+    if (guideToggle && guideContent) {
+        guideToggle.addEventListener('click', function() {
+            const isOpen = guideContent.classList.contains('open');
+            if (isOpen) {
+                guideContent.classList.remove('open');
+                guideContent.style.maxHeight = '0px';
+                guideToggle.classList.remove('open');
+            } else {
+                guideContent.classList.add('open');
+                guideContent.style.maxHeight = guideContent.scrollHeight + 'px';
+                guideToggle.classList.add('open');
+            }
+        });
+    }
 });

@@ -1,98 +1,96 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}<title>Mentions Légales - qrcodebykriss.fr</title>{% endblock %}
+{% block title %}<title>Mentions Légales - QR Code by Kriss</title>{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-10 px-6">
-    <h1 class="text-3xl font-bold mb-8">Mentions légales</h1>
+    <!-- Hero Section -->
+    <div class="text-center mb-10 bg-gradient-to-b from-blue-50/60 to-transparent -mt-10 pt-10 pb-2 -mx-6 px-6">
+        <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Mentions légales</h1>
+        <p class="text-sm text-gray-400">Dernière mise à jour : {{ current_date|date:"d/m/Y" }}</p>
+    </div>
 
-    <p class="text-sm text-gray-500 italic mb-8">Dernière mise à jour : {{ current_date|date:"d/m/Y" }}</p>
-
-    <div class="prose max-w-none space-y-6">
-        <p class="text-gray-600">
+    <div class="max-w-4xl mx-auto space-y-4">
+        <p class="text-gray-500 text-sm leading-relaxed">
             Conformément aux dispositions des articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site les informations suivantes.
         </p>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">1. Éditeur du site</h2>
-            <div class="text-gray-600 space-y-2">
-                <p><strong>Raison sociale :</strong> Auto-entrepreneur Schulz Christophe Andre Erwin</p>
-                <p><strong>Nom commercial :</strong> Code By Kriss</p>
-                <p><strong>Adresse :</strong> 60 rue François 1er, 75008 Paris, France</p>
-                <p><strong>SIRET :</strong> 989 052 840 000 18</p>
-                <p><strong>Email :</strong> <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline">contact@codebykriss.fr</a></p>
-                <p><strong>Activité :</strong> Développement d'applications web et mobiles</p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">1. Éditeur du site</h2>
+            <div class="text-gray-600 text-sm space-y-1.5">
+                <p><strong class="text-gray-700">Raison sociale :</strong> Auto-entrepreneur Schulz Christophe Andre Erwin</p>
+                <p><strong class="text-gray-700">Nom commercial :</strong> Code By Kriss</p>
+                <p><strong class="text-gray-700">Adresse :</strong> 60 rue François 1er, 75008 Paris, France</p>
+                <p><strong class="text-gray-700">SIRET :</strong> 989 052 840 000 18</p>
+                <p><strong class="text-gray-700">Email :</strong> <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline">contact@codebykriss.fr</a></p>
+                <p><strong class="text-gray-700">Activité :</strong> Développement d'applications web et mobiles</p>
             </div>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">2. Directeur de la publication</h2>
-            <p class="text-gray-600">
-                <strong>Nom :</strong> Christophe Schulz
-            </p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">2. Directeur de la publication</h2>
+            <p class="text-gray-600 text-sm"><strong class="text-gray-700">Nom :</strong> Christophe Schulz</p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">3. Hébergeur</h2>
-            <div class="text-gray-600 space-y-2">
-                <p><strong>Nom :</strong> Hostinger International Ltd.</p>
-                <p><strong>Adresse :</strong> 61 Lordou Vironos Street, 6023 Larnaca, Chypre</p>
-                <p><strong>Site web :</strong> <a href="https://www.hostinger.fr" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">https://www.hostinger.fr</a></p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">3. Hébergeur</h2>
+            <div class="text-gray-600 text-sm space-y-1.5">
+                <p><strong class="text-gray-700">Nom :</strong> Hostinger International Ltd.</p>
+                <p><strong class="text-gray-700">Adresse :</strong> 61 Lordou Vironos Street, 6023 Larnaca, Chypre</p>
+                <p><strong class="text-gray-700">Site web :</strong> <a href="https://www.hostinger.fr" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">https://www.hostinger.fr</a></p>
             </div>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">4. Propriété intellectuelle</h2>
-            <p class="text-gray-600">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">4. Propriété intellectuelle</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
                 L'ensemble du contenu de ce site (textes, images, graphismes, logo, icônes, etc.) est la propriété exclusive de l'éditeur, à l'exception des marques, logos ou contenus appartenant à d'autres sociétés partenaires ou auteurs. Toute reproduction, distribution, modification, adaptation, retransmission ou publication de ces différents éléments est strictement interdite sans l'accord exprès par écrit de l'éditeur.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">5. Données personnelles</h2>
-            <p class="text-gray-600">
-                Pour plus d'informations sur la collecte et le traitement des données personnelles, veuillez consulter notre <a href="{% url 'privacy' %}" class="text-blue-600 hover:underline">Politique de confidentialité</a>.
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">5. Données personnelles</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Pour plus d'informations sur la collecte et le traitement des données personnelles, veuillez consulter notre <a href="{% url 'privacy' %}" class="text-blue-600 hover:underline font-medium">Politique de confidentialité</a>.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">6. Cookies</h2>
-            <p class="text-gray-600">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">6. Cookies</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
                 Ce site n'utilise aucun cookie de tracking ou de marketing. Seuls les cookies techniques nécessaires au bon fonctionnement du site peuvent être utilisés.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">7. Responsabilité</h2>
-            <p class="text-gray-600 mb-3">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">7. Responsabilité</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-2">
                 Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois contenir des inexactitudes, des omissions ou des lacunes.
             </p>
-            <p class="text-gray-600">
+            <p class="text-gray-600 text-sm leading-relaxed">
                 Si vous constatez une lacune, erreur ou ce qui paraît être un dysfonctionnement, merci de bien vouloir le signaler par email en décrivant le problème de la manière la plus précise possible.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">8. Liens hypertextes</h2>
-            <p class="text-gray-600">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">8. Liens hypertextes</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
                 Les liens hypertextes mis en place dans le cadre du présent site web en direction d'autres ressources présentes sur le réseau Internet ne sauraient engager la responsabilité de Code By Kriss.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">9. Droit applicable</h2>
-            <p class="text-gray-600">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">9. Droit applicable</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
                 Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents.
             </p>
         </section>
 
-        <section class="p-6 rounded-2xl bg-gray-50 border border-gray-200 mb-6">
-            <h2 class="text-xl font-semibold mb-4">10. Contact</h2>
-            <p class="text-gray-600">
-                Pour toute question concernant ces mentions légales, vous pouvez nous contacter par email à <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline">contact@codebykriss.fr</a>.
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">10. Contact</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">
+                Pour toute question, contactez-nous par email à <a href="mailto:contact@codebykriss.fr" class="text-blue-600 hover:underline font-medium">contact@codebykriss.fr</a>.
             </p>
         </section>
     </div>
-</div>
 {% endblock %}

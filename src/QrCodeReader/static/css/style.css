@@ -1,106 +1,101 @@
 /* =================================================================
-   STYLES PERSONNALISÉS POUR L'APPLICATION QR CODE
-   Utilisation obligatoire de Tailwind CSS
+   STYLES PERSONNALISES - QR CODE BY KRISS
    ================================================================= */
 
-/* Styles personnalisés additionnels seulement */
+/* --- Navigation active states --- */
 .nav-link.active {
-    background-color: #3b82f6 !important;
-    color: white !important;
+    background-color: #3b82f6;
+    color: white;
 }
 
 .nav-link.active svg {
-    color: white !important;
+    color: white;
 }
 
 .mobile-nav-link.active {
-    background-color: #eff6ff !important;
-    color: #2563eb !important;
+    background-color: #eff6ff;
+    color: #2563eb;
 }
 
 .mobile-nav-link.active svg {
-    color: #2563eb !important;
+    color: #2563eb;
 }
 
-/* État actif seulement - le reste utilise les classes Tailwind normales */
+/* --- QR type buttons active state --- */
 .qr-option-btn.active {
-    background-color: #3b82f6 !important;
-    border-color: #3b82f6 !important;
-    color: white !important;
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
 }
 
 .qr-option-btn.active svg {
-    color: white !important;
+    color: white;
 }
 
 .qr-option-btn.active span {
-    color: white !important;
+    color: white;
 }
 
-/* Forcer l'état actif avec plus de spécificité */
 button.qr-option-btn.active,
 .qr-option-btn.active:hover,
 .qr-option-btn.active:focus {
-    background-color: #3b82f6 !important;
-    border-color: #3b82f6 !important;
-    color: white !important;
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
 }
 
-/* Responsive mobile pour la grille des boutons QR */
-@media (max-width: 768px) {
-    .qr-option-grid-mobile {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-
-/* Styles pour l'infobulle */
-.tooltip {
+/* --- Tooltip unifie --- */
+.info-tooltip {
     position: relative;
     display: inline-flex;
     align-items: center;
     margin-left: 4px;
 }
 
-.tooltip .tooltip-trigger {
+.info-tooltip .tooltip-trigger,
+.info-tooltip > span:first-child {
     width: 16px;
     height: 16px;
     background-color: #3b82f6;
     color: white;
     border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     cursor: help;
     transition: background-color 0.2s;
 }
 
-.tooltip .tooltip-trigger:hover {
+.info-tooltip:hover .tooltip-trigger,
+.info-tooltip:hover > span:first-child {
     background-color: #2563eb;
 }
 
-.tooltip .tooltip-content {
+.info-tooltip .tooltip-text,
+.info-tooltip .tooltip-content {
     position: absolute;
     bottom: 130%;
     left: 50%;
     transform: translateX(-50%);
     background-color: #1f2937;
     color: white;
-    padding: 12px 16px;
+    padding: 10px 14px;
     border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.4;
-    width: 320px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    font-size: 13px;
+    line-height: 1.5;
+    width: 300px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     z-index: 1000;
+    font-weight: normal;
 }
 
-.tooltip .tooltip-content::after {
+.info-tooltip .tooltip-text::after,
+.info-tooltip .tooltip-content::after {
     content: '';
     position: absolute;
     top: 100%;
@@ -110,16 +105,74 @@ button.qr-option-btn.active,
     border-top-color: #1f2937;
 }
 
-.tooltip:hover .tooltip-content {
+.info-tooltip:hover .tooltip-text,
+.info-tooltip:hover .tooltip-content {
     opacity: 1;
     visibility: visible;
 }
 
-/* Responsive pour mobile */
+/* --- Accordeon guide --- */
+.guide-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+
+.guide-accordion-content.open {
+    max-height: 2000px;
+}
+
+.guide-accordion-toggle svg {
+    transition: transform 0.3s ease;
+}
+
+.guide-accordion-toggle.open svg {
+    transform: rotate(180deg);
+}
+
+/* --- Animations --- */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out;
+}
+
+.animate-scale-in {
+    animation: scale-in 0.3s ease-out;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .qr-option-grid-mobile {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 480px) {
-    .tooltip .tooltip-content {
-        width: 280px;
-        font-size: 13px;
-        padding: 10px 12px;
+    .info-tooltip .tooltip-text,
+    .info-tooltip .tooltip-content {
+        width: 260px;
+        font-size: 12px;
+        padding: 8px 10px;
     }
 }

@@ -3,12 +3,38 @@
 {% block title %}<title>Erreur serveur - QR Code by Kriss</title>{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto text-center py-20">
-    <h1 class="text-6xl font-bold text-gray-300 mb-4">500</h1>
-    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Erreur serveur</h2>
-    <p class="text-gray-600 mb-8">Une erreur inattendue s'est produite. Veuillez réessayer plus tard.</p>
-    <a href="{% url 'generate_qr_code_view' %}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200">
-        Retour à l'accueil
-    </a>
+<div class="max-w-2xl mx-auto text-center py-16">
+    <!-- Illustration SVG - engrenage cassé -->
+    <div class="mb-8 inline-block">
+        <svg class="w-40 h-40 mx-auto text-gray-200" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Engrenage principal -->
+            <path d="M80 50a30 30 0 110 60 30 30 0 010-60z" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="80" cy="80" r="12" fill="currentColor" opacity="0.2"/>
+            <!-- Dents d'engrenage -->
+            <rect x="74" y="30" width="12" height="16" rx="3" fill="currentColor" opacity="0.3"/>
+            <rect x="74" y="114" width="12" height="16" rx="3" fill="currentColor" opacity="0.3"/>
+            <rect x="30" y="74" width="16" height="12" rx="3" fill="currentColor" opacity="0.3"/>
+            <rect x="114" y="74" width="16" height="12" rx="3" fill="currentColor" opacity="0.3"/>
+            <!-- Dents diagonales -->
+            <rect x="46" y="42" width="12" height="16" rx="3" fill="currentColor" opacity="0.3" transform="rotate(-45 52 50)"/>
+            <rect x="102" y="42" width="12" height="16" rx="3" fill="currentColor" opacity="0.3" transform="rotate(45 108 50)"/>
+            <rect x="46" y="102" width="12" height="16" rx="3" fill="currentColor" opacity="0.3" transform="rotate(45 52 110)"/>
+            <rect x="102" y="102" width="12" height="16" rx="3" fill="currentColor" opacity="0.3" transform="rotate(-45 108 110)"/>
+            <!-- Éclair (erreur) -->
+            <path d="M88 62l-6 14h8l-6 14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <h1 class="text-7xl font-bold text-gray-200 mb-2">500</h1>
+    <h2 class="text-2xl font-semibold text-gray-900 mb-3">Erreur serveur</h2>
+    <p class="text-gray-500 mb-8 max-w-md mx-auto">
+        Une erreur inattendue s'est produite sur nos serveurs. Veuillez réessayer dans quelques instants.
+    </p>
+    <div class="flex items-center justify-center gap-4">
+        <a href="{% url 'generate_qr_code_view' %}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-200 shadow-sm">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg>
+            Retour à l'accueil
+        </a>
+    </div>
 </div>
 {% endblock %}

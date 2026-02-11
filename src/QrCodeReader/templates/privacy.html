@@ -1,89 +1,88 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}<title>Politique de Confidentialité - Générateur de QR Code</title>{% endblock %}
+{% block title %}<title>Politique de Confidentialité - QR Code by Kriss</title>{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-10 px-6">
-    <h1 class="text-3xl font-bold mb-8">Politique de Confidentialité</h1>
-    
-    <div class="prose max-w-none">
-        <p class="text-gray-600 mb-6">Dernière mise à jour : {{ current_date|date:"d/m/Y" }}</p>
+    <!-- Hero Section -->
+    <div class="text-center mb-10 bg-gradient-to-b from-blue-50/60 to-transparent -mt-10 pt-10 pb-2 -mx-6 px-6">
+        <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Politique de Confidentialité</h1>
+        <p class="text-sm text-gray-400">Dernière mise à jour : {{ current_date|date:"d/m/Y" }}</p>
+    </div>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">1. Introduction</h2>
-            <p>Nous accordons une importance primordiale à la protection de votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez notre service de génération de QR codes.</p>
+    <div class="max-w-4xl mx-auto space-y-4">
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">1. Introduction</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">Nous accordons une importance primordiale à la protection de votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez notre service de génération de QR codes.</p>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">2. Collecte de Données</h2>
-            <p>Notre service est conçu pour fonctionner de manière respectueuse de la vie privée :</p>
-            <ul class="list-disc pl-6 mt-2">
-                <li>Nous ne stockons aucune des informations que vous saisissez dans les formulaires</li>
-                <li>Les QR codes sont générés localement dans votre navigateur</li>
-                <li>Nous ne conservons aucune image de QR code sur nos serveurs</li>
-                <li>Nous ne collectons que les données techniques minimales nécessaires au fonctionnement du service</li>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">2. Collecte de Données</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">Notre service est conçu pour fonctionner de manière respectueuse de la vie privée :</p>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Nous ne stockons aucune des informations que vous saisissez dans les formulaires</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Les QR codes sont générés localement dans votre navigateur</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Nous ne conservons aucune image de QR code sur nos serveurs</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Nous ne collectons que les données techniques minimales nécessaires au fonctionnement du service</span></li>
             </ul>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">3. Utilisation des Données</h2>
-            <p>Les données que nous collectons sont utilisées uniquement pour :</p>
-            <ul class="list-disc pl-6 mt-2">
-                <li>Assurer le bon fonctionnement du service</li>
-                <li>Améliorer l'expérience utilisateur</li>
-                <li>Maintenir la sécurité du service</li>
-                <li>Générer des statistiques anonymes d'utilisation</li>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">3. Utilisation des Données</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">Les données que nous collectons sont utilisées uniquement pour :</p>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Assurer le bon fonctionnement du service</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Améliorer l'expérience utilisateur</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Maintenir la sécurité du service</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Générer des statistiques anonymes d'utilisation</span></li>
             </ul>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">4. Cookies</h2>
-            <p>Nous utilisons des cookies essentiels pour :</p>
-            <ul class="list-disc pl-6 mt-2">
-                <li>Maintenir votre session active</li>
-                <li>Mémoriser vos préférences de langue</li>
-                <li>Assurer la sécurité du service</li>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">4. Cookies</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">Nous utilisons des cookies essentiels pour :</p>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Maintenir votre session active</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Mémoriser vos préférences de langue</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Assurer la sécurité du service</span></li>
             </ul>
-            <p class="mt-2">Ces cookies sont nécessaires au fonctionnement du service et ne peuvent pas être désactivés.</p>
+            <p class="text-sm text-gray-600 mt-3">Ces cookies sont nécessaires au fonctionnement du service et ne peuvent pas être désactivés.</p>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">5. Sécurité</h2>
-            <p>Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données :</p>
-            <ul class="list-disc pl-6 mt-2">
-                <li>Utilisation de protocoles de sécurité (HTTPS)</li>
-                <li>Protection contre les attaques courantes</li>
-                <li>Surveillance régulière de la sécurité</li>
-                <li>Mises à jour de sécurité régulières</li>
-            </ul>
-        </section>
-
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">6. Vos Droits</h2>
-            <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
-            <ul class="list-disc pl-6 mt-2">
-                <li>Droit d'accès à vos données</li>
-                <li>Droit de rectification</li>
-                <li>Droit à l'effacement</li>
-                <li>Droit à la limitation du traitement</li>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">5. Sécurité</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données :</p>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Utilisation de protocoles de sécurité (HTTPS)</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Protection contre les attaques courantes</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Surveillance régulière de la sécurité</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Mises à jour de sécurité régulières</span></li>
             </ul>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">7. Modifications</h2>
-            <p>Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Les modifications entrent en vigueur dès leur publication sur le site. Nous vous informerons de tout changement significatif.</p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">6. Vos Droits</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-3">Conformément au RGPD, vous disposez des droits suivants :</p>
+            <ul class="text-sm text-gray-600 space-y-2">
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Droit d'accès à vos données</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Droit de rectification</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Droit à l'effacement</span></li>
+                <li class="flex items-start space-x-2"><div class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div><span>Droit à la limitation du traitement</span></li>
+            </ul>
         </section>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4">8. Contact</h2>
-            <p>Pour toute question concernant cette politique de confidentialité ou vos données personnelles, vous pouvez nous contacter à :</p>
-            <p class="mt-2">Email : krisskoolbycode@etik.com</p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">7. Modifications</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Les modifications entrent en vigueur dès leur publication sur le site.</p>
         </section>
 
-        <div class="bg-gray-50 p-4 rounded-lg mt-8">
-            <p class="text-sm text-gray-600">En utilisant notre service, vous acceptez les conditions de cette politique de confidentialité.</p>
+        <section class="p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">8. Contact</h2>
+            <p class="text-gray-600 text-sm leading-relaxed">Pour toute question, contactez-nous à : <a href="mailto:krisskoolbycode@etik.com" class="text-blue-600 hover:underline font-medium">krisskoolbycode@etik.com</a></p>
+        </section>
+
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+            <p class="text-xs text-gray-500 text-center">En utilisant notre service, vous acceptez les conditions de cette politique de confidentialité.</p>
         </div>
     </div>
-</div>
-{% endblock %} 
+{% endblock %}

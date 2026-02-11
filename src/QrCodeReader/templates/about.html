@@ -1,45 +1,45 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}<title>À propos</title>{% endblock %}
-    
+{% block title %}<title>À propos - QR Code by Kriss</title>{% endblock %}
+
 {% block content %}
     <!-- Hero Section -->
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">À propos de QR Code Generator</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-            Découvrez notre plateforme dédiée à la génération et à la lecture de QR codes, 
+    <div class="text-center mb-10 bg-gradient-to-b from-blue-50/60 to-transparent -mt-10 pt-10 pb-2 -mx-6 px-6">
+        <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">À propos de QR Code by Kriss</h1>
+        <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+            Découvrez notre plateforme dédiée à la génération et à la lecture de QR codes,
             conçue pour simplifier vos échanges numériques.
         </p>
     </div>
 
     <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 mb-16">
         <!-- Mission Section -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
             <div class="p-8">
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-5">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Notre Mission</h2>
                 <p class="text-gray-600 leading-relaxed mb-4">
-                    Nous nous engageons à fournir un outil simple, rapide et efficace pour créer et décoder 
-                    vos QR codes. Notre objectif est de faciliter la communication et le partage d'informations 
+                    Nous nous engageons à fournir un outil simple, rapide et efficace pour créer et décoder
+                    vos QR codes. Notre objectif est de faciliter la communication et le partage d'informations
                     dans un monde de plus en plus numérique.
                 </p>
                 <p class="text-gray-600 leading-relaxed">
-                    Que ce soit pour votre usage personnel ou professionnel, notre plateforme vous accompagne 
+                    Que ce soit pour votre usage personnel ou professionnel, notre plateforme vous accompagne
                     dans tous vos besoins de génération de QR codes.
                 </p>
             </div>
         </div>
 
         <!-- Technology Section -->
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
             <div class="p-8">
-                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-5">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                     </svg>
                 </div>
@@ -49,20 +49,20 @@
                 </p>
                 <div class="space-y-3">
                     <div class="flex items-center space-x-3">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-gray-700"><strong>Django</strong> - Framework web Python robuste</span>
+                        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                        <span class="text-gray-600"><strong class="text-gray-700">Django</strong> - Framework web Python robuste</span>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-gray-700"><strong>Tailwind CSS</strong> - Design moderne et responsive</span>
+                        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                        <span class="text-gray-600"><strong class="text-gray-700">Tailwind CSS</strong> - Design moderne et responsive</span>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-gray-700"><strong>OpenCV</strong> - Traitement d'images avancé</span>
+                        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                        <span class="text-gray-600"><strong class="text-gray-700">OpenCV</strong> - Traitement d'images avancé</span>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-gray-700"><strong>Python QRCode</strong> - Génération de QR codes</span>
+                        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                        <span class="text-gray-600"><strong class="text-gray-700">Python QRCode</strong> - Génération de QR codes</span>
                     </div>
                 </div>
             </div>
@@ -71,50 +71,47 @@
 
     <!-- Features Grid -->
     <div class="max-w-6xl mx-auto mb-16">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Pourquoi Choisir Notre Plateforme ?</h2>
-            <p class="text-xl text-gray-600">Des fonctionnalités pensées pour votre confort et votre sécurité</p>
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Pourquoi Choisir Notre Plateforme ?</h2>
+            <p class="text-lg text-gray-500">Des fonctionnalités pensées pour votre confort et votre sécurité</p>
         </div>
-        
+
         <div class="grid md:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="text-center p-6">
-                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 text-center">
+                <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-3">100% Sécurisé</h3>
-                <p class="text-gray-600">
-                    Vos données sont traitées localement dans votre navigateur. 
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">100% Sécurisé</h3>
+                <p class="text-sm text-gray-600">
+                    Vos données sont traitées localement dans votre navigateur.
                     Aucune information n'est stockée sur nos serveurs.
                 </p>
             </div>
 
-            <!-- Feature 2 -->
-            <div class="text-center p-6">
-                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 text-center">
+                <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-3">Rapide & Efficace</h3>
-                <p class="text-gray-600">
-                    Génération instantanée de QR codes et décodage en temps réel 
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Rapide & Efficace</h3>
+                <p class="text-sm text-gray-600">
+                    Génération instantanée de QR codes et décodage en temps réel
                     pour une expérience utilisateur optimale.
                 </p>
             </div>
 
-            <!-- Feature 3 -->
-            <div class="text-center p-6">
-                <div class="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 text-center">
+                <div class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-3">Multi-formats</h3>
-                <p class="text-gray-600">
-                    Support de nombreux types de QR codes : URL, Email, SMS, WiFi, 
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Multi-formats</h3>
+                <p class="text-sm text-gray-600">
+                    Support de nombreux types de QR codes : URL, Email, SMS, WiFi,
                     vCard, géolocalisation et événements.
                 </p>
             </div>
@@ -122,40 +119,38 @@
     </div>
 
     <!-- Statistics Section -->
-    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-16">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">En Quelques Chiffres</h2>
+    <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-16 border border-blue-100">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">En Quelques Chiffres</h2>
+        </div>
+        <div class="grid grid-cols-3 gap-6 text-center">
+            <div>
+                <div class="text-3xl font-bold text-blue-600 mb-1">9+</div>
+                <p class="text-sm text-gray-600 font-medium">Types de QR codes</p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div>
-                    <div class="text-4xl font-bold text-blue-600 mb-2">9+</div>
-                    <p class="text-gray-700 font-medium">Types de QR codes supportés</p>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-blue-600 mb-2">100%</div>
-                    <p class="text-gray-700 font-medium">Traitement local sécurisé</p>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-blue-600 mb-2">0€</div>
-                    <p class="text-gray-700 font-medium">Service entièrement gratuit</p>
-                </div>
+            <div>
+                <div class="text-3xl font-bold text-blue-600 mb-1">100%</div>
+                <p class="text-sm text-gray-600 font-medium">Traitement local</p>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-blue-600 mb-1">0&euro;</div>
+                <p class="text-sm text-gray-600 font-medium">Entièrement gratuit</p>
             </div>
         </div>
     </div>
 
     <!-- Contact Section -->
-    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Une Question ? Une Suggestion ?</h2>
-        <p class="text-gray-600 mb-6">
-            Nous sommes toujours à l'écoute de nos utilisateurs pour améliorer continuellement notre service.
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-3">Une Question ? Une Suggestion ?</h2>
+        <p class="text-gray-500 mb-6">
+            Nous sommes toujours à l'écoute pour améliorer notre service.
         </p>
-        <div class="bg-gray-50 rounded-xl p-6">
+        <div class="bg-gray-50 rounded-xl p-5">
             <p class="text-gray-700 font-medium">
-                Merci d'utiliser notre plateforme QR Code Generator !
+                Merci d'utiliser QR Code by Kriss !
             </p>
-            <p class="text-sm text-gray-500 mt-2">
-                Développé avec ❤️ pour faciliter vos échanges numériques
+            <p class="text-sm text-gray-400 mt-2">
+                Développé avec passion pour faciliter vos échanges numériques
             </p>
         </div>
     </div>
